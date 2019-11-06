@@ -2,11 +2,21 @@
   "name": "luk.ke",
   "version": "0.0.0",
   "description": "Portfolio site for Luke Deen Taylor",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/controversial/luk.ke.git"
   },
   "author": "Luke Deen Taylor",
   "license": "MIT",
-  "homepage": "https://luk.ke"
+  "homepage": "https://luk.ke",
+  "dependencies": {
+    "next": "^9.1.2",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0"
+  }
 }
