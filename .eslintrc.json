@@ -31,7 +31,8 @@
     ],
     "import/no-webpack-loader-syntax": "off",
     "import/newline-after-import": "off",
-    "react/no-this-in-sfc": "off"
+    "react/no-this-in-sfc": "off",
+    "jsx-a11y/anchor-is-valid": "off"
   },
   "settings": {
     "import/resolver": "webpack"
