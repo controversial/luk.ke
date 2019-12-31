@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-import styles from './index.css';
+import styles from './index.sass';
 
 const Index = () => (
   <div>
