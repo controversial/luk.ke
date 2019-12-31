@@ -8,7 +8,7 @@ class App extends DefaultApp {
     const { Component, pageProps } = this.props;
 
     return (
-      <TwoPanels>
+      <TwoPanels orientation={Component.panelOrientation}>
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <Component {...pageProps} />
       </TwoPanels>

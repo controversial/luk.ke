@@ -8,14 +8,22 @@ import styles from './TwoPanels.sass';
 
 class TwoPanels extends React.Component {
   static propTypes = {
-    children: PropTypes.node.isRequired,
+    children: PropTypes.element.isRequired,
+    orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
   }
 
   render() {
-    const { children } = this.props;
+    const { children, orientation } = this.props;
     return (
-      <div className="panel-layout">
-        { React.Children.only(children) }
+      <div className={`panel-layout panel-${orientation}`}>
+        <div className="panels-background">
+          <div className="panel-bg light" />
+          <div className="panel-bg dark" />
+        </div>
+
+        <div className="panels-content">
+          { React.Children.only(children) }
+        </div>
 
         <style jsx>{ styles }</style>
       </div>
