@@ -17,7 +17,8 @@
   "dependencies": {
     "next": "^9.1.2",
     "react": "^16.11.0",
-    "react-dom": "^16.11.0"
+    "react-dom": "^16.11.0",
+    "styled-jsx": "^3.2.4"
   },
   "devDependencies": {
     "eslint": "^6.6.0",
