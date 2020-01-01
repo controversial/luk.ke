@@ -1,0 +1,62 @@
+@import 'colors.sass'
+
+// Background colors behind content
+.panels-background
+  position: fixed
+  top: 0
+  left: 0
+  z-index: 1
+  width: 100vw
+  height: 100vh
+  background: $black
+
+  .panel-bg
+    position: absolute
+    top: 0
+    height: 100vh
+
+    // Dark panel is full width
+    &.dark
+      z-index: 1
+      left: 0
+      width: 100vw
+
+    // light panel sits on top, smaller
+    &.light
+      z-index: 2
+      width: 40vw
+      background: $white
+
+
+// Content in front of panels
+.panels-content
+  position: absolute
+  z-index: 2
+
+
+// When the white panel appears on the right
+.panel-layout.panel-on-right
+  .panel-bg.light
+    right: 0
+
+  // Set default text colors for content
+  .panels-content
+    & :global(.left)
+      color: $white
+
+    & :global(.right)
+      color: $black
+
+
+// When the white panel appears on the left
+.panel-layout.panel-on-left
+  .panel-bg.light
+    left: 0
+
+  // Set default text colors for content
+  .panels-content
+    & :global(.left)
+      color: $black
+
+    & :global(.right)
+      color: $white
