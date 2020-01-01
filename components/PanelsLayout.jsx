@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import styles from './TwoPanels.sass';
+import styles from './PanelsLayout.sass';
 
 
 /* eslint-disable react/prefer-stateless-function */
@@ -21,7 +21,7 @@ class TwoPanels extends React.Component {
     })[orientation];
 
     return (
-      <div className={`panel-layout ${orientationClass}`}>
+      <div className={`panels-layout ${orientationClass}`}>
         <div className="panels-background">
           <div className="panel-bg light" />
           <div className="panel-bg dark" />
