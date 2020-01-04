@@ -12,4 +12,6 @@ const ProjectDetails = () => {
   );
 };
 
+ProjectDetails.panelOrientation = 'full';
+
 export default ProjectDetails;
