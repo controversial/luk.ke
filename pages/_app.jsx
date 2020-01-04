@@ -1,5 +1,6 @@
 import React from 'react';
 import DefaultApp from 'next/app';
+import Router from 'next/router';
 
 import PanelsLayout from '../components/PanelsLayout.jsx';
 
@@ -17,3 +18,9 @@ class App extends DefaultApp {
 }
 
 export default App;
+
+// Make app and router accessible globally for debugging
+if (typeof window !== 'undefined') {
+  window.app = App;
+  window.app.router = Router;
+}
