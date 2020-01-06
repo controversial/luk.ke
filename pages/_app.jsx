@@ -2,7 +2,7 @@ import React from 'react';
 import DefaultApp from 'next/app';
 import Router from 'next/router';
 
-import PanelsLayout from '../components/PanelsLayout.jsx';
+import PanelsLayout from '../components/PanelsLayout/PanelsLayout.jsx';
 
 import baseStyles from '../styles/base.sass?type=global';
 

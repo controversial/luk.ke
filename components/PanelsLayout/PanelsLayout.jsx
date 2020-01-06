@@ -1,10 +1,16 @@
+/* eslint-disable react/prefer-stateless-function */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import styles from './PanelsLayout.sass';
 
 
-/* eslint-disable react/prefer-stateless-function */
+/**
+ * This component provides a layout with multiple panels: a light colored panel with fixed content,
+ * a dark-colored panel with scrolling content, and TODO: a menu component as a third panel on the
+ * opposite side of the fixed light panel from the scrolling dark panel.
+ */
 
 class PanelsLayout extends React.Component {
   static propTypes = {

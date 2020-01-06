@@ -11,18 +11,19 @@
   background: $black
 
   .panel-bg
-    position: absolute
     top: 0
     height: 100vh
 
-    // Dark panel is full width
+    // Dark panel is full width, it sits behind.
     &.dark
+      position: absolute
       z-index: 1
       left: 0
       width: 100vw
 
-    // light panel sits on top, smaller
+    // light panel is fixed in front of dark panel
     &.light
+      position: fixed
       z-index: 2
       left: 0
       width: 40vw
@@ -36,6 +37,10 @@
 .panels-content
   position: absolute
   z-index: 2
+  top: 0
+  left: 0
+  width: 100vw
+  min-height: 100vh
 
 
 // When the white panel appears on the right
@@ -43,33 +48,12 @@
   .panel-bg.light
     transform: translateX(100vw) translateX(-100%)
 
-  // Set default text colors for content
-  .panels-content
-    & :global(.left)
-      color: $white
-
-    & :global(.right)
-      color: $black
-
-
 // When the white panel appears on the left
 .panels-layout.panel-on-left
   .panel-bg.light
     transform: none
 
-  // Set default text colors for content
-  .panels-content
-    & :global(.left)
-      color: $black
-
-    & :global(.right)
-      color: $white
-
-
 // When the white panel occupies the entire screen
 .panels-layout.panel-full
   .panel-bg.light
     transform: scaleX(2.5)
-
-  .panels-content
-    color: $black
