@@ -6,7 +6,7 @@ import styles from './PanelsLayout.sass';
 
 /* eslint-disable react/prefer-stateless-function */
 
-class TwoPanels extends React.Component {
+class PanelsLayout extends React.Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
     orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
@@ -37,4 +37,4 @@ class TwoPanels extends React.Component {
   }
 }
 
-export default TwoPanels;
+export default PanelsLayout;
