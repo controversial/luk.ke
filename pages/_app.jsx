@@ -4,15 +4,21 @@ import Router from 'next/router';
 
 import PanelsLayout from '../components/PanelsLayout.jsx';
 
+import baseStyles from '../styles/base.sass?type=global';
+
 class App extends DefaultApp {
   render() {
     const { Component, pageProps } = this.props;
 
     return (
-      <PanelsLayout orientation={Component.panelOrientation}>
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        <Component {...pageProps} />
-      </PanelsLayout>
+      <>
+        <PanelsLayout orientation={Component.panelOrientation}>
+          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+          <Component {...pageProps} />
+        </PanelsLayout>
+
+        <style jsx>{baseStyles}</style>
+      </>
     );
   }
 }
