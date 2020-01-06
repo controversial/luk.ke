@@ -6,6 +6,14 @@ import PropTypes from 'prop-types';
 import styles from './PanelsLayout.sass';
 
 
+export function getOrientationClass(orientation) {
+  return ({
+    left: 'panel-on-left',
+    right: 'panel-on-right',
+    full: 'panel-full',
+  })[orientation];
+}
+
 /**
  * This component provides a layout with multiple panels: a light colored panel with fixed content,
  * a dark-colored panel with scrolling content, and TODO: a menu component as a third panel on the
@@ -20,11 +28,7 @@ class PanelsLayout extends React.Component {
 
   render() {
     const { children, orientation } = this.props;
-    const orientationClass = ({
-      left: 'panel-on-left',
-      right: 'panel-on-right',
-      full: 'panel-full',
-    })[orientation];
+    const orientationClass = getOrientationClass(orientation);
 
     return (
       <div className={`panels-layout ${orientationClass}`}>

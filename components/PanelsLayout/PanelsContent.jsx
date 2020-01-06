@@ -1,0 +1,41 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import { getOrientationClass } from './PanelsLayout.jsx';
+
+
+import styles from './PanelsContent.sass';
+
+/**
+ * Provides appropriate layout/styles for content to sit in front of PanelsLayout
+ */
+function PanelsContent({ orientation, darkContent, lightContent }) {
+  const orientationClass = getOrientationClass(orientation);
+
+  return (
+    <div className={`panels-content-layout ${orientationClass}`}>
+
+      <div className="dark container">
+        <div className="dark content">
+          {darkContent}
+        </div>
+      </div>
+
+      <div className="light container">
+        <div className="light content">
+          {lightContent}
+        </div>
+      </div>
+
+      <style jsx>{styles}</style>
+    </div>
+  );
+}
+
+PanelsContent.propTypes = {
+  orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
+  darkContent: PropTypes.element.isRequired,
+  lightContent: PropTypes.element.isRequired,
+};
+
+export default PanelsContent;
