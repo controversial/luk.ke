@@ -1,2 +1,10 @@
-@mixin weight($font-weight)
-  font-variation-settings: 'wght' $font-weight
+@mixin font-weight($weight, $letter-spacing: 0em)
+  font-variation-settings: 'wght' $weight
+  letter-spacing: $letter-spacing
+
+  // Make adjustments for Chrome's weird font rendering habits
+  @media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm)
+    @supports not (-moz-appearance: none)
+      font-variation-settings: 'wght' ($weight + 50)
+      letter-spacing: calc(#{$letter-spacing} - .04em)
+
