@@ -8,8 +8,9 @@ import PanelsLayout from '../components/PanelsLayout/PanelsLayout.jsx';
 import baseStyles from '../styles/base.sass?type=global';
 
 function App({ Component, pageProps }) {
-  const { panelOrientation, pageName } = Component;
+  const { panelOrientation, pageName: initialPageName } = Component;
 
+  const [pageName, setPageName] = useState(initialPageName);
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -23,8 +24,12 @@ function App({ Component, pageProps }) {
       />
 
       <PanelsLayout orientation={Component.panelOrientation}>
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        <Component {...pageProps} />
+        {/* eslint-disable react/jsx-props-no-spreading */}
+        <Component
+          {...pageProps}
+          setPageName={setPageName}
+        />
+        {/* eslint-enable */}
       </PanelsLayout>
 
       <style jsx>{baseStyles}</style>
