@@ -1,0 +1,31 @@
+@import colors
+
+
+.panels-content-layout
+  position: absolute
+  top: 0
+  left: 0
+  width: 100vw
+
+  display: flex
+  flex-direction: row
+
+  .container.dark
+    flex: 1 0 0
+
+    .content
+      color: $white
+
+  .container.light
+    flex: 0 0 auto
+    position: relative
+    width: 40vw
+    height: 100vh
+
+    .content
+      position: fixed
+      top: 0
+      width: inherit
+      height: 100vh
+
+      color: black
