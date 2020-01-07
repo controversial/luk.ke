@@ -24,6 +24,7 @@ const ProjectDetails = () => {
   );
 };
 
+ProjectDetails.pageName = 'Work';
 ProjectDetails.panelOrientation = 'full';
 
 export default ProjectDetails;

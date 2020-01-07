@@ -5,6 +5,8 @@ import PanelsContent from '../components/PanelsLayout/PanelsContent.jsx';
 import styles from './index.sass';
 
 class Index extends React.Component {
+  static pageName = 'Hello';
+
   static panelOrientation = 'right';
 
   render() {

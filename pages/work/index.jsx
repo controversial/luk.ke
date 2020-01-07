@@ -20,6 +20,7 @@ const WorkIndex = () => (
   </div>
 );
 
+WorkIndex.pageName = 'Work';
 WorkIndex.panelOrientation = 'left';
 
 export default WorkIndex;
