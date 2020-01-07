@@ -1,0 +1,23 @@
+@import colors
+
+.nav-bar
+  position: relative
+  height: 80px
+  background: $black
+
+  .panel-bg.light
+    background: $white
+    height: 100%
+
+    transform: none
+    transform-origin: left center
+    transition: transform .5s ease, width .5s ease
+
+  &.panel-on-right .panel-bg.light
+    transform: translateX(100vw) translateX(-100%)
+
+  &.panel-on-left .panel-bg.light
+    transform: none
+
+  &.panel-full .panel-bg.light
+    transform: scaleX(2.5)

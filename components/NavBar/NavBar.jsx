@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { getOrientationClass } from '../PanelsLayout/PanelsLayout.jsx';
 
+import styles from './NavBar.sass';
+
 function NavBar({ orientation, panelWidth, currPageName, menuOpen, setMenuOpen }) {
   return (
     <div className={`nav-bar ${getOrientationClass(orientation)}`}>
@@ -16,6 +18,8 @@ function NavBar({ orientation, panelWidth, currPageName, menuOpen, setMenuOpen }
           {currPageName}
         </button>
       </div>
+
+      <style jsx>{styles}</style>
     </div>
   );
 }
