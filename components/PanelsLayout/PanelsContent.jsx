@@ -34,8 +34,13 @@ function PanelsContent({ orientation, darkContent, lightContent }) {
 
 PanelsContent.propTypes = {
   orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
-  darkContent: PropTypes.element.isRequired,
-  lightContent: PropTypes.element.isRequired,
+  darkContent: PropTypes.element,
+  lightContent: PropTypes.element,
+};
+
+PanelsContent.defaultProps = {
+  darkContent: null,
+  lightContent: null,
 };
 
 export default PanelsContent;
