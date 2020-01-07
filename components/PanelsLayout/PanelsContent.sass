@@ -10,6 +10,8 @@
   display: flex
   flex-direction: row
 
+  // Style dark and light sides of content
+
   .container.dark
     flex: 1 0 0
 
@@ -29,3 +31,18 @@
       height: 100vh
 
       color: black
+
+  // Get the order right
+  &.panel-on-left,
+  &.panel-full
+    .container.light
+      order: 1
+    .container.dark
+      order: 2
+
+  &.panel-on-right
+    .container.dark
+      order: 1
+
+    .container.light
+      order: 2
