@@ -1,11 +1,36 @@
 @import colors
+@import mixins
 
 .nav-bar
   position: relative
   height: 80px
+  padding: 0 60px
   background: $black
+  display: flex
+  align-items: center
+
+  .menu-button
+    display: block
+    position: relative
+    z-index: 2
+
+    background: none
+    border: none
+    border-radius: 0
+    padding: 0
+    margin-top: 10px
+
+    @include font-weight(570)
+    font-size: 20px
+
+    cursor: pointer
+
 
   .panel-bg.light
+    position: absolute
+    top: 0
+    left: 0
+    z-index: 1
     background: $white
     height: 100%
 
@@ -13,8 +38,11 @@
     transform-origin: left center
     transition: transform .5s ease, width .5s ease
 
-  &.panel-on-right .panel-bg.light
-    transform: translateX(100vw) translateX(-100%)
+  &.panel-on-right
+    justify-content: flex-end
+
+    .panel-bg.light
+      transform: translateX(100vw) translateX(-100%)
 
   &.panel-on-left .panel-bg.light
     transform: none
