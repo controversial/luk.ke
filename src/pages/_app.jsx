@@ -2,41 +2,42 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
 
+import { StoreProvider } from '../store';
+
 import NavBar from '../components/NavBar/NavBar.jsx';
 import PanelsLayout from '../components/PanelsLayout/PanelsLayout.jsx';
 
 import baseStyles from '../styles/base.sass?type=global';
 
+
 function App({ Component, pageProps }) {
   const { panelOrientation, pageName: initialPageName } = Component;
 
   const [pageName, setPageName] = useState(initialPageName);
-  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div id="app">
-      <NavBar
-        currPageName={pageName}
-        orientation={panelOrientation}
-        panelWidth="40vw"
-        menuOpen={menuOpen}
-        setMenuOpen={setMenuOpen}
-      />
-
-      <PanelsLayout
-        orientation={Component.panelOrientation}
-        menuOpen={menuOpen}
-      >
-        {/* eslint-disable react/jsx-props-no-spreading */}
-        <Component
-          {...pageProps}
-          setPageName={setPageName}
+    <StoreProvider>
+      <div id="app">
+        <NavBar
+          currPageName={pageName}
+          orientation={panelOrientation}
+          panelWidth="40vw"
         />
-        {/* eslint-enable */}
-      </PanelsLayout>
 
-      <style jsx>{baseStyles}</style>
-    </div>
+        <PanelsLayout
+          orientation={Component.panelOrientation}
+        >
+          {/* eslint-disable react/jsx-props-no-spreading */}
+          <Component
+            {...pageProps}
+            setPageName={setPageName}
+          />
+          {/* eslint-enable */}
+        </PanelsLayout>
+
+        <style jsx>{baseStyles}</style>
+      </div>
+    </StoreProvider>
   );
 }
 

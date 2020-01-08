@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useStore } from '../../store';
 
 import Menu from '../Menu/Menu.jsx';
 
@@ -20,7 +21,8 @@ export function getOrientationClass(orientation) {
  * opposite side of the fixed light panel from the scrolling dark panel.
  */
 
-function PanelsLayout({ children, orientation, menuOpen }) {
+function PanelsLayout({ children, orientation }) {
+  const { state: { menuOpen } } = useStore();
   const orientationClass = getOrientationClass(orientation);
 
   return (
@@ -44,7 +46,6 @@ function PanelsLayout({ children, orientation, menuOpen }) {
 PanelsLayout.propTypes = {
   children: PropTypes.element.isRequired,
   orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
-  menuOpen: PropTypes.bool.isRequired,
 };
 
 export default PanelsLayout;

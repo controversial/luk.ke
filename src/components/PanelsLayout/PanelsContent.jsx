@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useStore } from '../../store';
 
 import { getOrientationClass } from './PanelsLayout.jsx';
 
@@ -9,7 +10,8 @@ import styles from './PanelsContent.sass';
 /**
  * Provides appropriate layout/styles for content to sit in front of PanelsLayout
  */
-function PanelsContent({ orientation, menuOpen, darkContent, lightContent }) {
+function PanelsContent({ orientation, darkContent, lightContent }) {
+  const { state: { menuOpen } } = useStore();
   const orientationClass = getOrientationClass(orientation);
 
   return (
@@ -34,7 +36,6 @@ function PanelsContent({ orientation, menuOpen, darkContent, lightContent }) {
 
 PanelsContent.propTypes = {
   orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
-  menuOpen: PropTypes.bool.isRequired,
   darkContent: PropTypes.element,
   lightContent: PropTypes.element,
 };
