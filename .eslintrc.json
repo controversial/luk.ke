@@ -34,6 +34,7 @@
     "react/sort-comp": ["error", { "order": [ "static-variables", "static-methods", "lifecycle", "everything-else", "render" ] }],
     "import/no-webpack-loader-syntax": "off",
     "import/newline-after-import": "off",
+    "import/extensions": "off",
     "react/no-this-in-sfc": "off",
     "react/static-property-placement": "off",
     "react/state-in-constructor": "off",
