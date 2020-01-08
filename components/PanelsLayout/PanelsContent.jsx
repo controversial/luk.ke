@@ -9,11 +9,11 @@ import styles from './PanelsContent.sass';
 /**
  * Provides appropriate layout/styles for content to sit in front of PanelsLayout
  */
-function PanelsContent({ orientation, darkContent, lightContent }) {
+function PanelsContent({ orientation, menuOpen, darkContent, lightContent }) {
   const orientationClass = getOrientationClass(orientation);
 
   return (
-    <div className={`panels-content-layout ${orientationClass}`}>
+    <div className={`panels-content-layout ${orientationClass} ${menuOpen ? 'menu-open' : ''}`}>
 
       <div className="dark container">
         <div className="dark content">
@@ -34,6 +34,7 @@ function PanelsContent({ orientation, darkContent, lightContent }) {
 
 PanelsContent.propTypes = {
   orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
+  menuOpen: PropTypes.bool.isRequired,
   darkContent: PropTypes.element,
   lightContent: PropTypes.element,
 };

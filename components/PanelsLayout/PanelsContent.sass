@@ -12,6 +12,9 @@
 
   // Style dark and light sides of content
 
+  .content
+    transition: transform .5s ease
+
   .container.dark
     flex: 1 0 0
 
@@ -46,3 +49,11 @@
 
     .container.light
       order: 2
+
+  // Shift elements when menu opens
+  &.menu-open
+    .content
+      transform: translateX(380px)
+
+    &.panel-on-right .content
+      transform: translate(-380px)

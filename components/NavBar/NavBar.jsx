@@ -7,12 +7,12 @@ import styles from './NavBar.sass';
 
 function NavBar({ orientation, panelWidth, currPageName, menuOpen, setMenuOpen }) {
   return (
-    <div className={`nav-bar ${getOrientationClass(orientation)}`}>
+    <div className={`nav-bar ${getOrientationClass(orientation)} ${menuOpen ? 'menu-open' : ''}`}>
       <div className="panel-bg light" style={{ width: panelWidth }} />
       {/* Button to toggle the menu */}
       <button
         type="button"
-        className={`menu-button ${menuOpen ? 'menu-open' : ''}`}
+        className="menu-button"
         onClick={() => { setMenuOpen(!menuOpen); }}
       >
         {currPageName}

@@ -1,6 +1,12 @@
 @import 'colors.sass'
 
+
+.panels-layout
+  transform: none
+  transition: transform .35s
+
 // Background colors behind content
+
 .panels-background
   position: fixed
   top: 0
@@ -32,17 +38,6 @@
       transform-origin: left center
       transition: transform .5s ease, width .5s ease
 
-
-// Content in front of panels
-.panels-content
-  position: absolute
-  z-index: 2
-  top: 0
-  left: 0
-  width: 100vw
-  min-height: 100vh
-
-
 // When the white panel appears on the right
 .panels-layout.panel-on-right
   .panel-bg.light
@@ -57,3 +52,38 @@
 .panels-layout.panel-full
   .panel-bg.light
     transform: scaleX(2.5)
+
+
+// Content in front of panels
+
+.panels-content
+  position: absolute
+  z-index: 2
+  top: 0
+  left: 0
+  width: 100vw
+  min-height: 100vh
+  transition: transform .5s ease
+
+
+// Menu
+
+nav.menu
+  position: absolute
+  left: 0
+  top: 0
+  transform: translate(-100%)
+// move to right side when the panel is on the right
+.panels-layout.panel-on-right
+  nav.menu
+    right: 0
+    transform: translate(100%)
+
+
+// Slide panel over when menu opens
+.panels-layout.menu-open
+  .panel-bg.light
+    transform: translate(380px)
+
+  &.panel-on-right .panel-bg.light
+    transform: translateX(100vw) translateX(-100%) translate(-380px)

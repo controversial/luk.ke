@@ -3,6 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Menu from '../Menu/Menu.jsx';
+
 import styles from './PanelsLayout.sass';
 
 
@@ -24,14 +26,15 @@ class PanelsLayout extends React.Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
     orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
+    menuOpen: PropTypes.bool.isRequired,
   }
 
   render() {
-    const { children, orientation } = this.props;
+    const { children, orientation, menuOpen } = this.props;
     const orientationClass = getOrientationClass(orientation);
 
     return (
-      <div className={`panels-layout ${orientationClass}`}>
+      <div className={`panels-layout ${orientationClass} ${menuOpen ? 'menu-open' : ''}`}>
         <div className="panels-background">
           <div className="panel-bg light" />
           <div className="panel-bg dark" />
@@ -40,6 +43,8 @@ class PanelsLayout extends React.Component {
         <div className="panels-content">
           { React.Children.only(children) }
         </div>
+
+        <Menu orientation={orientation} />
 
         <style jsx>{ styles }</style>
       </div>

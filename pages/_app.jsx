@@ -23,7 +23,10 @@ function App({ Component, pageProps }) {
         setMenuOpen={setMenuOpen}
       />
 
-      <PanelsLayout orientation={Component.panelOrientation}>
+      <PanelsLayout
+        orientation={Component.panelOrientation}
+        menuOpen={menuOpen}
+      >
         {/* eslint-disable react/jsx-props-no-spreading */}
         <Component
           {...pageProps}
