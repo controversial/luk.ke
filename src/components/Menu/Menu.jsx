@@ -19,7 +19,7 @@ function Menu({ orientation }) {
 
   const alignment = orientation === 'right' ? 'right' : 'left';
 
-  function toggleMenu() { dispatch({ type: 'setMenuOpen', payload: !menuOpen }); }
+  function toggleMenu() { dispatch('setMenuOpen', !menuOpen); }
 
   return (
     <nav className={`menu ${alignment}`}>

@@ -14,11 +14,11 @@ const actions = {
 
 // Reducer function looks through Vuex-style object of action functions, each of which mutates a
 // passed state object directly
-const reducer = (state, action) => {
-  const func = actions[action.type];
+const reducer = (state, { type: action, payload }) => {
+  const func = actions[action];
   if (func) {
     const state2 = cloneDeep(state);
-    func(state2, action.payload);
+    func(state2, payload);
     return state2;
   }
   throw new Error(`Action ${action?.type} not defined`);
@@ -29,9 +29,12 @@ const reducer = (state, action) => {
 
 export function StoreProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  // Nicer dispatch API: dispatch(actionType, payload)
+  function dispatch2(type, payload) { return dispatch({ type, payload }); }
+
   return React.createElement(
     StoreContext.Provider,
-    { value: { state, dispatch } },
+    { value: { state, dispatch: dispatch2 } },
     children,
   );
 }
