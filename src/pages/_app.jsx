@@ -14,6 +14,7 @@ function App({ Component, pageProps }) {
   const { panelOrientation, pageName: initialPageName } = Component;
 
   const [pageName, setPageName] = useState(initialPageName);
+  Router.events.on('routeChangeComplete', () => { setPageName(Component.pageName); });
 
   return (
     <StoreProvider>
