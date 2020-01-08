@@ -18,7 +18,7 @@ function NavBar({ orientation, panelWidth, currPageName }) {
         className="menu-button"
         onClick={() => { dispatch({ type: 'setMenuOpen', payload: !menuOpen }); }}
       >
-        {currPageName}
+        {menuOpen ? 'Close' : currPageName}
       </button>
 
       <style jsx>{styles}</style>
