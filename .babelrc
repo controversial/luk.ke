@@ -8,7 +8,7 @@
           "plugins": [
             [
               "styled-jsx-plugin-sass",
-              { "sassOptions": { "indentedSyntax": true, "includePaths": [ "./styles" ] } }
+              { "sassOptions": { "indentedSyntax": true, "includePaths": [ "./src/styles" ] } }
             ]
           ]
         }
