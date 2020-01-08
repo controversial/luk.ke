@@ -2,6 +2,8 @@
 
 
 .panels-layout
+  width: 100vw
+  overflow: hidden
   transform: none
   transition: transform .35s
 
@@ -57,33 +59,40 @@
 // Content in front of panels
 
 .panels-content
-  position: absolute
+  position: relative
   z-index: 2
   top: 0
   left: 0
   width: 100vw
-  min-height: 100vh
   transition: transform .5s ease
 
 
 // Menu
 
-nav.menu
-  position: absolute
-  left: 0
-  top: 0
-  transform: translate(-100%)
-// move to right side when the panel is on the right
-.panels-layout.panel-on-right
-  nav.menu
+.panels-layout
+  & :global(nav.menu)
+    position: absolute
+    z-index: 3
+    top: 0
+    transition: transform .5s ease
+
+  // Menu appears on left side for most orientations
+  &:not(.panel-on-right) :global(nav.menu)
+    left: 0
+    transform: translate(-100%)
+
+  // Menu moves to right side when the panel is on the right
+  &.panel-on-right :global(nav.menu)
     right: 0
     transform: translate(100%)
 
+  &.menu-open
+    & :global(nav.menu)
+      transform: none
 
-// Slide panel over when menu opens
-.panels-layout.menu-open
-  .panel-bg.light
-    transform: translate(380px)
+    // Slide panel over when menu opens
+    .panel-bg.light
+      transform: translate(380px)
 
-  &.panel-on-right .panel-bg.light
-    transform: translateX(100vw) translateX(-100%) translate(-380px)
+    &.panel-on-right .panel-bg.light
+      transform: translateX(100vw) translateX(-100%) translate(-380px)
