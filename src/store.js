@@ -21,7 +21,7 @@ const reducer = (state, action) => {
     func(state2, action.payload);
     return state2;
   }
-  throw new Error(`Action ${action} not defined`);
+  throw new Error(`Action ${action?.type} not defined`);
 };
 
 
