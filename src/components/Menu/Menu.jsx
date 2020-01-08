@@ -13,8 +13,10 @@ function Menu({ orientation }) {
   const router = useRouter();
   const currentRoute = router.route;
 
+  const alignment = orientation === 'right' ? 'right' : 'left';
+
   return (
-    <nav className="menu">
+    <nav className={`menu ${alignment}`}>
       <ul>
         {
           Object.entries(links).map(([label, routes]) => (
