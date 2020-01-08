@@ -13,7 +13,7 @@
   // Style dark and light sides of content
 
   .content
-    transition: transform .5s ease
+    transition: transform .5s ease, opacity .5s ease
 
   .container.dark
     flex: 1 0 0
@@ -54,6 +54,7 @@
   &.menu-open
     .content
       transform: translateX(380px)
+      opacity: .5
 
     &.panel-on-right .content
       transform: translate(-380px)

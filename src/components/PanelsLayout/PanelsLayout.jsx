@@ -16,18 +16,22 @@ export function getOrientationClass(orientation) {
 }
 
 /**
- * This component provides a layout with multiple panels: a light colored panel with fixed content,
- * a dark-colored panel with scrolling content, and TODO: a menu component as a third panel on the
- * opposite side of the fixed light panel from the scrolling dark panel.
+ * This component provides a layout with three full-height panels: a light colored panel with fixed-
+ * position content, a dark-colored panel with scrolling content, and a menu component as a third
+ * panel.
  */
 
 function PanelsLayout({ children, orientation }) {
-  const { state: { menuOpen } } = useStore();
+  const { state: { menuOpen }, dispatch } = useStore();
   const orientationClass = getOrientationClass(orientation);
 
   return (
-    <div className={`panels-layout ${orientationClass} ${menuOpen ? 'menu-open' : ''}`}>
-      <div className="panels-background">
+    <div
+      role="none"
+      className={`panels-layout ${orientationClass} ${menuOpen ? 'menu-open' : ''}`}
+      onClick={() => dispatch('setMenuOpen', false)}
+    >
+      <div role="none" className="panels-background">
         <div className="panel-bg light" />
         <div className="panel-bg dark" />
       </div>

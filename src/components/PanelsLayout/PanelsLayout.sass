@@ -88,6 +88,12 @@
     transform: translate(100%)
 
   &.menu-open
+    cursor: pointer
+
+    .panels-background,
+    .panels-content
+      pointer-events: none
+
     & :global(nav.menu)
       transform: none
 
