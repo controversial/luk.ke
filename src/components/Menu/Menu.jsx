@@ -2,9 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 
+import Link from 'next/link';
+
 import links from './routes';
 
 import styles from './Menu.sass';
+
 
 function Menu({ orientation }) {
   const router = useRouter();
@@ -14,12 +17,14 @@ function Menu({ orientation }) {
     <nav className="menu">
       <ul>
         {
-          Object.entries(links).forEach(([label, routes]) => (
+          Object.entries(links).map(([label, routes]) => (
             <li
               key={label}
               className={routes.includes(currentRoute) ? 'active' : ''}
             >
-              <a href={routes[0]}>{label}</a>
+              <Link href={routes[0]}>
+                <a>{label}</a>
+              </Link>
             </li>
           ))
         }
