@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import { motion } from 'framer-motion';
+
 import { useStore } from '../../store';
 
 import { getOrientationClass } from '../PanelsLayout/PanelsLayout.jsx';
@@ -19,8 +22,14 @@ function NavBar({ orientation, panelWidth, currPageName }) {
         onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
       >
         <div className="icon">
-          <div className="line" />
-          <div className="line" />
+          <motion.div
+            className="line"
+            animate={{ y: '-.25em' }}
+          />
+          <motion.div
+            className="line"
+            animate={{ y: '.25em' }}
+          />
         </div>
         <div className="label">{menuOpen ? 'Close' : currPageName}</div>
       </button>
