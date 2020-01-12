@@ -10,7 +10,6 @@
   align-items: center
 
   .menu-button
-    display: block
     position: relative
     z-index: 2
 
@@ -25,6 +24,14 @@
     font-size: 20px
 
     cursor: pointer
+
+    display: flex
+    flex-direction: row
+    align-items: center
+
+    .label
+      font-size: 20px
+      margin: 0 .95em
 
 
   .panel-bg.light
@@ -41,6 +48,9 @@
 
   &.panel-on-right
     justify-content: flex-end
+
+    .menu-button
+      flex-direction: row-reverse
 
     .panel-bg.light
       transform: translateX(100vw) translateX(-100%)
@@ -62,3 +72,29 @@
 
     &.panel-on-right .panel-bg.light
       transform: translateX(100vw) translateX(-100%) translate(-380px)
+
+
+
+.icon
+  position: relative
+  width: 1.35em
+  margin-top: .2em
+
+  & :global(.line)
+    position: absolute
+
+    $thickness: .125em
+    height: $thickness
+    top: -1.5 * $thickness
+    box-shadow: 0 $thickness 0 0
+
+    left: 0
+    width: 100%
+
+    color: inherit
+
+    &:first-child
+      transform: translateY(-.25em)
+
+    &:last-child
+      transform: translateY(.25em)
