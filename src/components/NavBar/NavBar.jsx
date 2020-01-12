@@ -24,11 +24,11 @@ function NavBar({ orientation, panelWidth, currPageName }) {
         <div className="icon">
           <motion.div
             className="line"
-            animate={{ y: '-.25em' }}
+            animate={{ y: '-.5em' }}
           />
           <motion.div
             className="line"
-            animate={{ y: '.25em' }}
+            animate={{ y: '.5em' }}
           />
         </div>
         <div className="label">{menuOpen ? 'Close' : currPageName}</div>
