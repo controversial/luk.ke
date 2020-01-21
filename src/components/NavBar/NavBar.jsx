@@ -56,15 +56,27 @@ function NavBar({ orientation, panelWidth, currPageName }) {
 
   return (
     <div className={`nav-bar ${getOrientationClass(orientation)} ${menuOpen ? 'menu-open' : ''}`}>
-      <div className="panel-bg light" style={{ width: panelWidth }} />
-      {/* Button to toggle the menu */}
+      {/* One side of the nav bar contains a white background, which displays a dark-colored button
+          to open the menu. */}
+      <div className="panel-bg light" style={{ width: panelWidth }}>
+        <button
+          type="button"
+          className="menu-button"
+          onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
+        >
+          { icon(menuOpen) }
+          <div className="label">{ currPageName }</div>
+        </button>
+      </div>
+
+      {/* Behind the white panel there's another button on a dark background to close the menu */}
       <button
         type="button"
         className="menu-button"
         onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
       >
         { icon(menuOpen) }
-        <div className="label">{menuOpen ? 'Close' : currPageName}</div>
+        <div className="label">Close</div>
       </button>
 
       <style jsx>{styles}</style>
