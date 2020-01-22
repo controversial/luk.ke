@@ -22,7 +22,9 @@ function Menu({ orientation }) {
   function toggleMenu() { dispatch('setMenuOpen', !menuOpen); }
 
   return (
-    <nav className={`menu ${alignment}`}>
+    // eslint-disable-next-line max-len
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
+    <nav role="navigation" className={`menu ${alignment}`} onClick={(e) => e.stopPropagation()}>
       <ul>
         {
           Object.entries(links).map(([label, routes]) => (
