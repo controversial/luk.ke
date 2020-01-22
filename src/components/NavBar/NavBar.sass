@@ -74,8 +74,14 @@
 
   &.panel-full .panel-bg.light
     transform: scaleX(2.5)
+    padding: 0 (60px / 2.5)
+
+    .menu-button
+      transform: scaleX(0.4)
 
 
+  // When the menu opens the light panel slides 380px and the menu button gets the opposite
+     transform to stay in place
   &.menu-open
     .panel-bg.light
       transform: translate(380px)
@@ -88,6 +94,14 @@
 
       .menu-button
         transform: translate(380px)
+
+    &.panel-full .panel-bg.light
+      transform: translateX(380px) scaleX(2.5)
+
+      .menu-button
+        $translate: 380px / 2.5 * -1
+        transform: translateX(#{$translate}) scaleX(0.4)
+
 
 
 .nav-bar .menu-button :global(.icon)
