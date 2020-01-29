@@ -24,7 +24,9 @@ const ProjectDetails = () => {
   );
 };
 
-ProjectDetails.pageName = 'Work';
-ProjectDetails.panelOrientation = 'full';
+Object.assign(ProjectDetails, {
+  pageName: 'Work',
+  panelOrientation: 'full',
+});
 
 export default ProjectDetails;
