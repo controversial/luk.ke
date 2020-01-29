@@ -1,10 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+import { getHomepage } from './api/content/home';
 
 import PanelsContent from '../components/PanelsLayout/PanelsContent.jsx';
-
 import styles from './index.sass';
 
-function Index() {
+function Index({ content }) {
   return (
     <div className="page home">
 
@@ -12,7 +14,9 @@ function Index() {
         orientation={Index.panelOrientation}
         darkContent={(
           <div>
-            <h1 className="heading-main">Hi, I&rsquo;m Luke!</h1>
+            <h1 className="heading-main">
+              { content.title }
+            </h1>
           </div>
         )}
         lightContent={(
@@ -31,5 +35,16 @@ Object.assign(Index, {
   pageName: 'Hello',
   panelOrientation: 'right',
 });
+
+Index.getInitialProps = async (ctx) => ({
+  content: await getHomepage(ctx.req),
+});
+
+Index.propTypes = {
+  content: PropTypes.exact({
+    title: PropTypes.string.isRequired,
+    text: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }).isRequired,
+};
 
 export default Index;
