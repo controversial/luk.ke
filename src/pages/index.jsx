@@ -17,6 +17,11 @@ function Index({ content }) {
             <h1 className="heading-main">
               { content.title }
             </h1>
+            {
+              content.text.map((t) => (
+                <div key={t} dangerouslySetInnerHTML={{ __html: t }} />
+              ))
+            }
           </div>
         )}
         lightContent={(
