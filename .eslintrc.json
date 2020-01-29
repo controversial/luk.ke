@@ -38,7 +38,8 @@
     "react/no-this-in-sfc": "off",
     "react/static-property-placement": "off",
     "react/state-in-constructor": "off",
-    "jsx-a11y/anchor-is-valid": "off"
+    "jsx-a11y/anchor-is-valid": "off",
+    "react/no-danger": "off"
   },
   "settings": {
     "import/resolver": "webpack"
