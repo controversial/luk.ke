@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import parse from 'html-react-parser';
+
 import { getHomepage } from './api/content/home';
 
 import PanelsContent from '../components/PanelsLayout/PanelsContent.jsx';
@@ -14,14 +16,8 @@ function Index({ content }) {
         orientation={Index.panelOrientation}
         darkContent={(
           <div>
-            <h1 className="heading-main">
-              { content.title }
-            </h1>
-            {
-              content.text.map((t) => (
-                <div key={t} dangerouslySetInnerHTML={{ __html: t }} />
-              ))
-            }
+            { parse(content.title) }
+            { content.text.map((p) => <React.Fragment key={p}>{parse(p)}</React.Fragment>) }
           </div>
         )}
         lightContent={(
