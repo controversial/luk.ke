@@ -10,6 +10,13 @@ import PanelsContent from '../components/PanelsLayout/PanelsContent.jsx';
 
 import styles from './index.sass';
 
+
+// Replacement function for html-react-parser. If we encounter an element with class name 'age', we
+// replace it with an instance of AgeCounter
+// eslint-disable-next-line react/prop-types
+const replaceAge = ({ attribs }) => attribs?.['class'] === 'age' && <AgeCounter />;
+
+
 function Index({ content }) {
   return (
     <div className="page home">
@@ -22,12 +29,7 @@ function Index({ content }) {
             {
               content.text.map((p) => (
                 <React.Fragment key={p}>
-                  {
-                    parse(p, {
-                      // If we encounter an element with class 'age', replace it with an AgeCounter
-                      replace: ({ attribs }) => attribs && attribs.class === 'age' && React.createElement(AgeCounter),
-                    })
-                  }
+                  { parse(p, { replace: replaceAge }) }
                 </React.Fragment>
               ))
             }
