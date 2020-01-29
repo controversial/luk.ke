@@ -5,7 +5,9 @@ import parse from 'html-react-parser';
 
 import { getHomepage } from './api/content/home';
 
+import AgeCounter from '../components/AgeCounter/AgeCounter.jsx';
 import PanelsContent from '../components/PanelsLayout/PanelsContent.jsx';
+
 import styles from './index.sass';
 
 function Index({ content }) {
@@ -17,7 +19,18 @@ function Index({ content }) {
         darkContent={(
           <div>
             { parse(content.title) }
-            { content.text.map((p) => <React.Fragment key={p}>{parse(p)}</React.Fragment>) }
+            {
+              content.text.map((p) => (
+                <React.Fragment key={p}>
+                  {
+                    parse(p, {
+                      // If we encounter an element with class 'age', replace it with an AgeCounter
+                      replace: ({ attribs }) => attribs && attribs.class === 'age' && React.createElement(AgeCounter),
+                    })
+                  }
+                </React.Fragment>
+              ))
+            }
           </div>
         )}
         lightContent={(

@@ -10,6 +10,11 @@ export async function getHomepage(req) {
     .then(({ main_title, text }) => ({
       title: PrismicDOM.RichText.asHtml(main_title),
       text: text.map(({ text_content }) => PrismicDOM.RichText.asHtml(text_content)),
+    }))
+    // Special case: replace instances of the string {{age}} with a span
+    .then(({ title, text }) => ({
+      title,
+      text: text.map((t) => t.replace(/{{age}}/g, '<span class="age"></span>')),
     }));
   /* eslint-enable */
 }
