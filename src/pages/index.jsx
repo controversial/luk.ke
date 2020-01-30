@@ -24,7 +24,7 @@ function Index({ content }) {
       <PanelsContent
         orientation={Index.panelOrientation}
         darkContent={(
-          <div>
+          <div className="content-wrapper">
             { parse(content.title) }
             {
               content.text.map((p) => (
