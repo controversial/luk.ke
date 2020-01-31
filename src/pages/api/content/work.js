@@ -23,3 +23,14 @@ export function fetchAllProjects(api) {
   return api.query(Prismic.Predicates.at('document.type', 'project'))
     .then(({ results: projects }) => projects);
 }
+
+export async function getProjects(req) {
+  const api = await initApi(req);
+  const projects = await fetchAllProjects(api);
+  return projects;
+}
+
+export default async (req, res) => {
+  const order = await getProjects(req);
+  res.status(200).json(order);
+};
