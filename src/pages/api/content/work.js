@@ -1,4 +1,5 @@
 import Prismic from 'prismic-javascript';
+import PrismicDOM from 'prismic-dom';
 import initApi from '../../../helpers/prismic';
 
 /**
@@ -42,7 +43,10 @@ export async function getProjects(req) {
 
   projects.sort((a, b) => rankOrder(a.uid) - rankOrder(b.uid));
 
-  return projects.map(({ data: project }) => project);
+  return projects.map(({ data: project }) => ({
+    ...project,
+    name: PrismicDOM.RichText.asHtml(project.name),
+  }));
 }
 
 export default async (req, res) => {
