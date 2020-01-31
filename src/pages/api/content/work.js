@@ -26,8 +26,23 @@ export function fetchAllProjects(api) {
 
 export async function getProjects(req) {
   const api = await initApi(req);
-  const projects = await fetchAllProjects(api);
-  return projects;
+  const [projects, order] = await Promise.all([
+    fetchAllProjects(api),
+    getProjectsOrder(api),
+  ]);
+
+  // Returns sorting ranks for project UIDs, where lower ranks should come earlier in the sorted
+  // list.
+  function rankOrder(uid) {
+    const index = order.indexOf(uid);
+    // Place UIDs missing from the order at the end
+    if (index === -1) return order.length;
+    return index;
+  }
+
+  projects.sort((a, b) => rankOrder(a.uid) - rankOrder(b.uid));
+
+  return projects.map(({ data: project }) => project);
 }
 
 export default async (req, res) => {
