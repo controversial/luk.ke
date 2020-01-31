@@ -14,3 +14,12 @@ export function getProjectsOrder(api) {
       .map(({ project }) => project.uid)
       .filter((id) => id));
 }
+
+/**
+ * Returns an unproceed and unordered list of all projects published in Prismic
+ * @param {Object} api - A Prismic API object retrieved from Prismic.getApi
+ */
+export function fetchAllProjects(api) {
+  return api.query(Prismic.Predicates.at('document.type', 'project'))
+    .then(({ results: projects }) => projects);
+}
