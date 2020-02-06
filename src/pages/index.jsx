@@ -5,6 +5,7 @@ import parse from 'html-react-parser';
 
 import { getHomepage } from './api/content/home';
 
+import Head from 'next/head';
 import AgeCounter from '../components/AgeCounter/AgeCounter.jsx';
 import PanelsContent from '../components/PanelsLayout/PanelsContent.jsx';
 
@@ -20,6 +21,9 @@ const replaceAge = ({ attribs }) => attribs?.['class'] === 'age' && <AgeCounter 
 function Index({ content }) {
   return (
     <div className="page home">
+      <Head>
+        <title>Luke Deen Taylor</title>
+      </Head>
 
       <PanelsContent
         orientation={Index.panelOrientation}

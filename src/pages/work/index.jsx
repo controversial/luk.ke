@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Head from 'next/head';
 import PanelsContent from '../../components/PanelsLayout/PanelsContent.jsx';
 
 /**
@@ -7,6 +8,9 @@ import PanelsContent from '../../components/PanelsLayout/PanelsContent.jsx';
  */
 const WorkIndex = () => (
   <div className="page work-index">
+    <Head>
+      <title>Work | Luke Deen Taylor</title>
+    </Head>
 
     <PanelsContent
       orientation={WorkIndex.panelOrientation}
