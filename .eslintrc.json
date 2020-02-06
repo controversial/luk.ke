@@ -35,6 +35,7 @@
     "import/no-webpack-loader-syntax": "off",
     "import/newline-after-import": "off",
     "import/extensions": "off",
+    "import/order": "off",
     "react/no-this-in-sfc": "off",
     "react/static-property-placement": "off",
     "react/state-in-constructor": "off",
