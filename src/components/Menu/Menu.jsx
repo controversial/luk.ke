@@ -36,7 +36,7 @@ function Menu({ orientation }) {
                 {/* eslint-disable jsx-a11y/interactive-supports-focus */}
                 {/* eslint-disable jsx-a11y/click-events-have-key-events */}
                 <a role="link" onClick={toggleMenu}>
-                  {label}
+                  <span>{label}</span>
                 </a>
                 {/* eslint-enable */}
               </Link>
