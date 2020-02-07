@@ -20,10 +20,12 @@
     margin-top: 10px
 
     color: $white
+    opacity: .5
     @include font-weight(520)
     font-size: 20px
 
     cursor: pointer
+    outline: none
 
     display: flex
     flex-direction: row
@@ -31,7 +33,7 @@
 
     .label
       font-size: 20px
-      margin: 0 (.9em - (1.25em / 2))
+      margin: 0 .9em
 
 
   .panel-bg.light
@@ -56,6 +58,7 @@
       transition: transform .5s
       transform-origin: left center
       color: $black
+      opacity: 1
       @include font-weight(570)
 
 
@@ -106,12 +109,16 @@
 
 .nav-bar .menu-button :global(.icon)
   position: relative
-  width: 2.5em
+  $width: 2.5em
+  width: $width
   margin-top: .2em
 
   // Doubling values and scaling to half sizes helps resolve issues with inconsistent rendering
      across browsers
   transform: scale(.5)
+  // Account for extra space created by downscaling
+  margin-left: -$width / 4
+  margin-right: -$width / 4
 
   & :global(.line)
     $thickness: .25em
