@@ -11,7 +11,8 @@ import withClassName from '../../../../helpers/addClass';
  * it will be returned from API routes.
  * @param {Object} obj - a single document fetched from Prisma
  */
-export const processProject = async ({ data: project }) => ({
+export const processProject = async ({ uid, data: project }) => ({
+  uid,
   ...project,
   name: PrismicDOM.RichText.asHtml(project.name),
   subhead: await withClassName('subhead', PrismicDOM.RichText.asHtml(project.subhead)),
