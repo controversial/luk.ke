@@ -11,7 +11,7 @@ import withClassName from '../../../../helpers/addClass';
  * it will be returned from API routes.
  * @param {Object} obj - a single document fetched from Prisma
  */
-export const processProject = async ({ uid, data: project }) => ({
+export const processProject = async ({ uid, data: project }, includeContent = true) => ({
   uid,
   ...project,
   name: PrismicDOM.RichText.asHtml(project.name),
@@ -23,36 +23,38 @@ export const processProject = async ({ uid, data: project }) => ({
   featured_images: project.featured_images.map(({ image }) => image.url),
 
   body: undefined,
-  content: project.body.map(({ slice_type: type, primary: item, items }) => {
-    // Breaks between sections
-    if (type === 'section_heading') {
-      return { type, content: PrismicDOM.RichText.asHtml(item.section_title) };
-    }
-    // Blocks of rich text content
-    if (type === 'content') {
-      return { type, content: PrismicDOM.RichText.asHtml(item.text_content) };
-    }
-    // Images
-    if (type === 'image') {
-      return { type, src: item.image.url, alt: item.image.alt };
-    }
-    if (type === 'image_gallery') {
-      return { type, images: items.map(({ image }) => ({ src: image.url, alt: image.alt })) };
-    }
-    // Videos
-    if (type === 'video') {
-      return { type, src: items?.[0]?.video?.url };
-    }
-    if (type === 'video_gallery') {
-      return { type, srcs: items.map(({ video }) => video.url) };
-    }
-    // Embeds
-    if (type === 'embed') {
-      return { type, content: item.embed?.html, meta: { ...item.embed, html: undefined } };
-    }
+  ...includeContent && {
+    content: project.body.map(({ slice_type: type, primary: item, items }) => {
+      // Breaks between sections
+      if (type === 'section_heading') {
+        return { type, content: PrismicDOM.RichText.asHtml(item.section_title) };
+      }
+      // Blocks of rich text content
+      if (type === 'content') {
+        return { type, content: PrismicDOM.RichText.asHtml(item.text_content) };
+      }
+      // Images
+      if (type === 'image') {
+        return { type, src: item.image.url, alt: item.image.alt };
+      }
+      if (type === 'image_gallery') {
+        return { type, images: items.map(({ image }) => ({ src: image.url, alt: image.alt })) };
+      }
+      // Videos
+      if (type === 'video') {
+        return { type, src: items?.[0]?.video?.url };
+      }
+      if (type === 'video_gallery') {
+        return { type, srcs: items.map(({ video }) => video.url) };
+      }
+      // Embeds
+      if (type === 'embed') {
+        return { type, content: item.embed?.html, meta: { ...item.embed, html: undefined } };
+      }
 
-    return { type, content: Object.keys(item || {}).length ? item : items };
-  }),
+      return { type, content: Object.keys(item || {}).length ? item : items };
+    }),
+  },
 });
 
 
@@ -98,7 +100,7 @@ export async function getProjects(req) {
 
   projects.sort((a, b) => rankOrder(a.uid) - rankOrder(b.uid));
 
-  return Promise.all(projects.map(processProject));
+  return Promise.all(projects.map((p) => processProject(p, false)));
 }
 
 export default async (req, res) => {
