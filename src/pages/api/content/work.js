@@ -53,6 +53,39 @@ export async function getProjects(req) {
     start_date: project.start_date.split('-').slice(0, 2).map((n) => parseInt(n, 10)),
     end_date: project.end_date.split('-').slice(0, 2).map((n) => parseInt(n, 10)),
     github_link: PrismicDOM.Link.url(project.github_link),
+    featured_images: project.featured_images.map(({ image }) => image.url),
+
+    body: undefined,
+    content: project.body.map(({ slice_type: type, primary: item, items }) => {
+      // Breaks between sections
+      if (type === 'section_heading') {
+        return { type, content: PrismicDOM.RichText.asHtml(item.section_title) };
+      }
+      // Blocks of rich text content
+      if (type === 'content') {
+        return { type, content: PrismicDOM.RichText.asHtml(item.text_content) };
+      }
+      // Images
+      if (type === 'image') {
+        return { type, src: item.image.url, alt: item.image.alt };
+      }
+      if (type === 'image_gallery') {
+        return { type, images: items.map(({ image }) => ({ src: image.url, alt: image.alt })) };
+      }
+      // Videos
+      if (type === 'video') {
+        return { type, src: items?.[0]?.video?.url };
+      }
+      if (type === 'video_gallery') {
+        return { type, srcs: items.map(({ video }) => video.url) };
+      }
+      // Embeds
+      if (type === 'embed') {
+        return { type, content: item.embed?.html, meta: { ...item.embed, html: undefined } };
+      }
+
+      return { type, content: Object.keys(item || {}).length ? item : items };
+    }),
   })));
 }
 
