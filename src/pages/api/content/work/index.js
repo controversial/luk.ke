@@ -22,6 +22,8 @@ export const processProject = async ({ uid, data: project }, includeContent = tr
   github_link: PrismicDOM.Link.url(project.github_link),
   featured_images: project.featured_images.map(({ image }) => image.url),
 
+  // If we're including the content of the page, in addition to just simple metadata, we need to
+  // process all of the rich text, etc. from the "body" of the Project entry from Prisma.
   body: undefined,
   ...includeContent && {
     content: project.body.map(({ slice_type: type, primary: item, items }) => {
@@ -81,7 +83,11 @@ export function fetchAllProjects(api) {
     .then(({ results: projects }) => projects);
 }
 
-
+/**
+ * Returns a sorted and processed list of all of the projects in Prismic, in an easy consumable
+ * format.
+ * @param {Object} req - A request object (from SSR) to which Prismic can attach
+ */
 export async function getProjects(req) {
   const api = await initApi(req);
   const [projects, order] = await Promise.all([
@@ -102,6 +108,7 @@ export async function getProjects(req) {
 
   return Promise.all(projects.map((p) => processProject(p, false)));
 }
+
 
 export default async (req, res) => {
   const projects = await getProjects(req);
