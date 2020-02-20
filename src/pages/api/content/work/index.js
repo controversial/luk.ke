@@ -7,9 +7,9 @@ import withClassName from '../../../../helpers/addClassToMarkup';
 // Helper functions
 
 /**
- * Processes a Project document from Prisma, turning the Prisma document form into the form in which
- * it will be returned from API routes.
- * @param {Object} obj - a single document fetched from Prisma
+ * Processes a Project document from Prismic, turning the Prismic document form into the form in
+ * which it will be returned from API routes.
+ * @param {Object} obj - a single document fetched from Prismic
  */
 export const processProject = async ({ uid, data: project }, includeContent = true) => ({
   uid,
@@ -23,7 +23,7 @@ export const processProject = async ({ uid, data: project }, includeContent = tr
   featured_images: project.featured_images.map(({ image }) => image.url),
 
   // If we're including the content of the page, in addition to just simple metadata, we need to
-  // process all of the rich text, etc. from the "body" of the Project entry from Prisma.
+  // process all of the rich text, etc. from the "body" of the Project entry from Prismic.
   body: undefined,
   ...includeContent && {
     content: project.body.map(({ slice_type: type, primary: item, items }) => {
