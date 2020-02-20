@@ -21,22 +21,34 @@ function MenuIcon({ menuOpen }) {
     <div className="icon">
       <motion.div
         className="line"
-        animate={{
-          width: menuOpen ? '90%' : '100%',
-          rotate: menuOpen ? 45 : 0,
-          y: menuOpen ? 0 : '-.5em',
+        variants={{
+          'menu-closed': {
+            width: '100%',
+            rotate: 0,
+            y: '-.5em',
+          },
+          'menu-open': {
+            width: '90%',
+            rotate: 45,
+            y: 0,
+          },
         }}
-        initial={false}
         transition={transition}
       />
       <motion.div
         className="line"
-        animate={{
-          width: menuOpen ? '90%' : '100%',
-          rotate: menuOpen ? -45 : 0,
-          y: menuOpen ? 0 : '.5em',
+        variants={{
+          'menu-closed': {
+            width: '100%',
+            rotate: 0,
+            y: '.5em',
+          },
+          'menu-open': {
+            width: '90%',
+            rotate: -45,
+            y: 0,
+          },
         }}
-        initial={false}
         transition={transition}
       />
     </div>

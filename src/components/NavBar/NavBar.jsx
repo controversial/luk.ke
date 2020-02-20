@@ -15,7 +15,11 @@ function NavBar({ orientation, panelWidth, currPageName }) {
   const { state: { menuOpen }, dispatch } = useStore();
 
   return (
-    <div className={`nav-bar ${getOrientationClass(orientation)} ${menuOpen ? 'menu-open' : ''}`}>
+    <motion.div
+      className={`nav-bar ${getOrientationClass(orientation)} ${menuOpen ? 'menu-open' : ''}`}
+      animate={menuOpen ? 'menu-open' : 'menu-closed'}
+      initial={false}
+    >
       {/* One side of the nav bar contains a white background, which displays a dark-colored button
           to open the menu. */}
       <div className="panel-bg light" style={{ width: panelWidth }}>
@@ -40,7 +44,7 @@ function NavBar({ orientation, panelWidth, currPageName }) {
       </button>
 
       <style jsx>{styles}</style>
-    </div>
+    </motion.div>
   );
 }
 
