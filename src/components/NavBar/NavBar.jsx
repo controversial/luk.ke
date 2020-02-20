@@ -8,7 +8,7 @@ import MenuIcon from './MenuIcon.jsx';
 import { useStore } from '../../store';
 import { getOrientationClass } from '../PanelsLayout/PanelsLayout.jsx';
 
-import styles from './NavBar.sass';
+import styles from './NavBar.sass?type=global';
 
 
 function NavBar({ orientation, panelWidth, currPageName }) {
