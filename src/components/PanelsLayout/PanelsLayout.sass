@@ -15,7 +15,7 @@
   left: 0
   width: 40vw
   height: 100vh
-  z-index: 2
+  z-index: 1
   background: $white
   transform: none
   transform-origin: left center
@@ -48,6 +48,15 @@
   transition: transform .5s ease
 
 
+// Nav bar
+.panels-layout :global(.nav-bar)
+  position: fixed
+  z-index: 5
+  top: 0
+  left: 0
+  width: 100vw
+
+
 // Menu
 
 .panels-layout
@@ -68,8 +77,6 @@
     transform: translate(100%)
 
   &.menu-open
-    cursor: pointer
-
     .panel-bg,
     .panels-content
       pointer-events: none

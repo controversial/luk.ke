@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useStore } from '../../store';
 
 import Menu from '../Menu/Menu.jsx';
+import NavBar from '../NavBar/NavBar.jsx';
 
 import getOrientationClass from '../../helpers/getOrientationClass';
 
@@ -14,16 +15,20 @@ import styles from './PanelsLayout.sass';
  * panel.
  */
 
-function PanelsLayout({ children, orientation }) {
+function PanelsLayout({ children, orientation, currPageName }) {
   const { state: { menuOpen }, dispatch } = useStore();
   const orientationClass = getOrientationClass(orientation);
 
   return (
     <div
-      role="none"
       className={`panels-layout ${orientationClass} ${menuOpen ? 'menu-open' : ''}`}
-      onClick={() => dispatch('setMenuOpen', false)}
     >
+      <NavBar
+        currPageName={currPageName}
+        orientation={orientation}
+        panelWidth="40vw"
+      />
+
       {/* Adds a light-colored background to the panel */}
       <div className="panel-bg" />
 
@@ -41,6 +46,7 @@ function PanelsLayout({ children, orientation }) {
 PanelsLayout.propTypes = {
   children: PropTypes.element.isRequired,
   orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
+  currPageName: PropTypes.string.isRequired,
 };
 
 export default PanelsLayout;

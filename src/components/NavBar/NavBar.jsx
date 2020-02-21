@@ -36,7 +36,7 @@ function NavBar({ orientation, panelWidth, currPageName }) {
       {/* Behind the white panel there's another button on a dark background to close the menu */}
       <button
         type="button"
-        className="menu-button"
+        className="menu-button back"
         onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
       >
         <MenuIcon menuOpen={menuOpen} />

@@ -4,7 +4,6 @@ import Router from 'next/router';
 
 import { StoreProvider } from '../store';
 
-import NavBar from '../components/NavBar/NavBar.jsx';
 import PanelsLayout from '../components/PanelsLayout/PanelsLayout.jsx';
 
 import baseStyles from '../styles/base.sass?type=global';
@@ -19,14 +18,9 @@ function App({ Component, pageProps }) {
   return (
     <StoreProvider>
       <div id="app">
-        <NavBar
-          currPageName={pageName}
-          orientation={panelOrientation}
-          panelWidth="40vw"
-        />
-
         <PanelsLayout
-          orientation={Component.panelOrientation}
+          orientation={panelOrientation}
+          currPageName={pageName}
         >
           {/* eslint-disable react/jsx-props-no-spreading */}
           <Component
