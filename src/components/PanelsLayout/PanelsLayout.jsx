@@ -10,9 +10,9 @@ import getOrientationClass from '../../helpers/getOrientationClass';
 import styles from './PanelsLayout.sass';
 
 /**
- * This component provides a layout with three full-height panels: a light colored panel with fixed-
- * position content, a dark-colored panel with scrolling content, and a menu component as a third
- * panel.
+ * This component provides a layout with three full-height sections: a light colored panel with
+ * fixed- position content, a dark section behind/to the side of the light panel with scrolling
+ * content, and a menu component off screen to one side.
  */
 
 function PanelsLayout({ children, orientation, currPageName }) {
