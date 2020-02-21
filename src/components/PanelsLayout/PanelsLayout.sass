@@ -9,7 +9,7 @@
   transition: transform .35s
 
 // Background colors behind content
-.panel-bg
+.panels-layout > .panel-bg
   position: fixed
   top: 0
   left: 0
@@ -39,7 +39,7 @@
 
 // Content in front of panels
 
-.panels-content
+.panels-layout > .panels-content
   position: relative
   z-index: 2
   top: 0
@@ -104,7 +104,7 @@
 
 // A div sits behind all the content and can be clicked on to close the menu
 
-.menu-close-target
+.panels-layout > .menu-close-target
   pointer-events: none
   cursor: pointer
   position: fixed

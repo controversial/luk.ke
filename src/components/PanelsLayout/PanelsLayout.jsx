@@ -7,7 +7,7 @@ import NavBar from '../NavBar/NavBar.jsx';
 
 import getOrientationClass from '../../helpers/getOrientationClass';
 
-import styles from './PanelsLayout.sass';
+import styles from './PanelsLayout.sass?type=global';
 
 /**
  * This component provides a layout with three full-height sections: a light colored panel with
