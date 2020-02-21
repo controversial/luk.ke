@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { motion } from 'framer-motion';
-
 import MenuIcon from './MenuIcon.jsx';
 
 import { useStore } from '../../store';
@@ -15,10 +13,8 @@ function NavBar({ orientation, panelWidth, currPageName }) {
   const { state: { menuOpen }, dispatch } = useStore();
 
   return (
-    <motion.div
+    <div
       className={`nav-bar ${getOrientationClass(orientation)} ${menuOpen ? 'menu-open' : ''}`}
-      animate={menuOpen ? 'menu-open' : 'menu-closed'}
-      initial={false}
     >
       {/* One side of the nav bar contains a white background, which displays a dark-colored button
           to open the menu. */}
@@ -44,7 +40,7 @@ function NavBar({ orientation, panelWidth, currPageName }) {
       </button>
 
       <style jsx>{styles}</style>
-    </motion.div>
+    </div>
   );
 }
 

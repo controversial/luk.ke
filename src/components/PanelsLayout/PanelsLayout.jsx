@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useStore } from '../../store';
 
+import { motion } from 'framer-motion';
 import Menu from '../Menu/Menu.jsx';
 import NavBar from '../NavBar/NavBar.jsx';
 
@@ -20,8 +21,10 @@ function PanelsLayout({ children, orientation, currPageName }) {
   const orientationClass = getOrientationClass(orientation);
 
   return (
-    <div
+    <motion.div
       className={`panels-layout ${orientationClass} ${menuOpen ? 'menu-open' : ''}`}
+      animate={menuOpen ? 'menu-open' : 'menu-closed'}
+      initial={false}
     >
       <NavBar
         currPageName={currPageName}
@@ -45,7 +48,7 @@ function PanelsLayout({ children, orientation, currPageName }) {
       />
 
       <style jsx>{ styles }</style>
-    </div>
+    </motion.div>
   );
 }
 
