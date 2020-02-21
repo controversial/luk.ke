@@ -6,7 +6,7 @@ import MenuIcon from './MenuIcon.jsx';
 import { useStore } from '../../store';
 import getOrientationClass from '../../helpers/getOrientationClass';
 
-import styles from './NavBar.sass?type=global';
+import styles from './NavBar.sass';
 
 
 function NavBar({ orientation, panelWidth, currPageName }) {

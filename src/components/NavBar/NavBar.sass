@@ -107,7 +107,7 @@
 
 
 
-.nav-bar .menu-button .icon
+.nav-bar .menu-button :global(.icon)
   position: relative
   $width: 2.5em
   width: $width
@@ -120,7 +120,7 @@
   margin-left: -$width / 4
   margin-right: -$width / 4
 
-  .line
+  & :global(.line)
     $thickness: .25em
 
     position: absolute
