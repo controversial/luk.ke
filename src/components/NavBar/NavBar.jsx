@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import MenuIcon from './MenuIcon.jsx';
 
 import { useStore } from '../../store';
-import { getOrientationClass } from '../PanelsLayout/PanelsLayout.jsx';
+import getOrientationClass from '../../helpers/getOrientationClass';
 
 import styles from './NavBar.sass?type=global';
 

@@ -4,16 +4,9 @@ import { useStore } from '../../store';
 
 import Menu from '../Menu/Menu.jsx';
 
+import getOrientationClass from '../../helpers/getOrientationClass';
+
 import styles from './PanelsLayout.sass';
-
-
-export function getOrientationClass(orientation) {
-  return ({
-    left: 'panel-on-left',
-    right: 'panel-on-right',
-    full: 'panel-full',
-  })[orientation];
-}
 
 /**
  * This component provides a layout with three full-height panels: a light colored panel with fixed-

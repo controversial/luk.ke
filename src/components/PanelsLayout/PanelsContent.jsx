@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useStore } from '../../store';
 
-import { getOrientationClass } from './PanelsLayout.jsx';
+import getOrientationClass from '../../helpers/getOrientationClass';
 
 
 import styles from './PanelsContent.sass';
