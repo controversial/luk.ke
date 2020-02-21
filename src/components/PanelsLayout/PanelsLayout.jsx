@@ -38,6 +38,12 @@ function PanelsLayout({ children, orientation, currPageName }) {
 
       <Menu orientation={orientation} />
 
+      <div
+        role="none"
+        className="menu-close-target"
+        onClick={() => dispatch('setMenuOpen', false)}
+      />
+
       <style jsx>{ styles }</style>
     </div>
   );

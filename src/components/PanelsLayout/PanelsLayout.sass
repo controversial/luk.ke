@@ -78,8 +78,12 @@
 
   &.menu-open
     .panel-bg,
-    .panels-content
+    .panels-content,
+    & :global(.nav-bar)
       pointer-events: none
+
+    .menu-close-target
+      pointer-events: all
 
     & :global(nav.menu)
       transform: none
@@ -93,3 +97,16 @@
 
     &.panel-full .panel-bg
       transform: translate(380px) scaleX(2.5)
+
+
+// A div sits behind all the content and can be clicked on to close the menu
+
+.menu-close-target
+  pointer-events: none
+  cursor: pointer
+  position: fixed
+  top: 0
+  left: 0
+  width: 100vw
+  height: 100vh
+  z-index: 0

@@ -5,6 +5,11 @@ import cloneDeep from 'lodash.clonedeep';
 const StoreContext = createContext();
 const initialState = {
   menuOpen: false,
+
+  dimensions: {
+    panelWidth: '40vw',
+    menuWidth: '380px',
+  },
 };
 
 
