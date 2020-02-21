@@ -31,10 +31,8 @@ function PanelsLayout({ children, orientation }) {
       className={`panels-layout ${orientationClass} ${menuOpen ? 'menu-open' : ''}`}
       onClick={() => dispatch('setMenuOpen', false)}
     >
-      <div role="none" className="panels-background">
-        <div className="panel-bg light" />
-        <div className="panel-bg dark" />
-      </div>
+      {/* Adds a light-colored background to the panel */}
+      <div className="panel-bg" />
 
       <div className="panels-content">
         { React.Children.only(children) }

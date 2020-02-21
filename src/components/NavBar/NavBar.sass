@@ -36,7 +36,7 @@
       margin: 0 .9em
 
 
-  .panel-bg.light
+  .panel
     position: absolute
     top: 0
     left: 0
@@ -68,14 +68,14 @@
     .menu-button
       flex-direction: row-reverse
 
-    .panel-bg.light
+    .panel
       justify-content: flex-end
       transform: translateX(100vw) translateX(-100%)
 
-  &.panel-on-left .panel-bg.light
+  &.panel-on-left .panel
     transform: none
 
-  &.panel-full .panel-bg.light
+  &.panel-full .panel
     transform: scaleX(2.5)
     padding: 0 (60px / 2.5)
 
@@ -86,19 +86,19 @@
   // When the menu opens the light panel slides 380px and the menu button gets the opposite
      transform to stay in place
   &.menu-open
-    .panel-bg.light
+    .panel
       transform: translate(380px)
 
       .menu-button
         transform: translate(-380px)
 
-    &.panel-on-right .panel-bg.light
+    &.panel-on-right .panel
       transform: translateX(100vw) translateX(-100%) translate(-380px)
 
       .menu-button
         transform: translate(380px)
 
-    &.panel-full .panel-bg.light
+    &.panel-full .panel
       transform: translateX(380px) scaleX(2.5)
 
       .menu-button

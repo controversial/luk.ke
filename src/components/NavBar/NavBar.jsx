@@ -22,7 +22,7 @@ function NavBar({ orientation, panelWidth, currPageName }) {
     >
       {/* One side of the nav bar contains a white background, which displays a dark-colored button
           to open the menu. */}
-      <div className="panel-bg light" style={{ width: panelWidth }}>
+      <div className="panel" style={{ width: panelWidth }}>
         <button
           type="button"
           className="menu-button"

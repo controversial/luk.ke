@@ -9,51 +9,31 @@
   transition: transform .35s
 
 // Background colors behind content
-
-.panels-background
+.panel-bg
   position: fixed
   top: 0
   left: 0
-  z-index: 1
-  width: 100vw
+  width: 40vw
   height: 100vh
-  background: $black
-
-  .panel-bg
-    top: 0
-    height: 100vh
-
-    // Dark panel is full width, it sits behind.
-    &.dark
-      position: absolute
-      z-index: 1
-      left: 0
-      width: 100vw
-
-    // light panel is fixed in front of dark panel
-    &.light
-      position: fixed
-      z-index: 2
-      left: 0
-      width: 40vw
-      background: $white
-      transform: none
-      transform-origin: left center
-      transition: transform .5s ease, width .5s ease
+  z-index: 2
+  background: $white
+  transform: none
+  transform-origin: left center
+  transition: transform .5s ease, width .5s ease
 
 // When the white panel appears on the right
 .panels-layout.panel-on-right
-  .panel-bg.light
+  .panel-bg
     transform: translateX(100vw) translateX(-100%)
 
 // When the white panel appears on the left
 .panels-layout.panel-on-left
-  .panel-bg.light
+  .panel-bg
     transform: none
 
 // When the white panel occupies the entire screen
 .panels-layout.panel-full
-  .panel-bg.light
+  .panel-bg
     transform: scaleX(2.5)
 
 
@@ -90,7 +70,7 @@
   &.menu-open
     cursor: pointer
 
-    .panels-background,
+    .panel-bg,
     .panels-content
       pointer-events: none
 
@@ -98,11 +78,11 @@
       transform: none
 
     // Slide panel over when menu opens
-    .panel-bg.light
+    .panel-bg
       transform: translate(380px)
 
-    &.panel-on-right .panel-bg.light
+    &.panel-on-right .panel-bg
       transform: translateX(100vw) translateX(-100%) translate(-380px)
 
-    &.panel-full .panel-bg.light
+    &.panel-full .panel-bg
       transform: translate(380px) scaleX(2.5)
