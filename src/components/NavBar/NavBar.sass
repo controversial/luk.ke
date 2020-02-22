@@ -9,7 +9,7 @@
   display: flex
   align-items: center
 
-  .menu-button
+  & :global(.menu-button)
     position: relative
     z-index: 1
 
@@ -36,7 +36,7 @@
       margin: 0 .9em
 
 
-  .panel
+  & :global(.panel)
     position: absolute
     top: 0
     left: 0
@@ -54,7 +54,7 @@
 
     overflow: hidden
 
-    .menu-button
+    & :global(.menu-button)
       transition: transform .5s
       transform-origin: left center
       color: $black
@@ -65,10 +65,10 @@
   &.panel-on-right
     justify-content: flex-end
 
-    .menu-button
+    & :global(.menu-button)
       flex-direction: row-reverse
 
-    .panel
+    & :global(.panel)
       justify-content: flex-end
       transform: translateX(100vw) translateX(-100%)
 
@@ -79,35 +79,35 @@
     transform: scaleX(2.5)
     padding: 0 (60px / 2.5)
 
-    .menu-button
+    & :global(.menu-button)
       transform: scaleX(0.4)
 
 
   // When the menu opens the light panel slides 380px and the menu button gets the opposite
      transform to stay in place
   &.menu-open
-    .panel
+    & :global(.panel)
       transform: translate(380px)
 
-      .menu-button
+      & :global(.menu-button)
         transform: translate(-380px)
 
-    &.panel-on-right .panel
+    &.panel-on-right :global(.panel)
       transform: translateX(100vw) translateX(-100%) translate(-380px)
 
-      .menu-button
+      & :global(.menu-button)
         transform: translate(380px)
 
-    &.panel-full .panel
+    &.panel-full :global(.panel)
       transform: translateX(380px) scaleX(2.5)
 
-      .menu-button
+      & :global(.menu-button)
         $translate: 380px / 2.5 * -1
         transform: translateX(#{$translate}) scaleX(0.4)
 
 
 
-.nav-bar .menu-button :global(.icon)
+.nav-bar :global(.menu-button .icon)
   position: relative
   $width: 2.5em
   width: $width

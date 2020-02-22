@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { motion } from 'framer-motion';
 import MenuIcon from './MenuIcon.jsx';
 
 import { useStore } from '../../store';
@@ -18,16 +19,19 @@ function NavBar({ orientation, panelWidth, currPageName }) {
     >
       {/* One side of the nav bar contains a white background, which displays a dark-colored button
           to open the menu. */}
-      <div className="panel" style={{ width: panelWidth }}>
-        <button
+      <motion.div
+        className="panel"
+        style={{ width: panelWidth }}
+      >
+        <motion.button
           type="button"
           className="menu-button"
           onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
         >
           <MenuIcon menuOpen={menuOpen} />
           <div className="label">{ currPageName }</div>
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
 
       {/* Behind the white panel there's another button on a dark background to close the menu */}
       <button
