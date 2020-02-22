@@ -3,18 +3,18 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 function MenuIcon() {
-  // const transition = {
-  //   type: 'tween',
-  //   duration: 0.35,
-  //   ease: 'backIn',
-  // };
   const transition = {
-    type: 'spring',
-    mass: 0.25,
-    stiffness: 150,
-    damping: 10,
-    velocity: 0,
+    type: 'tween',
+    duration: 0.35,
+    ease: 'backIn',
   };
+  // const transition = {
+  //   type: 'spring',
+  //   mass: 0.25,
+  //   stiffness: 150,
+  //   damping: 10,
+  //   velocity: 0,
+  // };
 
   return (
     <div className="icon">
