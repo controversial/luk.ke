@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { motion } from 'framer-motion';
 
-function MenuIcon({ menuOpen }) {
+function MenuIcon() {
   // const transition = {
   //   type: 'tween',
   //   duration: 0.35,
@@ -54,9 +53,5 @@ function MenuIcon({ menuOpen }) {
     </div>
   );
 }
-
-MenuIcon.propTypes = {
-  menuOpen: PropTypes.bool.isRequired,
-};
 
 export default MenuIcon;
