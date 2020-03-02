@@ -28,7 +28,7 @@ function NavBar({ orientation, panelWidth, currPageName }) {
           className="menu-button"
           onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
         >
-          <MenuIcon menuOpen={menuOpen} />
+          <MenuIcon />
           <div className="label">{ currPageName }</div>
         </motion.button>
       </motion.div>
@@ -39,7 +39,7 @@ function NavBar({ orientation, panelWidth, currPageName }) {
         className="menu-button back"
         onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
       >
-        <MenuIcon menuOpen={menuOpen} />
+        <MenuIcon />
         <div className="label">Close</div>
       </button>
 
