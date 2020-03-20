@@ -10,6 +10,20 @@ import getOrientationClass from '../../helpers/getOrientationClass';
 import styles from './NavBar.sass';
 
 
+const navPadding = 60; // px
+const panelWidth = 40; // vw
+
+const panelVariants = {
+  'menu-closed': ({ orientation }) => ({
+    x: orientation !== 'right' ? '0vw' : '100vw',
+    scaleX: orientation !== 'full' ? 1 : (100 / panelWidth),
+    padding: orientation !== 'full'
+      ? `0 ${navPadding}px`
+      : `0 ${navPadding / (100 / panelWidth)}px`,
+  }),
+};
+
+
 function NavBar({ orientation, panelWidth, currPageName }) {
   const { state: { menuOpen }, dispatch } = useStore();
 
@@ -21,6 +35,13 @@ function NavBar({ orientation, panelWidth, currPageName }) {
           to open the menu. */}
       <motion.div
         className="panel"
+        variants={panelVariants}
+        animate={{
+          transitionEnd: {
+            'justify-content': orientation === 'right' ? 'flex-end' : 'flex-start'
+          }
+        }}
+        custom={{ orientation, panelWidth }}
         style={{ width: panelWidth }}
       >
         <motion.button
