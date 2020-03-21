@@ -49,16 +49,19 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
       </motion.div>
 
       {/* Dark content sits "behind" and to the side of right panel */}
-      <motion.div
-        layoutTransition
-        className="dark-content"
-        style={{ gridColumn: {
-          left: 'fifth 2 / viewport-right',
-          right: 'viewport-left / fifth 3',
-        }[orientation] }}
-      >
-        {darkContent}
-      </motion.div>
+      { orientation === 'full' ? <React.Fragment />
+        : (
+          <motion.div
+            layoutTransition
+            className="dark-content"
+            style={{ gridColumn: {
+              left: 'fifth 2 / viewport-right',
+              right: 'viewport-left / fifth 3',
+            }[orientation] }}
+          >
+            {darkContent}
+          </motion.div>
+        ) }
 
       {/* There's a menu off screen to the right */}
       <Menu orientation="right" />
