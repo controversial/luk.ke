@@ -23,6 +23,12 @@ $nav-height: 80px
     background: $white
     color: $black
 
+  &.panel-full .panel.light
+    position: relative
+    height: auto
+    min-height: 100vh
+    overflow: hidden // take full height of content
+
   .dark-content
     overflow: hidden // take full height of content
     grid-column: fifth 2 / span 3 // this is overridden in JSX
