@@ -7,9 +7,6 @@ import { getHomepage } from '../api/content/home';
 
 import Head from 'next/head';
 import AgeCounter from '../../components/AgeCounter/AgeCounter.jsx';
-import PanelsContent from '../../components/PanelsLayout/PanelsContent.jsx';
-
-import styles from './index.sass';
 
 
 // Replacement function for html-react-parser. If we encounter an element with class name 'age', we
@@ -18,53 +15,65 @@ import styles from './index.sass';
 const replaceAge = ({ attribs }) => attribs?.['class'] === 'age' && <AgeCounter />;
 
 
-function Index({ content }) {
+// Main component - configures page metadata and doesn't render anything
+
+function Hello() {
   return (
-    <div className="page home">
+    <React.Fragment>
       <Head>
         <title>Luke Deen Taylor</title>
       </Head>
+    </React.Fragment>
+  );
+}
 
-      <PanelsContent
-        orientation={Index.panelOrientation}
-        darkContent={(
-          <div className="content-wrapper">
-            { parse(content.title) }
-            {
-              content.text.map((p) => (
-                <React.Fragment key={p}>
-                  { parse(p, { replace: replaceAge }) }
-                </React.Fragment>
-              ))
-            }
-          </div>
-        )}
-        lightContent={(
-          <div>
-            <div className="gradient" />
-          </div>
-        )}
-      />
+// Content to go in the light section
 
-      <style jsx>{styles}</style>
+function LightContent() {
+  return (
+    <div>
+      <div className="gradient" />
     </div>
   );
 }
 
-Object.assign(Index, {
-  pageName: 'Hello',
-  panelOrientation: 'right',
-});
+// Content to go in the dark section
 
-Index.getInitialProps = async (ctx) => ({
-  content: await getHomepage(ctx.req),
-});
+function DarkContent({ content }) {
+  return (
+    <div className="content-wrapper">
+      { parse(content.title) }
+      {
+        content.text.map((p) => (
+          <React.Fragment key={p}>
+            { parse(p, { replace: replaceAge }) }
+          </React.Fragment>
+        ))
+      }
+    </div>
+  );
+}
 
-Index.propTypes = {
+DarkContent.propTypes = {
   content: PropTypes.exact({
     title: PropTypes.string.isRequired,
     text: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
 };
 
-export default Index;
+
+// Define everything that needs to be a property of the exported component
+
+Object.assign(Hello, {
+  LightContent,
+  DarkContent,
+  pageName: 'Hello',
+  panelOrientation: 'right',
+
+  async getInitialProps(ctx) {
+    return { content: await getHomepage(ctx.req) };
+  },
+});
+
+
+export default Hello;
