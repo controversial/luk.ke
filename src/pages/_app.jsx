@@ -10,7 +10,7 @@ import baseStyles from '../styles/base.sass?type=global';
 
 
 function App({ Component, pageProps: basePageProps }) {
-  const { panelOrientation, pageName: initialPageName } = Component;
+  const { panelOrientation: pagePanelOrientation, pageName: initialPageName } = Component;
 
   const [pageName, setPageName] = useState(initialPageName);
   Router.events.on('routeChangeComplete', () => { setPageName(Component.pageName); });
@@ -27,7 +27,7 @@ function App({ Component, pageProps: basePageProps }) {
           darkContent={Component.DarkContent && React.createElement(Component.DarkContent, pprops)}
           // If the component does not provide both light content and dark content, force the "full"
           // layout.
-          orientation={(Component.LightContent && Component.DarkContent) ? panelOrientation : 'full'}
+          orientation={(Component.LightContent && Component.DarkContent) ? pagePanelOrientation : 'full'}
           currPageName={pageName}
         />
 
