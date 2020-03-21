@@ -17,13 +17,19 @@ import styles from './PanelsLayout.sass?type=global';
 
 function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) {
   // Whether or not the menu is open is recorded in the global application store
-  const { state: { menuOpen }, dispatch } = useStore();
+  const { state: { menuOpen, dimensions }, dispatch } = useStore();
   const orientationClass = getOrientationClass(orientation);
 
   return (
     <motion.div
       className={`panels-layout ${orientationClass} ${menuOpen ? 'menu-open' : ''}`}
+      variants={{
+        'menu-open': (orient) => ({ x: orient === 'right' ? `-${dimensions.menuWidth}` : dimensions.menuWidth }),
+        'menu-closed': { x: 0 },
+      }}
       animate={menuOpen ? 'menu-open' : 'menu-closed'}
+      transition={{ type: 'tween', duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+      custom={orientation}
       initial={false}
     >
       {/* There's a menu off screen to the left */}
