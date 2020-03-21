@@ -73,9 +73,10 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
 
 PanelsLayout.propTypes = {
   lightContent: PropTypes.element.isRequired,
-  darkContent: PropTypes.element.isRequired,
+  darkContent: PropTypes.element,
   orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
   currPageName: PropTypes.string.isRequired,
 };
+PanelsLayout.defaultProps = { darkContent: null };
 
 export default PanelsLayout;
