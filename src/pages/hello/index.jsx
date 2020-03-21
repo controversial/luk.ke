@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import parse from 'html-react-parser';
 
-import { getHomepage } from '../api/content/home';
+import { getHomepage } from '../api/content/hello';
 
 import Head from 'next/head';
 import AgeCounter from '../../components/AgeCounter/AgeCounter.jsx';
