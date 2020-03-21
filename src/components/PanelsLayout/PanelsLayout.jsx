@@ -4,19 +4,19 @@ import { useStore } from '../../store';
 
 import { motion } from 'framer-motion';
 import Menu from '../Menu/Menu.jsx';
-import NavBar from '../NavBar/NavBar.jsx';
 
 import getOrientationClass from '../../helpers/getOrientationClass';
 
 import styles from './PanelsLayout.sass?type=global';
 
 /**
- * This component provides a layout with three full-height sections: a light colored panel with
- * fixed- position content, a dark section behind/to the side of the light panel with scrolling
- * content, and a menu component off screen to one side.
+ * This component provides a layout with four full-height sections: a light colored panel with
+ * fixed-position content, a dark section behind/to the side of the light panel with scrolling
+ * content, and a menu component off screen to each side.
  */
 
-function PanelsLayout({ children, orientation, currPageName }) {
+function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) {
+  // Whether or not the menu is open is recorded in the global application store
   const { state: { menuOpen }, dispatch } = useStore();
   const orientationClass = getOrientationClass(orientation);
 
@@ -26,26 +26,12 @@ function PanelsLayout({ children, orientation, currPageName }) {
       animate={menuOpen ? 'menu-open' : 'menu-closed'}
       initial={false}
     >
-      <NavBar
-        currPageName={currPageName}
-        orientation={orientation}
-        panelWidth="40vw"
-      />
+      <Menu orientation="left" />
 
-      {/* Adds a light-colored background to the panel */}
-      <div className="panel-bg" />
+      <div className="panel light">{lightContent}</div>
+      <div className="dark-content">{darkContent}</div>
 
-      <div className="panels-content">
-        { React.Children.only(children) }
-      </div>
-
-      <Menu orientation={orientation} />
-
-      <div
-        role="none"
-        className="menu-close-target"
-        onClick={() => dispatch('setMenuOpen', false)}
-      />
+      <Menu orientation="right" />
 
       <style jsx>{ styles }</style>
     </motion.div>
@@ -53,7 +39,8 @@ function PanelsLayout({ children, orientation, currPageName }) {
 }
 
 PanelsLayout.propTypes = {
-  children: PropTypes.element.isRequired,
+  lightContent: PropTypes.element.isRequired,
+  darkContent: PropTypes.element.isRequired,
   orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
   currPageName: PropTypes.string.isRequired,
 };
