@@ -1,30 +1,41 @@
 import React from 'react';
 
 import Head from 'next/head';
-import PanelsContent from '../../components/PanelsLayout/PanelsContent.jsx';
 
 /**
- * Page listing brief details/images for many of my projects, and linking to fuller descriptions
+ * Page listing brief details/images for many of my projects, which allows navigation to case
+ * studies.
  */
-const WorkIndex = () => (
-  <div className="page work-index">
-    <Head>
-      <title>Work | Luke Deen Taylor</title>
-    </Head>
 
-    <PanelsContent
-      orientation={WorkIndex.panelOrientation}
-      lightContent={(
-        <div>
-          <h2>Project Name</h2>
-        </div>
-      )}
-    />
+// Main component configures page metadata and doesn't redner anything
 
-  </div>
-);
+function WorkIndex() {
+  return (
+    <React.Fragment>
+      <Head>
+        <title>Work | Luke Deen Taylor</title>
+      </Head>
+    </React.Fragment>
+  );
+}
+
+
+// Content to go in the dark section
+function LightContent() {
+  return (
+    <div>
+      <h2>Project Name</h2>
+    </div>
+  );
+}
+
+function DarkContent() {
+  return <div />;
+}
 
 Object.assign(WorkIndex, {
+  LightContent,
+  DarkContent,
   pageName: 'Work',
   panelOrientation: 'left',
 });
