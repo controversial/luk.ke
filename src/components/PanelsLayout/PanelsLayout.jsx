@@ -26,11 +26,35 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
       animate={menuOpen ? 'menu-open' : 'menu-closed'}
       initial={false}
     >
+      {/* There's a menu off screen to the left */}
       <Menu orientation="left" />
 
-      <div className="panel light">{lightContent}</div>
-      <div className="dark-content">{darkContent}</div>
+      {/* Light panel */}
+      <motion.div
+        layoutTransition
+        className="panel light"
+        style={{ gridColumn: {
+          left: 'viewport-left / fifth 2',
+          right: 'fifth 3 / viewport-right',
+          full: 'viewport-left / viewport-right',
+        }[orientation] }}
+      >
+        {lightContent}
+      </motion.div>
 
+      {/* Dark content sits "behind" and to the side of right panel */}
+      <motion.div
+        layoutTransition
+        className="dark-content"
+        style={{ gridColumn: {
+          left: 'fifth 2 / viewport-right',
+          right: 'viewport-left / fifth 3',
+        }[orientation] }}
+      >
+        {darkContent}
+      </motion.div>
+
+      {/* There's a menu off screen to the right */}
       <Menu orientation="right" />
 
       <style jsx>{ styles }</style>

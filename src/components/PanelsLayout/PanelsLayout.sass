@@ -17,14 +17,16 @@ $nav-height: 80px
     position: sticky // Allows fixed position without removal from the grid layout
     top: 0
     height: 100vh
-    grid-column: viewport-left / span 2
+    grid-column: viewport-left / span 2 // this is overridden in JSX
+    grid-row: top / bottom
 
     background: $white
     color: $black
 
   .dark-content
     overflow: hidden // take full height of content
-    grid-column: fifth 2 / span 3
+    grid-column: fifth 2 / span 3 // this is overridden in JSX
+    grid-row: top / bottom
 
     color: $white
     padding-top: $nav-height
