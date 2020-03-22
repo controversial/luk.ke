@@ -2,6 +2,9 @@ import React from 'react';
 
 import { motion } from 'framer-motion';
 
+import styles from './MenuIcon.module.sass';
+
+
 function MenuIcon() {
   const transition = {
     type: 'tween',
@@ -17,9 +20,9 @@ function MenuIcon() {
   // };
 
   return (
-    <div className="icon">
+    <div className={styles.icon}>
       <motion.div
-        className="line"
+        className={styles.line}
         variants={{
           'menu-closed': {
             width: '100%',
@@ -35,7 +38,7 @@ function MenuIcon() {
         transition={transition}
       />
       <motion.div
-        className="line"
+        className={styles.line}
         variants={{
           'menu-closed': {
             width: '100%',
