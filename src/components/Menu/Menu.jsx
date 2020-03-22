@@ -8,8 +8,6 @@ import Link from 'next/link';
 
 import links from './routes';
 
-import styles from './Menu.sass';
-
 
 function Menu({ orientation }) {
   const router = useRouter();
@@ -44,7 +42,6 @@ function Menu({ orientation }) {
           ))
         }
       </ul>
-      <style jsx>{styles}</style>
     </nav>
   );
 }

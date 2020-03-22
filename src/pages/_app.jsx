@@ -6,8 +6,6 @@ import { StoreProvider } from '../store';
 
 import PanelsLayout from '../components/PanelsLayout/PanelsLayout.jsx';
 
-import baseStyles from '../styles/base.sass?type=global';
-
 
 function App({ Component, pageProps: basePageProps }) {
   const { panelOrientation: pagePanelOrientation, pageName: initialPageName } = Component;
@@ -38,8 +36,6 @@ function App({ Component, pageProps: basePageProps }) {
         */}
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         { Component.LightContent ? <Component {...pprops} /> : '' }
-
-        <style jsx>{baseStyles}</style>
       </div>
     </StoreProvider>
   );

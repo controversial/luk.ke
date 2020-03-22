@@ -7,8 +7,6 @@ import Menu from '../Menu/Menu.jsx';
 
 import getOrientationClass from '../../helpers/getOrientationClass';
 
-import styles from './PanelsLayout.sass?type=global';
-
 /**
  * This component provides a layout with four full-height sections: a light colored panel with
  * fixed-position content, a dark section behind/to the side of the light panel with scrolling
@@ -65,8 +63,6 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
 
       {/* There's a menu off screen to the right */}
       <Menu orientation="right" />
-
-      <style jsx>{ styles }</style>
     </motion.div>
   );
 }
