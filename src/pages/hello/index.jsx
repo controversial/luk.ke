@@ -8,11 +8,13 @@ import { getHomepage } from '../api/content/hello';
 import Head from 'next/head';
 import AgeCounter from '../../components/AgeCounter/AgeCounter.jsx';
 
+import styles from './index.module.sass';
+
 
 // Replacement function for html-react-parser. If we encounter an element with class name 'age', we
 // replace it with an instance of AgeCounter
 // eslint-disable-next-line react/prop-types
-const replaceAge = ({ attribs }) => attribs?.['class'] === 'age' && <AgeCounter />;
+const replaceAge = ({ attribs }) => attribs?.['class'] === 'age' && <AgeCounter className={styles.age} />;
 
 
 // Main component - configures page metadata and doesn't render anything
@@ -32,7 +34,7 @@ function Hello() {
 function LightContent() {
   return (
     <div>
-      <div className="gradient" />
+      <div className={styles.gradient} />
     </div>
   );
 }
@@ -41,7 +43,7 @@ function LightContent() {
 
 function DarkContent({ content }) {
   return (
-    <div className="content-wrapper">
+    <div className={styles.contentWrapper}>
       { parse(content.title) }
       {
         content.text.map((p) => (
