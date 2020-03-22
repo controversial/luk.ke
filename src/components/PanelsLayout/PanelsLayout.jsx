@@ -4,7 +4,7 @@ import { useStore } from '../../store';
 
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import Menu from '../Menu/Menu.jsx';
-import MenuIcon from '../NavBar/MenuIcon.jsx';
+import MenuIcon from '../MenuIcon/MenuIcon.jsx';
 
 import getOrientationClass from '../../helpers/getOrientationClass';
 
