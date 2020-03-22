@@ -92,6 +92,7 @@
 
   display: flex
   align-items: center
+  overflow: hidden
 
   &.panel-on-right
     left: auto
@@ -105,7 +106,7 @@
     padding: 0
     outline: none
 
-    color: $black
+    color: $white
     font-size: 20px
     @include font-weight(520)
 
@@ -122,3 +123,11 @@
 
   &.panel-on-right button
     flex-direction: row-reverse
+
+
+  &.light
+    z-index: 4
+    background: $white
+
+    button
+      color: $black

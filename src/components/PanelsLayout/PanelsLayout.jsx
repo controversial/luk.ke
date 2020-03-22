@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useStore } from '../../store';
 
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 import Menu from '../Menu/Menu.jsx';
 import MenuIcon from '../NavBar/MenuIcon.jsx';
 
@@ -23,21 +23,18 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
 
   const variant = menuOpen ? 'menu-open' : 'menu-closed';
 
-  return (
-    <React.Fragment>
-      {/* Menu button that floats above */}
-      <div className={`${styles.menuButton} ${styles[orientationClass]}`}>
-        <motion.button
-          type="button"
-          onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
-          animate={variant}
-          initial={false}
-        >
-          <MenuIcon />
-          <div className={styles.label}>{ currPageName }</div>
-        </motion.button>
-      </div>
+  // This is the amount the whole panels container is transformed by when opening/closing the menu
+  const x = useMotionValue(0);
+  const inverseX = useTransform(x, (val) => val * -1);
 
+  return (
+    // Using display: contents makes this behave like a Fragment but we can add Framer Motion props
+    // to it, which propagate to children.
+    <motion.div
+      style={{ display: 'contents' }}
+      animate={variant}
+      initial={false}
+    >
       {/*
         The main panels container. Displays a dark and light panel that fill up the whole viewport,
         as well as a menu to the left and the right. This whole container shifts to the left/right
@@ -45,14 +42,12 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
       */}
       <motion.div
         className={`${styles.panelsLayout} ${styles[orientationClass]} ${menuOpen ? styles.menuOpen : ''}`}
+        style={{ x }}
         variants={{
-          'menu-open': (orient) => ({ x: orient === 'right' ? `-${dimensions.menuWidth}` : dimensions.menuWidth }),
+          'menu-open': { x: orientation === 'right' ? `-${dimensions.menuWidth}` : dimensions.menuWidth },
           'menu-closed': { x: 0 },
         }}
-        animate={variant}
         transition={{ type: 'tween', duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-        custom={orientation}
-        initial={false}
       >
         {/* There's a menu off screen to the left */}
         <Menu orientation="left" />
@@ -90,7 +85,48 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
         {/* There's a menu off screen to the right */}
         <Menu orientation="right" />
       </motion.div>
-    </React.Fragment>
+
+
+      {/* Menu button that floats above */}
+      {/*
+        There are two copies of the menu button rendered.
+        - The "light" copy of the menu button has an opaque white background. This background
+          obscures the dark copy, and clips the light button as the menu slides open.
+        - The "dark" copy of the menu button is revealed from under the light copy when the menu
+          opens.
+      */}
+
+      {/* light menu button */}
+      <motion.div
+        className={`${styles.menuButton} ${styles.light} ${styles[orientationClass]}`}
+        // This div has the light background. It slides over with the PanelsLayout when menu opens
+        style={{ x }}
+      >
+        <motion.button
+          type="button"
+          // The visible text of the button slides in the opposite direction so that it stays in
+          // place. However, the parent div has overflow: hidden and clips this div as it moves.
+          style={{ x: inverseX }}
+          onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
+        >
+          <MenuIcon />
+          <div className={styles.label}>{ currPageName }</div>
+        </motion.button>
+      </motion.div>
+      {/* dark menu button */}
+      <div
+        className={`${styles.menuButton} ${styles.dark} ${styles[orientationClass]}`}
+      >
+        <button
+          type="button"
+          onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
+        >
+          <MenuIcon />
+          <div className={styles.label}>Close</div>
+        </button>
+      </div>
+
+    </motion.div>
   );
 }
 
