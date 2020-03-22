@@ -1,9 +1,11 @@
 @import '../../styles/colors.sass'
 @import '../../styles/dimensions.sass'
+@import '../../styles/mixins.sass'
 
 
 .panels-layout
   position: relative
+  z-index: 2
   // The width of the window, plus space for a menu on either side
   width: calc(100% + #{$menu-width} * 2)
   left: -$menu-width
@@ -78,3 +80,45 @@
 
       &.right
         grid-column: viewport-right / menu-right
+
+
+.menu-button
+  position: fixed
+  top: 0
+  left: 0
+  z-index: 3
+  height: $nav-height
+  padding: 0 60px
+
+  display: flex
+  align-items: center
+
+  &.panel-on-right
+    left: auto
+    right: 0
+
+  button
+    // resets
+    background: none
+    border: none
+    border-radius: 0
+    padding: 0
+    outline: none
+
+    color: $black
+    font-size: 20px
+    @include font-weight(520)
+
+    margin-top: 10px
+    cursor: pointer
+
+    display: flex
+    flex-direction: ropw
+    align-items: center
+
+    .label
+      font-size: 20px
+      margin: 0 .9em
+
+  &.panel-on-right button
+    flex-direction: row-reverse
