@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import getAge from '../../helpers/age';
 
-export default function AgeCounter({ places }) {
+export default function AgeCounter({ places, ...props }) {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function AgeCounter({ places }) {
   }, []);
 
   return (
-    <span className="age">{ getAge(time).toFixed(places) }</span>
+    <span {...props}>{ getAge(time).toFixed(places) }</span>
   );
 }
 

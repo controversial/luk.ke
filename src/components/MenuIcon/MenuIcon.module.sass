@@ -1,0 +1,31 @@
+.icon
+  position: relative
+  $width: 2.5em
+  width: $width
+  margin-top: .2em
+
+  // Doubling values and scaling to half sizes helps resolve issues with inconsistent rendering
+     across browsers
+  transform: scale(.5)
+  // Account for extra space created by downscaling
+  margin-left: -$width / 4
+  margin-right: -$width / 4
+
+  .line
+    $thickness: .25em
+
+    position: absolute
+    top: -.5 * $thickness
+    width: 100%
+
+    &::before
+      content: ''
+      display: block
+
+      height: $thickness
+      transform: translateY(#{-$thickness})
+      box-shadow: 0 $thickness 0 0
+
+      width: 100%
+
+      color: inherit

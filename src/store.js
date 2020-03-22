@@ -7,8 +7,7 @@ const initialState = {
   menuOpen: false,
 
   dimensions: {
-    panelWidth: '40vw',
-    menuWidth: '380px',
+    menuWidth: 380,
   },
 };
 

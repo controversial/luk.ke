@@ -1,0 +1,144 @@
+@import '../../styles/colors.sass'
+@import '../../styles/dimensions.sass'
+@import '../../styles/mixins.sass'
+
+
+.panels-layout
+  position: relative
+  z-index: 2
+  // The width of the window, plus space for a menu on either side
+  width: calc(100% + #{$menu-width} * 2)
+  left: -$menu-width
+
+  display: grid
+  grid-template-rows: [top] minmax(100vh, min-content) [bottom] // at least window height; grow to fit content
+  grid-template-columns: [menu-left] $menu-width [viewport-left] repeat(4, 1fr [fifth]) 1fr [viewport-right] $menu-width [menu-right]
+
+  will-change: transform
+
+
+  .panel.light
+    position: sticky // Allows fixed position without removal from the grid layout
+    z-index: 6
+    top: 0
+    height: 100vh
+    grid-column: viewport-left / span 2 // this is overridden in JSX
+    grid-row: top / bottom
+
+    background: $white
+    color: $black
+
+  &.panel-full .panel.light
+    position: relative
+    height: auto
+    min-height: 100vh
+    overflow: hidden // take full height of content
+
+
+  .panel.dark
+    position: relative
+    z-index: 5
+    grid-column: fifth 2 / span 3 // this is overridden in JSX
+    grid-row: top / bottom
+
+    color: $white
+
+
+  .panel .content
+    padding-top: $nav-height
+    overflow: hidden
+    width: 100%
+    min-height: 100%
+    will-change: opacity
+
+
+  .nav-cover
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: $nav-height
+    z-index: 100
+
+  .dark .nav-cover
+    position: sticky
+    margin-bottom: -$nav-height
+    background: $black
+
+  .light .nav-cover
+    background: $white
+
+  &.panel-full .light .nav-cover
+    position: sticky
+    margin-bottom: -$nav-height
+
+
+  \:global
+    .menu
+      position: sticky
+      top: 0
+      height: 100vh
+
+      &.left
+        grid-column: menu-left / viewport-left
+
+      &.right
+        grid-column: viewport-right / menu-right
+
+  .menu-close-target
+    position: relative
+    grid-column: viewport-left / viewport-right
+    grid-row: top / bottom
+    z-index: 10
+    cursor: pointer
+
+
+.menu-button
+  position: fixed
+  top: 0
+  left: 0
+  z-index: 3
+  height: $nav-height
+  padding: 0 60px
+
+  display: flex
+  align-items: center
+  overflow: hidden
+
+  &.panel-on-right
+    left: auto
+    right: 0
+
+  button
+    // resets
+    background: none
+    border: none
+    border-radius: 0
+    padding: 0
+    outline: none
+
+    color: $white
+    font-size: 20px
+    @include font-weight(520)
+
+    margin-top: 10px
+    cursor: pointer
+
+    display: flex
+    flex-direction: ropw
+    align-items: center
+
+    .label
+      font-size: 20px
+      margin: 0 .9em
+
+  &.panel-on-right button
+    flex-direction: row-reverse
+
+
+  &.light
+    z-index: 4
+    background: $white
+
+    button
+      color: $black

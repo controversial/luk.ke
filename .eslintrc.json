@@ -40,7 +40,9 @@
     "react/static-property-placement": "off",
     "react/state-in-constructor": "off",
     "jsx-a11y/anchor-is-valid": "off",
-    "react/no-danger": "off"
+    "react/no-danger": "off",
+    "react/jsx-fragments": "off",
+    "react/jsx-props-no-spreading": "off"
   },
   "settings": {
     "import/resolver": "webpack"
