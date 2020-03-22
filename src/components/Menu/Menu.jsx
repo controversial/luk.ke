@@ -8,6 +8,7 @@ import Link from 'next/link';
 
 import links from './routes';
 
+import styles from './Menu.module.sass';
 
 function Menu({ orientation }) {
   const router = useRouter();
@@ -22,13 +23,13 @@ function Menu({ orientation }) {
   return (
     // eslint-disable-next-line max-len
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
-    <nav role="navigation" className={`menu ${alignment}`} onClick={(e) => e.stopPropagation()}>
+    <nav role="navigation" className={`${styles.menu} ${styles[alignment]}`} onClick={(e) => e.stopPropagation()}>
       <ul>
         {
           Object.entries(links).map(([label, routes]) => (
             <li
               key={label}
-              className={routes.includes(currentRoute) ? 'active' : ''}
+              className={routes.includes(currentRoute) ? styles.active : ''}
             >
               <Link href={routes[0]}>
                 {/* eslint-disable jsx-a11y/interactive-supports-focus */}
