@@ -36,7 +36,6 @@ function App({ Component, pageProps: basePageProps }) {
           PanelsLayout. Whenever this is the case, we elect to render in the main app container
           instead. In most cases, Component won't render real DOM content.
         */}
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         { Component.LightContent ? <Component {...pprops} /> : '' }
       </div>
     </StoreProvider>
