@@ -45,7 +45,8 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
           full: 'viewport-left / viewport-right',
         }[orientation] }}
       >
-        {lightContent}
+        <div className={styles.navCover} />
+        <div className={styles.content}>{lightContent}</div>
       </motion.div>
 
       {/* Dark content sits "behind" and to the side of right panel */}
@@ -53,13 +54,14 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
         : (
           <motion.div
             layoutTransition
-            className={`${styles.darkContent}`}
+            className={`${styles.panel} ${styles.dark}`}
             style={{ gridColumn: {
               left: 'fifth 2 / viewport-right',
               right: 'viewport-left / fifth 3',
             }[orientation] }}
           >
-            {darkContent}
+            <div className={styles.navCover} />
+            <div className={styles.content}>{darkContent}</div>
           </motion.div>
         ) }
 

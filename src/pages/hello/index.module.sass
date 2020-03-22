@@ -1,24 +1,28 @@
 @import '../../styles/colors'
 @import '../../styles/mixins'
+@import '../../styles/dimensions'
+
 
 .gradient
   position: absolute
-  top: 50%
+  top: calc(50% + (#{$nav-height} / 2))
   left: 50%
   width: 72%
-  height: 78%
+  height: calc((100% - #{$nav-height}) * .78)
   background: linear-gradient(135deg, $gradient-1, $gradient-2)
   transform: translate(-50%, -55%)
   opacity: .75
 
-.age
-  font-variant-numeric: tabular-nums
-  color: transparentize($white, .3)
-  @include font-weight(550, -.06em)
 
 .content-wrapper
   margin: 75px 100px 110px
   max-width: 530px
+
+  .age
+    font-variant-numeric: tabular-nums
+    color: transparentize($white, .3)
+    @include font-weight(550, -.06em)
+
 
   \:global
     h1
