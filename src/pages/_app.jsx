@@ -6,6 +6,8 @@ import { StoreProvider } from '../store';
 
 import PanelsLayout from '../components/PanelsLayout/PanelsLayout.jsx';
 
+import '../styles/base.sass';
+
 
 function App({ Component, pageProps: basePageProps }) {
   const { panelOrientation: pagePanelOrientation, pageName: initialPageName } = Component;
