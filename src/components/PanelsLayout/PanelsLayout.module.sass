@@ -1,4 +1,4 @@
-@import 'colors.sass'
+@import '../../styles/colors.sass'
 
 $menu-width: 380px
 $nav-height: 80px
@@ -37,13 +37,15 @@ $nav-height: 80px
     color: $white
     padding-top: $nav-height
 
-  .menu
-    position: sticky
-    top: 0
-    height: 100vh
 
-  .menu.left
-    grid-column: menu-left / viewport-left
+  \:global
+    .menu
+      position: sticky
+      top: 0
+      height: 100vh
 
-  .menu.right
-    grid-column: viewport-right / menu-right
+      &.left
+        grid-column: menu-left / viewport-left
+
+      &.right
+        grid-column: viewport-right / menu-right

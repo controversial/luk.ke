@@ -7,6 +7,8 @@ import Menu from '../Menu/Menu.jsx';
 
 import getOrientationClass from '../../helpers/getOrientationClass';
 
+import styles from './PanelsLayout.module.sass';
+
 /**
  * This component provides a layout with four full-height sections: a light colored panel with
  * fixed-position content, a dark section behind/to the side of the light panel with scrolling
@@ -20,7 +22,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
 
   return (
     <motion.div
-      className={`panels-layout ${orientationClass} ${menuOpen ? 'menu-open' : ''}`}
+      className={`${styles.panelsLayout} ${styles[orientationClass]} ${menuOpen ? styles.menuOpen : ''}`}
       variants={{
         'menu-open': (orient) => ({ x: orient === 'right' ? `-${dimensions.menuWidth}` : dimensions.menuWidth }),
         'menu-closed': { x: 0 },
@@ -36,7 +38,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
       {/* Light panel */}
       <motion.div
         layoutTransition
-        className="panel light"
+        className={`${styles.panel} ${styles.light}`}
         style={{ gridColumn: {
           left: 'viewport-left / fifth 2',
           right: 'fifth 3 / viewport-right',
@@ -51,7 +53,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
         : (
           <motion.div
             layoutTransition
-            className="dark-content"
+            className={`${styles.darkContent}`}
             style={{ gridColumn: {
               left: 'fifth 2 / viewport-right',
               right: 'viewport-left / fifth 3',
