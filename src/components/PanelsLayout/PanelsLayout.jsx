@@ -96,6 +96,13 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
             </motion.div>
           ) }
 
+        <div
+          className={styles.menuCloseTarget}
+          style={{ pointerEvents: menuOpen ? 'all' : 'none' }}
+          onClick={() => dispatch('setMenuOpen', false)}
+          role="none"
+        />
+
         {/* There's a menu off screen to the right */}
         <Menu orientation="right" />
       </motion.div>
