@@ -23,7 +23,7 @@ function Menu({ orientation }) {
   return (
     // eslint-disable-next-line max-len
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
-    <nav role="navigation" className={`${styles.menu} ${styles[alignment]}`} onClick={(e) => e.stopPropagation()}>
+    <nav role="navigation" className={`menu ${styles.menu} ${styles[alignment]}`} onClick={(e) => e.stopPropagation()}>
       <ul>
         {
           Object.entries(links).map(([label, routes]) => (
