@@ -22,10 +22,14 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
   const orientationClass = getOrientationClass(orientation);
 
   const variant = menuOpen ? 'menu-open' : 'menu-closed';
+  // The offset, in px, to be applied to the PanelsLayout to display the menu
+  const openOffset = orientation === 'right' ? -dimensions.menuWidth : dimensions.menuWidth;
 
   // This is the amount the whole panels container is transformed by when opening/closing the menu
   const x = useMotionValue(0);
   const inverseX = useTransform(x, (val) => val * -1);
+  // This maps the motion of the PanelsLayout to the opacity of the content
+  const contentOpacity = useTransform(x, [0, openOffset], [1, 0.5]);
 
   return (
     // Using display: contents makes this behave like a Fragment but we can add Framer Motion props
@@ -44,7 +48,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
         className={`${styles.panelsLayout} ${styles[orientationClass]} ${menuOpen ? styles.menuOpen : ''}`}
         style={{ x }}
         variants={{
-          'menu-open': { x: orientation === 'right' ? `-${dimensions.menuWidth}` : dimensions.menuWidth },
+          'menu-open': { x: openOffset },
           'menu-closed': { x: 0 },
         }}
         transition={{ type: 'tween', duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
@@ -63,11 +67,16 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
           }[orientation] }}
         >
           <div className={styles.navCover} />
-          <div className={styles.content}>{lightContent}</div>
+          <motion.div
+            className={styles.content}
+            style={{ opacity: contentOpacity, pointerEvents: menuOpen ? 'none' : 'all' }}
+          >
+            {lightContent}
+          </motion.div>
         </motion.div>
 
         {/* Dark content sits "behind" and to the side of right panel */}
-        { orientation === 'full' ? <React.Fragment />
+        { orientation === 'full' ? null
           : (
             <motion.div
               layoutTransition
@@ -78,7 +87,12 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
               }[orientation] }}
             >
               <div className={styles.navCover} />
-              <div className={styles.content}>{darkContent}</div>
+              <motion.div
+                className={styles.content}
+                style={{ opacity: contentOpacity, pointerEvents: menuOpen ? 'none' : 'all' }}
+              >
+                {darkContent}
+              </motion.div>
             </motion.div>
           ) }
 
