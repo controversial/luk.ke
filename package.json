@@ -18,7 +18,7 @@
     "classnames": "^2.2.6",
     "domhandler": "^3.0.0",
     "domutils": "^2.0.0",
-    "framer-motion": "^1.10.0",
+    "framer-motion": "^1.10.2",
     "html-react-parser": "^0.10.2",
     "htmlparser2": "^4.1.0",
     "isomorphic-unfetch": "^3.0.0",
