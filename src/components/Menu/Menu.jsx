@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
-import { useStore } from '../../store';
 
 import Link from 'next/link';
 
@@ -18,11 +17,7 @@ function Menu({ orientation }) {
   const router = useRouter();
   const currentRoute = router.route;
 
-  const { state: { menuOpen }, dispatch } = useStore();
-
   const alignment = orientation === 'right' ? 'right' : 'left'; // full -> left
-
-  function toggleMenu() { dispatch('setMenuOpen', !menuOpen); }
 
   return (
     // Include 'menu' both as a scoped class name and as an unscoped class name
@@ -35,12 +30,9 @@ function Menu({ orientation }) {
               className={cx({ active: routes.includes(currentRoute) })}
             >
               <Link href={routes[0]}>
-                {/* eslint-disable jsx-a11y/interactive-supports-focus */}
-                {/* eslint-disable jsx-a11y/click-events-have-key-events */}
-                <a role="link" onClick={toggleMenu}>
+                <a role="link">
                   <span>{label}</span>
                 </a>
-                {/* eslint-enable */}
               </Link>
             </li>
           ))

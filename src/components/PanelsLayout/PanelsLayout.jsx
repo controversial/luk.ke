@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
+import { Router, useRouter } from 'next/router';
 import { useStore } from '../../store';
 
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
@@ -47,14 +48,20 @@ FadeOnChange.defaultProps = {
  */
 
 function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) {
-  // Whether or not the menu is open is recorded in the global application store
-  const { state: { menuOpen, dimensions }, dispatch } = useStore();
+  // Get the class name to go with the panel orientation
   const orientationClass = getOrientationClass(orientation);
 
+  // Whether or not the menu is open is recorded in the global application store
+  const { state: { menuOpen, dimensions }, dispatch } = useStore();
   const variant = menuOpen ? 'menu-open' : 'menu-closed';
+
+  // We need the page name so that we can force everything to re-render when the URL changes
+  const router = useRouter();
+  const routerPath = router.asPath;
+  Router.events.on('routeChangeComplete', () => dispatch('setMenuOpen', false));
+
   // The offset, in px, to be applied to the PanelsLayout to display the menu
   const openOffset = orientation === 'right' ? -dimensions.menuWidth : dimensions.menuWidth;
-
   // This is the amount the whole panels container is transformed by when opening/closing the menu
   const x = useMotionValue(0);
   const inverseX = useTransform(x, (val) => val * -1);
@@ -84,11 +91,13 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
         transition={{ type: 'tween', duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
       >
         {/* There's a menu off screen to the left */}
-        <Menu orientation="left" />
+        <FadeOnChange watch={routerPath}>
+          <Menu orientation="left" />
+        </FadeOnChange>
 
         {/* Light panel */}
         <motion.div
-          layoutTransition
+          positionTransition={{ duration: 0.5, delay: 0.5 }}
           className={cx('panel', 'light')}
           style={{ gridColumn: {
             left: 'viewport-left / fifth 2',
@@ -101,7 +110,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
             className={cx('content')}
             style={{ opacity: contentOpacity, pointerEvents: menuOpen ? 'none' : 'all' }}
           >
-            {lightContent}
+            <FadeOnChange watch={routerPath}>{ lightContent }</FadeOnChange>
           </motion.div>
         </motion.div>
 
@@ -109,7 +118,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
         { orientation === 'full' ? null
           : (
             <motion.div
-              layoutTransition
+              positionTransition={{ duration: 0.5, delay: 0.5 }}
               className={cx('panel', 'dark')}
               style={{ gridColumn: {
                 left: 'fifth 2 / viewport-right',
@@ -121,7 +130,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
                 className={cx('content')}
                 style={{ opacity: contentOpacity, pointerEvents: menuOpen ? 'none' : 'all' }}
               >
-                {darkContent}
+                <FadeOnChange watch={routerPath}>{ darkContent }</FadeOnChange>
               </motion.div>
             </motion.div>
           ) }
@@ -134,7 +143,9 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
         />
 
         {/* There's a menu off screen to the right */}
-        <Menu orientation="right" />
+        <FadeOnChange watch={routerPath}>
+          <Menu orientation="right" />
+        </FadeOnChange>
       </motion.div>
 
 
@@ -147,35 +158,37 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
           opens.
       */}
 
-      {/* light menu button */}
-      <motion.div
-        className={cx('menu-button', 'light', orientationClass)}
-        // This div has the light background. It slides over with the PanelsLayout when menu opens
-        style={{ x }}
-      >
-        <motion.button
-          type="button"
-          // The visible text of the button slides in the opposite direction so that it stays in
-          // place. However, the parent div has overflow: hidden and clips this div as it moves.
-          style={{ x: inverseX }}
-          onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
+      <FadeOnChange watch={routerPath} style={{ position: 'relative', zIndex: 3 }}>
+        {/* light menu button */}
+        <motion.div
+          className={cx('menu-button', 'light', orientationClass)}
+          // This div has the light background. It slides over with the PanelsLayout when menu opens
+          style={{ x }}
         >
-          <MenuIcon />
-          <div className={cx('label')}>{ currPageName || 'Menu' }</div>
-        </motion.button>
-      </motion.div>
-      {/* dark menu button */}
-      <div
-        className={cx('menu-button', 'dark', orientationClass)}
-      >
-        <button
-          type="button"
-          onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
+          <motion.button
+            type="button"
+            // The visible text of the button slides in the opposite direction so that it stays in
+            // place. However, the parent div has overflow: hidden and clips this div as it moves.
+            style={{ x: inverseX }}
+            onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
+          >
+            <MenuIcon />
+            <div className={cx('label')}>{ currPageName || 'Menu' }</div>
+          </motion.button>
+        </motion.div>
+        {/* dark menu button */}
+        <div
+          className={cx('menu-button', 'dark', orientationClass)}
         >
-          <MenuIcon />
-          <div className={cx('label')}>Close</div>
-        </button>
-      </div>
+          <button
+            type="button"
+            onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
+          >
+            <MenuIcon />
+            <div className={cx('label')}>Close</div>
+          </button>
+        </div>
+      </FadeOnChange>
 
     </motion.div>
   );
