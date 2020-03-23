@@ -134,7 +134,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
           onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
         >
           <MenuIcon />
-          <div className={cx('label')}>{ currPageName }</div>
+          <div className={cx('label')}>{ currPageName || 'Menu' }</div>
         </motion.button>
       </motion.div>
       {/* dark menu button */}
@@ -158,8 +158,11 @@ PanelsLayout.propTypes = {
   lightContent: PropTypes.element.isRequired,
   darkContent: PropTypes.element,
   orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
-  currPageName: PropTypes.string.isRequired,
+  currPageName: PropTypes.string,
 };
-PanelsLayout.defaultProps = { darkContent: null };
+PanelsLayout.defaultProps = {
+  darkContent: null,
+  currPageName: null,
+};
 
 export default PanelsLayout;
