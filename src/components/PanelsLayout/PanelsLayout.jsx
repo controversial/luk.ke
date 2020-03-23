@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames/bind';
 import { useStore } from '../../store';
 
 import { motion, useMotionValue, useTransform } from 'framer-motion';
@@ -9,6 +10,8 @@ import MenuIcon from '../MenuIcon/MenuIcon.jsx';
 import getOrientationClass from '../../helpers/getOrientationClass';
 
 import styles from './PanelsLayout.module.sass';
+const cx = classNames.bind(styles);
+
 
 /**
  * This component provides a layout with four full-height sections: a light colored panel with
@@ -45,7 +48,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
         to reveal the menu.
       */}
       <motion.div
-        className={`${styles.panelsLayout} ${styles[orientationClass]} ${menuOpen ? styles.menuOpen : ''}`}
+        className={cx('panelsLayout', orientationClass, { menuOpen })}
         style={{ x }}
         variants={{
           'menu-open': { x: openOffset },
@@ -59,16 +62,16 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
         {/* Light panel */}
         <motion.div
           layoutTransition
-          className={`${styles.panel} ${styles.light}`}
+          className={cx('panel', 'light')}
           style={{ gridColumn: {
             left: 'viewport-left / fifth 2',
             right: 'fifth 3 / viewport-right',
             full: 'viewport-left / viewport-right',
           }[orientation] }}
         >
-          <div className={styles.navCover} />
+          <div className={cx('nav-cover')} />
           <motion.div
-            className={styles.content}
+            className={cx('content')}
             style={{ opacity: contentOpacity, pointerEvents: menuOpen ? 'none' : 'all' }}
           >
             {lightContent}
@@ -80,15 +83,15 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
           : (
             <motion.div
               layoutTransition
-              className={`${styles.panel} ${styles.dark}`}
+              className={cx('panel', 'dark')}
               style={{ gridColumn: {
                 left: 'fifth 2 / viewport-right',
                 right: 'viewport-left / fifth 3',
               }[orientation] }}
             >
-              <div className={styles.navCover} />
+              <div className={cx('nav-cover')} />
               <motion.div
-                className={styles.content}
+                className={cx('content')}
                 style={{ opacity: contentOpacity, pointerEvents: menuOpen ? 'none' : 'all' }}
               >
                 {darkContent}
@@ -97,7 +100,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
           ) }
 
         <div
-          className={styles.menuCloseTarget}
+          className={cx('menuCloseTarget')}
           style={{ pointerEvents: menuOpen ? 'all' : 'none' }}
           onClick={() => dispatch('setMenuOpen', false)}
           role="none"
@@ -119,7 +122,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
 
       {/* light menu button */}
       <motion.div
-        className={`${styles.menuButton} ${styles.light} ${styles[orientationClass]}`}
+        className={cx('menuButton', 'light', orientationClass)}
         // This div has the light background. It slides over with the PanelsLayout when menu opens
         style={{ x }}
       >
@@ -131,19 +134,19 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
           onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
         >
           <MenuIcon />
-          <div className={styles.label}>{ currPageName }</div>
+          <div className={cx('label')}>{ currPageName }</div>
         </motion.button>
       </motion.div>
       {/* dark menu button */}
       <div
-        className={`${styles.menuButton} ${styles.dark} ${styles[orientationClass]}`}
+        className={cx('menuButton', 'dark', orientationClass)}
       >
         <button
           type="button"
           onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
         >
           <MenuIcon />
-          <div className={styles.label}>Close</div>
+          <div className={cx('label')}>Close</div>
         </button>
       </div>
 

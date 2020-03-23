@@ -1,6 +1,7 @@
 /* eslint-disable import/order */
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
 import { useStore } from '../../store';
 
@@ -9,6 +10,9 @@ import Link from 'next/link';
 import links from './routes';
 
 import styles from './Menu.module.sass';
+const cx = classNames.bind(styles);
+const cxUnscoped = classNames;
+
 
 function Menu({ orientation }) {
   const router = useRouter();
@@ -16,20 +20,19 @@ function Menu({ orientation }) {
 
   const { state: { menuOpen }, dispatch } = useStore();
 
-  const alignment = orientation === 'right' ? 'right' : 'left';
+  const alignment = orientation === 'right' ? 'right' : 'left'; // full -> left
 
   function toggleMenu() { dispatch('setMenuOpen', !menuOpen); }
 
   return (
-    // eslint-disable-next-line max-len
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
-    <nav role="navigation" className={`menu ${styles.menu} ${styles[alignment]}`} onClick={(e) => e.stopPropagation()}>
+    // Include 'menu' both as a scoped class name and as an unscoped class name
+    <nav role="navigation" className={cxUnscoped('menu', cx('menu', alignment))}>
       <ul>
         {
           Object.entries(links).map(([label, routes]) => (
             <li
               key={label}
-              className={routes.includes(currentRoute) ? styles.active : ''}
+              className={cx({ active: routes.includes(currentRoute) })}
             >
               <Link href={routes[0]}>
                 {/* eslint-disable jsx-a11y/interactive-supports-focus */}
