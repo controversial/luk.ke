@@ -15,6 +15,7 @@
   "license": "MIT",
   "homepage": "https://luk.ke",
   "dependencies": {
+    "classnames": "^2.2.6",
     "domhandler": "^3.0.0",
     "domutils": "^2.0.0",
     "framer-motion": "^1.10.0",
