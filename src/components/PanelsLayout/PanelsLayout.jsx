@@ -48,7 +48,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
         to reveal the menu.
       */}
       <motion.div
-        className={cx('panelsLayout', orientationClass, { menuOpen })}
+        className={cx('panels-layout', orientationClass, { 'menu-open': menuOpen })}
         style={{ x }}
         variants={{
           'menu-open': { x: openOffset },
@@ -100,7 +100,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
           ) }
 
         <div
-          className={cx('menuCloseTarget')}
+          className={cx('menu-close-target')}
           style={{ pointerEvents: menuOpen ? 'all' : 'none' }}
           onClick={() => dispatch('setMenuOpen', false)}
           role="none"
@@ -122,7 +122,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
 
       {/* light menu button */}
       <motion.div
-        className={cx('menuButton', 'light', orientationClass)}
+        className={cx('menu-button', 'light', orientationClass)}
         // This div has the light background. It slides over with the PanelsLayout when menu opens
         style={{ x }}
       >
@@ -139,7 +139,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
       </motion.div>
       {/* dark menu button */}
       <div
-        className={cx('menuButton', 'dark', orientationClass)}
+        className={cx('menu-button', 'dark', orientationClass)}
       >
         <button
           type="button"
