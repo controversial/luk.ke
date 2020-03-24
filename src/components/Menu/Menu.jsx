@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
-import { useStore } from '../../store';
 import useCache from '../../helpers/useCache';
 
 import Link from 'next/link';
@@ -15,15 +14,11 @@ const cx = classNames.bind(styles);
 const cxUnscoped = classNames;
 
 
-function Menu({ orientation, freezeUpdates }) {
+function Menu({ orientation, freezeUpdates, onNavigate }) {
   const router = useRouter();
   const currentRoute = useCache(router.route, freezeUpdates);
 
-  const { state: { menuOpen }, dispatch } = useStore();
-
   const alignment = orientation === 'right' ? 'right' : 'left'; // full -> left
-
-  function toggleMenu() { dispatch('setMenuOpen', !menuOpen); }
 
   return (
     // Include 'menu' both as a scoped class name and as an unscoped class name
@@ -38,7 +33,7 @@ function Menu({ orientation, freezeUpdates }) {
               <Link href={routes[0]}>
                 {/* eslint-disable jsx-a11y/interactive-supports-focus */}
                 {/* eslint-disable jsx-a11y/click-events-have-key-events */}
-                <a role="link" onClick={toggleMenu}>
+                <a role="link" onClick={onNavigate}>
                   <span>{label}</span>
                 </a>
                 {/* eslint-enable */}
@@ -54,8 +49,12 @@ function Menu({ orientation, freezeUpdates }) {
 Menu.propTypes = {
   orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
   freezeUpdates: PropTypes.bool,
+  onNavigate: PropTypes.func,
 };
-Menu.defaultProps = { freezeUpdates: false };
+Menu.defaultProps = {
+  freezeUpdates: false,
+  onNavigate: () => {},
+};
 
 
 export default Menu;
