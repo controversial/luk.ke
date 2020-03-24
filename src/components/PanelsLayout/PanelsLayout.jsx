@@ -57,6 +57,7 @@ function PanelsLayout({
   if (!freezeUpdates) panelsControls.start(variant);
   // We're also going to need imperative control over the light panel
   const lightPanelControls = useAnimation();
+  const [lightPanelAnimCallback, setLightPanelAnimCallback] = useState(null);
 
   // This is the opacity of everything besides the panels themselves (all buttons and text content).
   // It's controlled imperatively with opacityControls, and used during the page transition sequence
@@ -90,6 +91,12 @@ function PanelsLayout({
     lightPanelControls.set({ x: openOffset });
     // Let the new page content/attributes flow in
     setFreezeUpdates(false);
+    // Wait for the panel to finish sliding
+    await new Promise((resolve) => setLightPanelAnimCallback(() => resolve));
+    setLightPanelAnimCallback(null);
+    // Fade in all content
+    setDisplayContent(true);
+    await opacityControls.start({ opacity: 1, transition: { duration: 0.4, ease: 'easeOut' } });
   }
 
 
@@ -126,6 +133,7 @@ function PanelsLayout({
         {/* Light panel */}
         <motion.div
           layoutTransition={freezeUpdates ? false : { duration: 0.65, ease }}
+          onAnimationComplete={lightPanelAnimCallback}
           className={cx('panel', 'light')}
           style={{ gridColumn: {
             left: 'viewport-left / fifth 2',
