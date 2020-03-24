@@ -29,6 +29,7 @@ function Menu({ orientation, freezeUpdates, onNavigate }) {
             <li
               key={label}
               className={cx({ active: routes.includes(currentRoute) })}
+              style={{ pointerEvents: freezeUpdates ? 'none' : 'auto' }}
             >
               <Link href={routes[0]}>
                 {/* eslint-disable jsx-a11y/interactive-supports-focus */}

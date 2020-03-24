@@ -45,19 +45,25 @@ function PanelsLayout({
   // The offset, in px, to be applied to the PanelsLayout to display the menu
   const openOffset = orientation === 'right' ? -dimensions.menuWidth : dimensions.menuWidth;
 
+  // This is the amount the whole panels container is transformed by when opening/closing the menu
+  const x = useMotionValue(0);
+  const inverseX = useTransform(x, (val) => val * -1);
+
+
   // This is the opacity of everything besides the panels themselves (all buttons and text content).
   // It's controlled imperatively with opacityControls, and used during the page transition sequence
   const globalOpacity = useMotionValue(1);
   const opacityControls = useAnimation();
-
-  // This is the amount the whole panels container is transformed by when opening/closing the menu
-  const x = useMotionValue(0);
-  const inverseX = useTransform(x, (val) => val * -1);
   // This maps the motion of the PanelsLayout to the opacity of the content
   // Causes content to fade out when the menu opens
   const menuOpenProgress = useTransform(x, (val) => Math.abs(val / openOffset));
   const menuFadeOpacity = useTransform(menuOpenProgress, [0, 1], [1, 0.5]);
   const contentOpacity = useTransformMulti([menuFadeOpacity, globalOpacity], (a, b) => a * b);
+
+  const contentStyles = {
+    opacity: contentOpacity,
+    pointerEvents: (menuOpen || freezeUpdates) ? 'none' : 'auto',
+  };
 
 
   // Perform the animation sequence for page transitions!
@@ -106,10 +112,7 @@ function PanelsLayout({
           }[orientation] }}
         >
           <div className={cx('nav-cover')} />
-          <motion.div
-            className={cx('content')}
-            style={{ opacity: contentOpacity, pointerEvents: menuOpen ? 'none' : 'all' }}
-          >
+          <motion.div className={cx('content')} style={contentStyles}>
             {lightContent}
           </motion.div>
         </motion.div>
@@ -126,18 +129,17 @@ function PanelsLayout({
               }[orientation] }}
             >
               <div className={cx('nav-cover')} />
-              <motion.div
-                className={cx('content')}
-                style={{ opacity: contentOpacity, pointerEvents: menuOpen ? 'none' : 'all' }}
-              >
+              <motion.div className={cx('content')} style={contentStyles}>
                 {darkContent}
               </motion.div>
             </motion.div>
           ) }
 
+        {/* When the menu opens there's a big transparent div over the page that intercepts click
+            events to close the menu */}
         <div
           className={cx('menu-close-target')}
-          style={{ pointerEvents: menuOpen ? 'all' : 'none' }}
+          style={{ pointerEvents: (menuOpen && !freezeUpdates) ? 'auto' : 'none' }}
           onClick={() => dispatch('setMenuOpen', false)}
           role="none"
         />
@@ -158,7 +160,14 @@ function PanelsLayout({
           opens.
       */}
 
-      <motion.div style={{ opacity: globalOpacity, position: 'relative', zIndex: 3 }}>
+      <motion.div
+        style={{
+          opacity: globalOpacity,
+          pointerEvents: freezeUpdates ? 'none' : 'auto',
+          position: 'relative',
+          zIndex: 3,
+        }}
+      >
         {/* light menu button */}
         <motion.div
           className={cx('menu-button', 'light', getOrientationClass(orientation))}
@@ -170,7 +179,7 @@ function PanelsLayout({
             // The visible text of the button slides in the opposite direction so that it stays in
             // place. However, the parent div has overflow: hidden and clips this div as it moves.
             style={{ x: inverseX }}
-            onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
+            onClick={() => { dispatch('setMenuOpen', true); }}
           >
             <MenuIcon />
             <div className={cx('label')}>{ currPageName || 'Menu' }</div>
@@ -182,7 +191,7 @@ function PanelsLayout({
         >
           <button
             type="button"
-            onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
+            onClick={() => { dispatch('setMenuOpen', false); }}
           >
             <MenuIcon />
             <div className={cx('label')}>Close</div>
