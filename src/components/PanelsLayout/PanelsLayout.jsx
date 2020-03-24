@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { useStore } from '../../store';
+import useCache from '../../helpers/useCache';
 
 import { motion, useMotionValue, useTransform, useAnimation } from 'framer-motion';
 import useTransformMulti from '../../helpers/useTransformMulti';
@@ -21,10 +22,23 @@ const cx = classNames.bind(styles);
  * content, and a menu component off screen to each side.
  */
 
-function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) {
+function PanelsLayout({
+  lightContent: passedLightContent,
+  darkContent: passedDarkContent,
+  orientation: passedOrientation,
+  currPageName: passedCurrPageName,
+}) {
+  // This component supports "freezing" updates to certain cached state values, especially
+  // This is useful for preserving the old state during animations
+  const [freezeUpdates, setFreezeUpdates] = useState(false);
+  // Make freezable cached copies of all the data passed in props
+  const lightContent = useCache(passedLightContent, freezeUpdates);
+  const darkContent = useCache(passedDarkContent, freezeUpdates);
+  const orientation = useCache(passedOrientation, freezeUpdates);
+  const currPageName = useCache(passedCurrPageName, freezeUpdates);
+
   // Whether or not the menu is open is recorded in the global application store
   const { state: { menuOpen, dimensions }, dispatch } = useStore();
-  const orientationClass = getOrientationClass(orientation);
 
   const variant = menuOpen ? 'menu-open' : 'menu-closed';
   // The offset, in px, to be applied to the PanelsLayout to display the menu
@@ -57,7 +71,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
         to reveal the menu.
       */}
       <motion.div
-        className={cx('panels-layout', orientationClass, { 'menu-open': menuOpen })}
+        className={cx('panels-layout', getOrientationClass(orientation), { 'menu-open': menuOpen })}
         style={{ x }}
         variants={{
           'menu-open': { x: openOffset },
@@ -69,7 +83,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
             Note: one motion element needs to link globalOpacity to opacityControls. We're using
             this since it's the first element that uses globalOpacity */}
         <motion.div style={{ opacity: globalOpacity }} animate={opacityControls}>
-          <Menu orientation="left" />
+          <Menu orientation="left" freezeUpdates={freezeUpdates} />
         </motion.div>
 
         {/* Light panel */}
@@ -121,7 +135,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
 
         {/* There's a menu off screen to the right */}
         <motion.div style={{ opacity: globalOpacity }}>
-          <Menu orientation="right" />
+          <Menu orientation="right" freezeUpdates={freezeUpdates} />
         </motion.div>
       </motion.div>
 
@@ -138,7 +152,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
       <motion.div style={{ opacity: globalOpacity, position: 'relative', zIndex: 3 }}>
         {/* light menu button */}
         <motion.div
-          className={cx('menu-button', 'light', orientationClass)}
+          className={cx('menu-button', 'light', getOrientationClass(orientation))}
           // This div has the light background. It slides over with the PanelsLayout when menu opens
           style={{ x }}
         >
@@ -155,7 +169,7 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
         </motion.div>
         {/* dark menu button */}
         <div
-          className={cx('menu-button', 'dark', orientationClass)}
+          className={cx('menu-button', 'dark', getOrientationClass(orientation))}
         >
           <button
             type="button"

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
 import { useStore } from '../../store';
+import useCache from '../../helpers/useCache';
 
 import Link from 'next/link';
 
@@ -14,9 +15,9 @@ const cx = classNames.bind(styles);
 const cxUnscoped = classNames;
 
 
-function Menu({ orientation }) {
+function Menu({ orientation, freezeUpdates }) {
   const router = useRouter();
-  const currentRoute = router.route;
+  const currentRoute = useCache(router.route, freezeUpdates);
 
   const { state: { menuOpen }, dispatch } = useStore();
 
@@ -52,6 +53,9 @@ function Menu({ orientation }) {
 
 Menu.propTypes = {
   orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
+  freezeUpdates: PropTypes.bool,
 };
+Menu.defaultProps = { freezeUpdates: false };
+
 
 export default Menu;
