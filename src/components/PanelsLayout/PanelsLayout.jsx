@@ -60,15 +60,20 @@ function PanelsLayout({
   const menuFadeOpacity = useTransform(menuOpenProgress, [0, 1], [1, 0.5]);
   const contentOpacity = useTransformMulti([menuFadeOpacity, globalOpacity], (a, b) => a * b);
 
+  // We can set content to display: none while it's hidden to improve performance
+  const [displayContent, setDisplayContent] = useState(true);
   const contentStyles = {
     opacity: contentOpacity,
+    display: displayContent ? 'block' : 'none',
     pointerEvents: (menuOpen || freezeUpdates) ? 'none' : 'auto',
   };
 
 
   // Perform the animation sequence for page transitions!
-  function onNavigate() {
+  async function onNavigate() {
     setFreezeUpdates(true);
+    await opacityControls.start({ opacity: 0, transition: { duration: 0.5, ease } });
+    setDisplayContent(false);
   }
 
 
