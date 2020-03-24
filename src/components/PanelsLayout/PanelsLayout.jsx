@@ -54,7 +54,8 @@ function PanelsLayout({
   const inverseX = useTransform(x, (val) => val * -1);
   // This maps the motion of the PanelsLayout to the opacity of the content
   // Causes content to fade out when the menu opens
-  const menuFadeOpacity = useTransform(x, [0, openOffset], [1, 0.5]);
+  const menuOpenProgress = useTransform(x, (val) => Math.abs(val / openOffset));
+  const menuFadeOpacity = useTransform(menuOpenProgress, [0, 1], [1, 0.5]);
   const contentOpacity = useTransformMulti([menuFadeOpacity, globalOpacity], (a, b) => a * b);
 
   return (
