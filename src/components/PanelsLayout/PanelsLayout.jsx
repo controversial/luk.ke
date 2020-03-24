@@ -58,6 +58,13 @@ function PanelsLayout({
   const menuFadeOpacity = useTransform(menuOpenProgress, [0, 1], [1, 0.5]);
   const contentOpacity = useTransformMulti([menuFadeOpacity, globalOpacity], (a, b) => a * b);
 
+
+  // Perform the animation sequence for page transitions!
+  function onNavigate() {
+    setFreezeUpdates(true);
+  }
+
+
   return (
     // Using display: contents makes this behave like a Fragment but we can add Framer Motion props
     // to it, which propagate to children.
@@ -84,7 +91,7 @@ function PanelsLayout({
             Note: one motion element needs to link globalOpacity to opacityControls. We're using
             this since it's the first element that uses globalOpacity */}
         <motion.div style={{ opacity: globalOpacity }} animate={opacityControls}>
-          <Menu orientation="left" freezeUpdates={freezeUpdates} />
+          <Menu orientation="left" {...{ freezeUpdates, onNavigate }} />
         </motion.div>
 
         {/* Light panel */}
@@ -136,7 +143,7 @@ function PanelsLayout({
 
         {/* There's a menu off screen to the right */}
         <motion.div style={{ opacity: globalOpacity }}>
-          <Menu orientation="right" freezeUpdates={freezeUpdates} />
+          <Menu orientation="right" {...{ freezeUpdates, onNavigate }} />
         </motion.div>
       </motion.div>
 
