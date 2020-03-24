@@ -5,7 +5,7 @@ import { useStore } from '../../store';
 import useCache from '../../helpers/useCache';
 
 import { motion, useMotionValue, useTransform, useAnimation } from 'framer-motion';
-import useTransformMulti from '../../helpers/useTransformMulti';
+import { useTransformMulti, easings } from '../../helpers/motion';
 
 import Menu from '../Menu/Menu.jsx';
 import MenuIcon from '../MenuIcon/MenuIcon.jsx';
@@ -15,6 +15,7 @@ import getOrientationClass from '../../helpers/getOrientationClass';
 import styles from './PanelsLayout.module.sass';
 const cx = classNames.bind(styles);
 
+const { ease } = easings;
 
 /**
  * This component provides a layout with four full-height sections: a light colored panel with
@@ -85,7 +86,7 @@ function PanelsLayout({
           'menu-open': { x: openOffset },
           'menu-closed': { x: 0 },
         }}
-        transition={{ type: 'tween', duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+        transition={{ type: 'tween', duration: 0.5, ease }}
       >
         {/* There's a menu off screen to the left.
             Note: one motion element needs to link globalOpacity to opacityControls. We're using

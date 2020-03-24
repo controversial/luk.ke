@@ -1,8 +1,13 @@
 import { useEffect } from 'react';
 import { useMotionValue } from 'framer-motion';
 
+export const easings = {
+  ease: [0.25, 0.1, 0.25, 1],
+};
+
+
 // Adapted from https://github.com/framer/motion/blob/99862c082144ceb0451516bdb7777c28b0b3f02f/src/value/use-relative.ts
-export default function useTransformMulti(parentMotionValues, transformFunc) {
+export function useTransformMulti(parentMotionValues, transformFunc) {
   function computeValue() {
     const parentValues = parentMotionValues.map((mv) => mv.get());
     const computedValue = transformFunc(...parentValues);
