@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { useStore } from '../../store';
 
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useAnimation } from 'framer-motion';
+import useTransformMulti from '../../helpers/useTransformMulti';
+
 import Menu from '../Menu/Menu.jsx';
 import MenuIcon from '../MenuIcon/MenuIcon.jsx';
 
@@ -28,11 +30,18 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
   // The offset, in px, to be applied to the PanelsLayout to display the menu
   const openOffset = orientation === 'right' ? -dimensions.menuWidth : dimensions.menuWidth;
 
+  // This is the opacity of everything besides the panels themselves (all buttons and text content).
+  // It's controlled imperatively with opacityControls, and used during the page transition sequence
+  const globalOpacity = useMotionValue(1);
+  const opacityControls = useAnimation();
+
   // This is the amount the whole panels container is transformed by when opening/closing the menu
   const x = useMotionValue(0);
   const inverseX = useTransform(x, (val) => val * -1);
   // This maps the motion of the PanelsLayout to the opacity of the content
-  const contentOpacity = useTransform(x, [0, openOffset], [1, 0.5]);
+  // Causes content to fade out when the menu opens
+  const menuFadeOpacity = useTransform(x, [0, openOffset], [1, 0.5]);
+  const contentOpacity = useTransformMulti([menuFadeOpacity, globalOpacity], (a, b) => a * b);
 
   return (
     // Using display: contents makes this behave like a Fragment but we can add Framer Motion props
@@ -56,8 +65,12 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
         }}
         transition={{ type: 'tween', duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
       >
-        {/* There's a menu off screen to the left */}
-        <Menu orientation="left" />
+        {/* There's a menu off screen to the left.
+            Note: one motion element needs to link globalOpacity to opacityControls. We're using
+            this since it's the first element that uses globalOpacity */}
+        <motion.div style={{ opacity: globalOpacity }} animate={opacityControls}>
+          <Menu orientation="left" />
+        </motion.div>
 
         {/* Light panel */}
         <motion.div
@@ -107,7 +120,9 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
         />
 
         {/* There's a menu off screen to the right */}
-        <Menu orientation="right" />
+        <motion.div style={{ opacity: globalOpacity }}>
+          <Menu orientation="right" />
+        </motion.div>
       </motion.div>
 
 
@@ -120,35 +135,37 @@ function PanelsLayout({ lightContent, darkContent, orientation, currPageName }) 
           opens.
       */}
 
-      {/* light menu button */}
-      <motion.div
-        className={cx('menu-button', 'light', orientationClass)}
-        // This div has the light background. It slides over with the PanelsLayout when menu opens
-        style={{ x }}
-      >
-        <motion.button
-          type="button"
-          // The visible text of the button slides in the opposite direction so that it stays in
-          // place. However, the parent div has overflow: hidden and clips this div as it moves.
-          style={{ x: inverseX }}
-          onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
+      <motion.div style={{ opacity: globalOpacity, position: 'relative', zIndex: 3 }}>
+        {/* light menu button */}
+        <motion.div
+          className={cx('menu-button', 'light', orientationClass)}
+          // This div has the light background. It slides over with the PanelsLayout when menu opens
+          style={{ x }}
         >
-          <MenuIcon />
-          <div className={cx('label')}>{ currPageName || 'Menu' }</div>
-        </motion.button>
+          <motion.button
+            type="button"
+            // The visible text of the button slides in the opposite direction so that it stays in
+            // place. However, the parent div has overflow: hidden and clips this div as it moves.
+            style={{ x: inverseX }}
+            onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
+          >
+            <MenuIcon />
+            <div className={cx('label')}>{ currPageName || 'Menu' }</div>
+          </motion.button>
+        </motion.div>
+        {/* dark menu button */}
+        <div
+          className={cx('menu-button', 'dark', orientationClass)}
+        >
+          <button
+            type="button"
+            onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
+          >
+            <MenuIcon />
+            <div className={cx('label')}>Close</div>
+          </button>
+        </div>
       </motion.div>
-      {/* dark menu button */}
-      <div
-        className={cx('menu-button', 'dark', orientationClass)}
-      >
-        <button
-          type="button"
-          onClick={() => { dispatch('setMenuOpen', !menuOpen); }}
-        >
-          <MenuIcon />
-          <div className={cx('label')}>Close</div>
-        </button>
-      </div>
 
     </motion.div>
   );
