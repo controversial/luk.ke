@@ -29,8 +29,9 @@ function PanelsLayout({
   orientation: passedOrientation,
   currPageName: passedCurrPageName,
 }) {
-  // This component supports "freezing" updates to certain cached state values, especially
-  // This is useful for preserving the old state during animations
+  // This component supports "freezing" updates to certain cached state values.
+  // This is useful for preserving the old state during animations.
+  // In this component, freezeUpdates=true implies that we are in the middle of a page transition
   const [freezeUpdates, setFreezeUpdates] = useState(false);
   // Make freezable cached copies of all the data passed in props
   const lightContent = useCache(passedLightContent, freezeUpdates);
@@ -45,10 +46,17 @@ function PanelsLayout({
   // The offset, in px, to be applied to the PanelsLayout to display the menu
   const openOffset = orientation === 'right' ? -dimensions.menuWidth : dimensions.menuWidth;
 
-  // This is the amount the whole panels container is transformed by when opening/closing the menu
+  // While opening/closing the menu, this is the amount by which the whole panels container is
+  // transformed
   const x = useMotionValue(0);
   const inverseX = useTransform(x, (val) => val * -1);
 
+  // We need imperative control over the panels container's styles for page transitions
+  const panelsControls = useAnimation();
+  // The variant for the panels container syncs with the variant from the top-level component
+  if (!freezeUpdates) panelsControls.start(variant);
+  // We're also going to need imperative control over the light panel
+  const lightPanelControls = useAnimation();
 
   // This is the opacity of everything besides the panels themselves (all buttons and text content).
   // It's controlled imperatively with opacityControls, and used during the page transition sequence
@@ -71,9 +79,17 @@ function PanelsLayout({
 
   // Perform the animation sequence for page transitions!
   async function onNavigate() {
+    // Pause at the old state
     setFreezeUpdates(true);
-    await opacityControls.start({ opacity: 0, transition: { duration: 0.5, ease } });
+    // Fade out all content
+    await opacityControls.start({ opacity: 0, transition: { duration: 0.4, ease: 'easeIn' } });
     setDisplayContent(false);
+    // Without animation, close the menu and transform the light panel to stay in place
+    panelsControls.set('menu-closed');
+    dispatch('setMenuOpen', false);
+    lightPanelControls.set({ x: openOffset });
+    // Let the new page content/attributes flow in
+    setFreezeUpdates(false);
   }
 
 
@@ -97,6 +113,7 @@ function PanelsLayout({
           'menu-open': { x: openOffset },
           'menu-closed': { x: 0 },
         }}
+        animate={panelsControls}
         transition={{ type: 'tween', duration: 0.5, ease }}
       >
         {/* There's a menu off screen to the left.
@@ -108,13 +125,14 @@ function PanelsLayout({
 
         {/* Light panel */}
         <motion.div
-          layoutTransition
+          layoutTransition={freezeUpdates ? false : { duration: 0.65, ease }}
           className={cx('panel', 'light')}
           style={{ gridColumn: {
             left: 'viewport-left / fifth 2',
             right: 'fifth 3 / viewport-right',
             full: 'viewport-left / viewport-right',
           }[orientation] }}
+          animate={lightPanelControls}
         >
           <div className={cx('nav-cover')} />
           <motion.div className={cx('content')} style={contentStyles}>
@@ -126,7 +144,6 @@ function PanelsLayout({
         { orientation === 'full' ? null
           : (
             <motion.div
-              layoutTransition
               className={cx('panel', 'dark')}
               style={{ gridColumn: {
                 left: 'fifth 2 / viewport-right',
