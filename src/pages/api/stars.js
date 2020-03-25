@@ -32,18 +32,22 @@ async function fetchStars() {
     .reduce((a, b) => a + b, 0);
 }
 
-export default async (req, res) => {
+export async function getTotalStars() {
   // Only actually re-fetch if it's been an hour since the last time (or if the lambda restarted)
   if ((Date.now() - fetchedAt) > 1000 * 60 * 60) {
     totalStars = await fetchStars();
     fetchedAt = Date.now();
   }
+  return totalStars;
+}
 
-  // As an extra step beyond the 1-hour cache we set up here, we provide cache instructions to the
-  // Zeit CDN so that when we haven't re-fetched the value, the serverless function isn't run at
+export default async (req, res) => {
+  // Get the total number of stars
+  const total = await getTotalStars();
+  // As an extra step beyond the 1-hour cache we set up in memory, we provide cache instructions to
+  // the Zeit CDN so that when we haven't re-fetched the value, the serverless function isn't run at
   // all, instead its last response is served from the edge network.
   res.setHeader('Cache-Control', 'max-age=0, s-maxage=3600, stale-while-revalidate');
-
   // send it
-  res.status(200).json({ totalStars });
+  res.status(200).json({ totalStars: total });
 };
