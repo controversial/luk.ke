@@ -14,7 +14,7 @@ const cx = classNames.bind(styles);
 const cxUnscoped = classNames;
 
 
-function Menu({ orientation, freezeUpdates, onNavigate }) {
+function Menu({ orientation, freezeUpdates }) {
   const router = useRouter();
   const currentRoute = useCache(router.route, freezeUpdates);
 
@@ -34,7 +34,7 @@ function Menu({ orientation, freezeUpdates, onNavigate }) {
               <Link href={routes[0]}>
                 {/* eslint-disable jsx-a11y/interactive-supports-focus */}
                 {/* eslint-disable jsx-a11y/click-events-have-key-events */}
-                <a role="link" onClick={onNavigate}>
+                <a role="link">
                   <span>{label}</span>
                 </a>
                 {/* eslint-enable */}
@@ -50,11 +50,9 @@ function Menu({ orientation, freezeUpdates, onNavigate }) {
 Menu.propTypes = {
   orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
   freezeUpdates: PropTypes.bool,
-  onNavigate: PropTypes.func,
 };
 Menu.defaultProps = {
   freezeUpdates: false,
-  onNavigate: () => {},
 };
 
 

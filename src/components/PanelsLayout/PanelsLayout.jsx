@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { useStore } from '../../store';
 import useCache from '../../helpers/useCache';
+
+import Router from 'next/router';
 
 import { motion, useMotionValue, useTransform, useAnimation } from 'framer-motion';
 import { useTransformMulti, easings } from '../../helpers/motion';
@@ -99,6 +101,13 @@ function PanelsLayout({
     await opacityControls.start({ opacity: 1, transition: { duration: 0.4, ease: 'easeOut' } });
   }
 
+  // The page transition function should run whenever the route changes.
+  // We have to re-bind the function when the primitive values that it depends on change
+  useEffect(() => {
+    Router.events.on('routeChangeStart', onNavigate);
+    return () => { Router.events.off('routeChangeStart', onNavigate); };
+  }, [orientation]);
+
 
   return (
     // Using display: contents makes this behave like a Fragment but we can add Framer Motion props
@@ -127,7 +136,7 @@ function PanelsLayout({
             Note: one motion element needs to link globalOpacity to opacityControls. We're using
             this since it's the first element that uses globalOpacity */}
         <motion.div style={{ opacity: globalOpacity }} animate={opacityControls}>
-          <Menu orientation="left" {...{ freezeUpdates, onNavigate }} />
+          <Menu orientation="left" freezeUpdates={freezeUpdates} />
         </motion.div>
 
         {/* Light panel */}
@@ -176,7 +185,7 @@ function PanelsLayout({
 
         {/* There's a menu off screen to the right */}
         <motion.div style={{ opacity: globalOpacity }}>
-          <Menu orientation="right" {...{ freezeUpdates, onNavigate }} />
+          <Menu orientation="right" freezeUpdates={freezeUpdates} />
         </motion.div>
       </motion.div>
 
