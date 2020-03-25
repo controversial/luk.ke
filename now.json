@@ -1,4 +1,7 @@
 {
+  "env": {
+    "GITHUB_TOKEN": "@portfolio_github_token"
+  },
   "github": {
     "silent": true
   }
