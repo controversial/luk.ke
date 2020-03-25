@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames/bind';
 
 import { motion } from 'framer-motion';
+import { easings } from '../../helpers/motion';
 
 import styles from './MenuIcon.module.sass';
 const cx = classNames.bind(styles);
@@ -10,16 +11,10 @@ const cx = classNames.bind(styles);
 function MenuIcon() {
   const transition = {
     type: 'tween',
-    duration: 0.35,
-    ease: 'backIn',
+    duration: 0.15,
+    delay: 0.15,
+    ease: easings.ease,
   };
-  // const transition = {
-  //   type: 'spring',
-  //   mass: 0.25,
-  //   stiffness: 150,
-  //   damping: 10,
-  //   velocity: 0,
-  // };
 
   return (
     <div className={cx('icon')}>
