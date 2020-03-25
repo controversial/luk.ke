@@ -82,11 +82,18 @@ function PanelsLayout({
 
   // This function orchestrates the animation sequence for page transitions!
   async function onNavigate() {
+    // A promise that will resolve once route change is successful
+    const routeChanged = new Promise((resolve) => {
+      const onComplete = () => { resolve(); Router.events.off('routeChangeComplete', onComplete); };
+      Router.events.on('routeChangeComplete', onComplete);
+    });
     // Pause at the old state
     setFreezeUpdates(true);
     // Fade out all content
     await opacityControls.start({ opacity: 0, transition: { duration: 0.35, ease: 'easeInOut' } });
     setDisplayContent(false);
+    // Wait for the new route to load
+    await routeChanged; // TODO: handle errors
     // Without animation, close the menu and transform the light panel to stay in place
     if (menuOpen) lightPanelControls.set({ x: openOffset });
     panelsControls.set('menu-closed');
