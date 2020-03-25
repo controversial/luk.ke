@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import getAge from '../../helpers/age';
+import getAge from './age';
 
 export default function AgeCounter({ places, ...props }) {
   const [time, setTime] = useState(new Date());
