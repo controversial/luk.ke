@@ -39,5 +39,11 @@ export default async (req, res) => {
     fetchedAt = Date.now();
   }
 
+  // As an extra step beyond the 1-hour cache we set up here, we provide cache instructions to the
+  // Zeit CDN so that when we haven't re-fetched the value, the serverless function isn't run at
+  // all, instead its last response is served from the edge network.
+  res.setHeader('Cache-Control', 'max-age=0, s-maxage=3600, stale-while-revalidate');
+
+  // send it
   res.status(200).json({ totalStars });
 };
