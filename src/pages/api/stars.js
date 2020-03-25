@@ -11,6 +11,9 @@ query {
 }
 `;
 
+let totalStars = 0;
+let fetchedAt = 0;
+
 async function fetchStars() {
   // Send the GraphQL query to the GitHub API
   const response = await fetch('https://api.github.com/graphql', {
@@ -30,6 +33,11 @@ async function fetchStars() {
 }
 
 export default async (req, res) => {
-  const totalStars = await fetchStars();
+  // Only actually re-fetch if it's been an hour since the last time (or if the lambda restarted)
+  if ((Date.now() - fetchedAt) > 1000 * 60 * 60) {
+    totalStars = await fetchStars();
+    fetchedAt = Date.now();
+  }
+
   res.status(200).json({ totalStars });
 };
