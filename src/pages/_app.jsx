@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
 
@@ -13,7 +13,13 @@ function App({ Component, pageProps: basePageProps }) {
   const { panelOrientation: pagePanelOrientation, pageName: initialPageName } = Component;
 
   const [pageName, setPageName] = useState(initialPageName);
-  Router.events.on('routeChangeComplete', () => { setPageName(Component.pageName); });
+
+  // When we get to a new page, update the page name stored in state
+  useEffect(() => {
+    const updatePageName = () => { setPageName(Component.pageName); };
+    Router.events.on('routeChangeComplete', updatePageName);
+    return () => { Router.events.off('routeChangeComplete', updatePageName); };
+  }, []);
 
   const pprops = { ...basePageProps, setPageName };
 
