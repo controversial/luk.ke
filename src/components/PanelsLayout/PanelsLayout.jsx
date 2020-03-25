@@ -85,7 +85,7 @@ function PanelsLayout({
     // Pause at the old state
     setFreezeUpdates(true);
     // Fade out all content
-    await opacityControls.start({ opacity: 0, transition: { duration: 0.4, ease: 'easeIn' } });
+    await opacityControls.start({ opacity: 0, transition: { duration: 0.35, ease: 'easeInOut' } });
     setDisplayContent(false);
     // Without animation, close the menu and transform the light panel to stay in place
     if (menuOpen) lightPanelControls.set({ x: openOffset });
@@ -99,7 +99,7 @@ function PanelsLayout({
     setLightPanelAnimCallback(null);
     // Fade in all content
     setDisplayContent(true);
-    await opacityControls.start({ opacity: 1, transition: { duration: 0.4, ease: 'easeOut' } });
+    await opacityControls.start({ opacity: 1, transition: { duration: 0.65, ease: 'easeOut' } });
   }
 
   // The page transition function should run whenever the route changes.
@@ -131,7 +131,7 @@ function PanelsLayout({
           'menu-closed': { x: 0 },
         }}
         animate={panelsControls}
-        transition={{ type: 'tween', duration: 0.5, ease }}
+        transition={{ type: 'tween', duration: 0.4, ease }}
       >
         {/* There's a menu off screen to the left.
             Note: one motion element needs to link globalOpacity to opacityControls. We're using
@@ -142,7 +142,7 @@ function PanelsLayout({
 
         {/* Light panel */}
         <motion.div
-          layoutTransition={freezeUpdates ? false : { duration: 0.65, ease }}
+          layoutTransition={freezeUpdates ? false : { duration: 0.5, ease: [0.5, 0.1, 0.25, 1] }}
           onAnimationComplete={lightPanelAnimCallback}
           className={cx('panel', 'light')}
           style={{ gridColumn: {
