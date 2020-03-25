@@ -80,7 +80,7 @@ function PanelsLayout({
   };
 
 
-  // Perform the animation sequence for page transitions!
+  // This function orchestrates the animation sequence for page transitions!
   async function onNavigate() {
     // Pause at the old state
     setFreezeUpdates(true);
@@ -88,9 +88,10 @@ function PanelsLayout({
     await opacityControls.start({ opacity: 0, transition: { duration: 0.4, ease: 'easeIn' } });
     setDisplayContent(false);
     // Without animation, close the menu and transform the light panel to stay in place
+    if (menuOpen) lightPanelControls.set({ x: openOffset });
     panelsControls.set('menu-closed');
+    // Record that the menu is closed
     dispatch('setMenuOpen', false);
-    lightPanelControls.set({ x: openOffset });
     // Let the new page content/attributes flow in
     setFreezeUpdates(false);
     // Wait for the panel to finish sliding
@@ -106,7 +107,7 @@ function PanelsLayout({
   useEffect(() => {
     Router.events.on('routeChangeStart', onNavigate);
     return () => { Router.events.off('routeChangeStart', onNavigate); };
-  }, [orientation]);
+  }, [orientation, menuOpen]);
 
 
   return (
