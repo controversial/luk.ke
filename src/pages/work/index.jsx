@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { getProjects } from '../api/content/work';
 
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 
@@ -83,6 +84,21 @@ function DarkContent({ content: projects, bus }) {
     }
   }
 
+  // When the hash changes we should change the displayed project.
+  const router = useRouter();
+  if (typeof window !== 'undefined') { // this isn't relevant server-side
+    useEffect(() => {
+      const updateFromHash = () => updateProject(getIndexFromHash(projects));
+      // bind event listeners
+      router.events.on('hashChangeComplete', updateFromHash);
+      window.addEventListener('hashchange', updateFromHash);
+      // return cleanup function
+      return () => {
+        router.events.off('hashChangeComplete', updateFromHash);
+        window.removeEventListener('hashchange', updateFromHash);
+      };
+    }, [currProjectIndex]);
+  }
   return <div />;
 }
 DarkContent.propTypes = LightContent.propTypes;
