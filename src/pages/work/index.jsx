@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { getProjects } from '../api/content/work';
 
 import Head from 'next/head';
 
+
 /**
- * Page listing brief details/images for many of my projects, which allows navigation to case
- * studies.
+ * This page serves as a listing for all of the case studies on the site.
+ * It displays each project with a brief description and images
  */
+
+
+/**
+ * Helper function that returns the index of the project that we should display at the outset.
+ * This is 0 unless changed by the URL hash
+ */
+function getIndexFromHash(projects) {
+  if (typeof window === 'undefined') return 0; // can't see hash server side
+  const currentUid = window.location.hash && window.location.hash.substr(1);
+  const uids = projects.map((p) => p.uid);
+  const index = uids.indexOf(currentUid);
+  return index === -1 ? 0 : index; // default to the first one if not found
+}
+
 
 // Main component configures page metadata and doesn't redner anything
 
@@ -23,8 +38,19 @@ function WorkIndex() {
 }
 
 
-// Content to go in the dark section
-function LightContent() {
+// The light section displays information about the current case study
+
+function LightContent({ content: projects, bus }) {
+  // Start out displaying whichever project the URL hash dictates.
+  const [currProjectIndex, setCurrProject] = useState(getIndexFromHash(projects));
+  const project = projects[currProjectIndex];
+  // We change what project we display when we receive an event that says to do so.
+  // These events are emitted from DarkContent
+  useEffect(() => {
+    bus.on('changeProject', setCurrProject);
+    return () => bus.off('changeProject', setCurrProject);
+  }, []);
+
   return (
     <div>
       <h2>Project Name</h2>
@@ -37,10 +63,26 @@ LightContent.propTypes = {
     head: PropTypes.string.isRequired,
     featured_images: PropTypes.arrayOf(PropTypes.string).isRequired,
   })).isRequired,
+
+  bus: PropTypes.shape({
+    on: PropTypes.func,
+    off: PropTypes.func,
+  }).isRequired,
 };
 
 
-function DarkContent() {
+// The dark section contains a parallax scrolling list of images
+function DarkContent({ content: projects, bus }) {
+  const [currProjectIndex, setCurrProject] = useState(getIndexFromHash(projects));
+
+  // DarkContent controls the "current project" for both the dark and light content.
+  function updateProject(index) {
+    if (index !== currProjectIndex) {
+      bus.emit('changeProject', index);
+      setCurrProject(index);
+    }
+  }
+
   return <div />;
 }
 DarkContent.propTypes = LightContent.propTypes;
