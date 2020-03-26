@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import { useStore } from '../../store';
 import useCache from '../../helpers/useCache';
 
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 
 import { motion, useMotionValue, useTransform, useAnimation } from 'framer-motion';
 import { useTransformMulti, easings } from '../../helpers/motion';
@@ -79,13 +79,13 @@ function PanelsLayout({
     pointerEvents: (menuOpen || freezeUpdates) ? 'none' : 'auto',
   };
 
-
+  const router = useRouter();
   // This function orchestrates the animation sequence for page transitions!
   async function onNavigate() {
     // A promise that will resolve once route change is successful
     const routeChanged = new Promise((resolve) => {
-      const onComplete = () => { resolve(); Router.events.off('routeChangeComplete', onComplete); };
-      Router.events.on('routeChangeComplete', onComplete);
+      const onComplete = () => { resolve(); router.events.off('routeChangeComplete', onComplete); };
+      router.events.on('routeChangeComplete', onComplete);
     });
     // Pause at the old state
     setFreezeUpdates(true);
@@ -112,8 +112,8 @@ function PanelsLayout({
   // The page transition function should run whenever the route changes.
   // We have to re-bind the function when the primitive values that it depends on change
   useEffect(() => {
-    Router.events.on('routeChangeStart', onNavigate);
-    return () => { Router.events.off('routeChangeStart', onNavigate); };
+    router.events.on('routeChangeStart', onNavigate);
+    return () => { router.events.off('routeChangeStart', onNavigate); };
   }, [orientation, menuOpen]);
 
 
