@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 
 import mitt from 'mitt';
 import { StoreProvider } from '../store';
@@ -19,11 +19,11 @@ function App({ Component, pageProps: basePageProps }) {
   const [bus] = useState(mitt());
 
   // When we get to a new page, update the page name stored in state
+  const router = useRouter();
   useEffect(() => {
-    const updatePageName = () => { setPageName(Component.pageName); };
-    Router.events.on('routeChangeComplete', updatePageName);
-    return () => { Router.events.off('routeChangeComplete', updatePageName); };
-  }, []);
+    const { Component: newComponent } = router.components[router.pathname];
+    setPageName(newComponent.pageName);
+  }, [router.route]);
 
   const pprops = { ...basePageProps, setPageName, bus };
 
