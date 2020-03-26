@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
 
+import mitt from 'mitt';
 import { StoreProvider } from '../store';
 
 import PanelsLayout from '../components/PanelsLayout/PanelsLayout.jsx';
@@ -13,6 +14,9 @@ function App({ Component, pageProps: basePageProps }) {
   const { panelOrientation: pagePanelOrientation, pageName: initialPageName } = Component;
 
   const [pageName, setPageName] = useState(initialPageName);
+  // This event emitter is passed to both LightContent and DarkContent and can be used to pass data
+  // between the two when necessary
+  const [bus] = useState(mitt());
 
   // When we get to a new page, update the page name stored in state
   useEffect(() => {
@@ -21,7 +25,7 @@ function App({ Component, pageProps: basePageProps }) {
     return () => { Router.events.off('routeChangeComplete', updatePageName); };
   }, []);
 
-  const pprops = { ...basePageProps, setPageName };
+  const pprops = { ...basePageProps, setPageName, bus };
 
   return (
     <StoreProvider>
