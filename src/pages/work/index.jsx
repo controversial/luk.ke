@@ -7,6 +7,7 @@ import parse from 'html-react-parser';
 
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { InView } from 'react-intersection-observer';
 
 import styles from './index.module.sass';
 const cx = classNames.bind(styles);
@@ -104,12 +105,30 @@ function DarkContent({ content: projects, bus }) {
       };
     }, [currProjectIndex]);
   }
+
+  // When we scroll to the section that corresponds to a certain project we should change projects
+  function switchFromScroll(uid) {
+    const newIndex = projects.map((p) => p.uid).indexOf(uid);
+    updateProject(newIndex !== -1 ? newIndex : 0);
+  }
+
   return (
     <div className={cx('images-container')}>
       { projects.map((p) => (
-        <section id={p.uid} key={p.uid}>
+        <InView
+          as="section"
+          id={p.uid}
+          key={p.uid}
+          // The area we're observing the intersection on is the area between 50% from the top and
+          // 49% from the bottom.
+          rootMargin="-50% 0px -49%"
+          // Whichever project section enters this area from either side becomes the active project.
+          // Caveat: if a section just barely enters this area and then the user scrolls back the
+          // other way, the site won't go back to the previously active section
+          onChange={(inView) => { if (inView) switchFromScroll(p.uid); }}
+        >
           { parse(p.head) }
-        </section>
+        </InView>
       )) }
     </div>
   );
