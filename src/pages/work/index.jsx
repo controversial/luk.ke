@@ -110,6 +110,10 @@ function DarkContent({ content: projects, bus }) {
   function switchFromScroll(uid) {
     const newIndex = projects.map((p) => p.uid).indexOf(uid);
     updateProject(newIndex !== -1 ? newIndex : 0);
+    // Change the URL hash silently, without triggering a scroll jump
+    const uri = `${window.location.href}#`;
+    const newUri = uri.replace(/#.*$/, `#${uid}`);
+    window.history.replaceState(null, '', newUri);
   }
 
   return (
