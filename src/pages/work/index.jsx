@@ -58,8 +58,8 @@ function LightContent({ content: projects, bus }) {
   }, []);
 
   return (
-    <div>
-      <h2>Project Name</h2>
+    <div className={cx('project-overview')}>
+      { parse(project.head) }
     </div>
   );
 }
