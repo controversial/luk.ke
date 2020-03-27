@@ -175,7 +175,6 @@ function PanelsLayout({
                 right: 'viewport-left / fifth 3',
               }[orientation] }}
             >
-              <div className={cx('nav-cover')} />
               <motion.div className={cx('content')} style={contentStyles}>
                 {darkContent}
               </motion.div>

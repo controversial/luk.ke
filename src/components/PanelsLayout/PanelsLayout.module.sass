@@ -45,32 +45,24 @@
 
 
   .panel .content
-    padding-top: $nav-height
     overflow: hidden
     width: 100%
     min-height: 100%
     will-change: opacity
 
-
   .nav-cover
-    position: absolute
+    position: sticky
     top: 0
     left: 0
     width: 100%
     height: $nav-height
     z-index: 100
 
-  .dark .nav-cover
-    position: sticky
-    margin-bottom: -$nav-height
-    background: $black
+    & + .content
+      min-height: calc(100% - #{$nav-height})
 
   .light .nav-cover
     background: $white
-
-  &.panel-full .light .nav-cover
-    position: sticky
-    margin-bottom: -$nav-height
 
 
   \:global
