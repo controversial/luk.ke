@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames/bind';
 
 import { getProjects } from '../api/content/work';
+import parse from 'html-react-parser';
 
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+
+import styles from './index.module.sass';
+const cx = classNames.bind(styles);
 
 
 /**
@@ -99,7 +104,15 @@ function DarkContent({ content: projects, bus }) {
       };
     }, [currProjectIndex]);
   }
-  return <div />;
+  return (
+    <div className={cx('images-container')}>
+      { projects.map((p) => (
+        <section id={p.uid} key={p.uid}>
+          { parse(p.head) }
+        </section>
+      )) }
+    </div>
+  );
 }
 DarkContent.propTypes = LightContent.propTypes;
 
