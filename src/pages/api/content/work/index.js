@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import Prismic from 'prismic-javascript';
 import PrismicDOM from 'prismic-dom';
 import initApi from '../../../../helpers/prismic';
@@ -21,7 +22,8 @@ export const processProject = async ({ uid, data: project }, includeContent = tr
   start_date: project.start_date.split('-').slice(0, 2).map((n) => parseInt(n, 10)),
   end_date: project.end_date.split('-').slice(0, 2).map((n) => parseInt(n, 10)),
   github_link: PrismicDOM.Link.url(project.github_link),
-  featured_images: project.featured_images.map(({ image: { url, alt } }) => ({ url, alt })),
+  featured_images: project.featured_images
+    .map(({ image: { url, alt }, show_overlay }) => ({ url, alt, show_overlay })),
 
   // If we're including the content of the page, in addition to just simple metadata, we need to
   // process all of the rich text, etc. from the "body" of the Project entry from Prismic.

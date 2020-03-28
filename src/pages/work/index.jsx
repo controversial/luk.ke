@@ -68,7 +68,11 @@ LightContent.propTypes = {
   content: PropTypes.arrayOf(PropTypes.shape({
     uid: PropTypes.string.isRequired,
     head: PropTypes.string.isRequired,
-    featured_images: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+    featured_images: PropTypes.arrayOf(PropTypes.shape({
+      src: PropTypes.string,
+      alt: PropTypes.string,
+      show_overlay: PropTypes.bool,
+    })).isRequired,
   })).isRequired,
 
   bus: PropTypes.shape({
