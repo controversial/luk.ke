@@ -23,9 +23,9 @@ const cx = classNames.bind(styles);
  * Helper function that returns the index of the project that we should display at the outset.
  * This is 0 unless changed by the URL hash
  */
-function getIndexFromHash(projects) {
-  if (typeof window === 'undefined') return 0; // can't see hash server side
-  const currentUid = window.location.hash && window.location.hash.substr(1);
+function getIndexFromHash(projects, hash) {
+  if (!hash && typeof window === 'undefined') return 0; // can't see hash server side
+  const currentUid = hash || (window.location.hash && window.location.hash.substr(1));
   const uids = projects.map((p) => p.uid);
   const index = uids.indexOf(currentUid);
   return index === -1 ? 0 : index; // default to the first one if not found
@@ -110,16 +110,6 @@ function DarkContent({ content: projects, bus }) {
     }, [currProjectIndex]);
   }
 
-  // When we scroll to the section that corresponds to a certain project we should change projects
-  function switchFromScroll(uid) {
-    const newIndex = projects.map((p) => p.uid).indexOf(uid);
-    updateProject(newIndex !== -1 ? newIndex : 0);
-    // Change the URL hash silently, without triggering a scroll jump
-    const uri = `${window.location.href}#`;
-    const newUri = uri.replace(/#.*$/, `#${uid}`);
-    window.history.replaceState(null, '', newUri);
-  }
-
   return (
     <div className={cx('images-container')}>
       { projects.map((p) => (
@@ -133,7 +123,7 @@ function DarkContent({ content: projects, bus }) {
           // Whichever project section enters this area from either side becomes the active project.
           // Caveat: if a section just barely enters this area and then the user scrolls back the
           // other way, the site won't go back to the previously active section
-          onChange={(inView) => { if (inView) switchFromScroll(p.uid); }}
+          onChange={(inView) => { if (inView) updateProject(getIndexFromHash(projects, p.uid)); }}
         >
           {
             p.featured_images.map(({ url, alt }) => (
