@@ -21,7 +21,7 @@ export const processProject = async ({ uid, data: project }, includeContent = tr
   start_date: project.start_date.split('-').slice(0, 2).map((n) => parseInt(n, 10)),
   end_date: project.end_date.split('-').slice(0, 2).map((n) => parseInt(n, 10)),
   github_link: PrismicDOM.Link.url(project.github_link),
-  featured_images: project.featured_images.map(({ image }) => image.url),
+  featured_images: project.featured_images.map(({ image: { url, alt } }) => ({ url, alt })),
 
   // If we're including the content of the page, in addition to just simple metadata, we need to
   // process all of the rich text, etc. from the "body" of the Project entry from Prismic.
