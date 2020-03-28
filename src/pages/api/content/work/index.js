@@ -24,7 +24,7 @@ export const processProject = async ({ uid, data: project }, includeContent = tr
   github_link: PrismicDOM.Link.url(project.github_link),
   featured_images: project.featured_images
     .map(({ image: { url, alt, dimensions }, show_overlay }) => ({
-      url,
+      src: url,
       alt,
       dimensions: [dimensions.width, dimensions.height],
       show_overlay,

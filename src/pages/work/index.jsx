@@ -127,11 +127,11 @@ function DarkContent({ content: projects, bus }) {
           onChange={(inView) => { if (inView) updateProject(getIndexFromHash(projects, p.uid)); }}
         >
           {
-            p.featured_images.map(({ url, alt }) => (
+            p.featured_images.map(({ src, alt }) => (
               <div
-                key={url}
+                key={src}
                 role="img"
-                style={{ backgroundImage: `url(${url})` }}
+                style={{ backgroundImage: `url(${src})` }}
                 aria-label={alt}
                 className={cx('image')}
               />
