@@ -71,6 +71,7 @@ LightContent.propTypes = {
     featured_images: PropTypes.arrayOf(PropTypes.shape({
       src: PropTypes.string,
       alt: PropTypes.string,
+      dimensions: PropTypes.arrayOf(PropTypes.number),
       show_overlay: PropTypes.bool,
     })).isRequired,
   })).isRequired,
