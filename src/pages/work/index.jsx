@@ -68,7 +68,7 @@ LightContent.propTypes = {
   content: PropTypes.arrayOf(PropTypes.shape({
     uid: PropTypes.string.isRequired,
     head: PropTypes.string.isRequired,
-    featured_images: PropTypes.arrayOf(PropTypes.string).isRequired,
+    featured_images: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   })).isRequired,
 
   bus: PropTypes.shape({
@@ -131,7 +131,17 @@ function DarkContent({ content: projects, bus }) {
           // other way, the site won't go back to the previously active section
           onChange={(inView) => { if (inView) switchFromScroll(p.uid); }}
         >
-          { parse(p.head) }
+          {
+            p.featured_images.map(({ url, alt }) => (
+              <div
+                key={url}
+                role="img"
+                style={{ backgroundImage: `url(${url})` }}
+                aria-label={alt}
+                className={cx('image')}
+              />
+            ))
+          }
         </InView>
       )) }
     </div>
