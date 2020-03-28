@@ -12,9 +12,26 @@ const cx = classNames.bind(styles);
  * This component provides implements the floating parallax images on the /work page.
  */
 
-function ParallaxImage() {
+function ParallaxImage({
+  image,
+  parallax,
+  showOverlay,
+}) {
   return (<motion.div className={cx('floating-image')} />);
 }
-ParallaxImage.propTypes = {};
+ParallaxImage.propTypes = {
+  image: PropTypes.shape({
+    src: PropTypes.string.isRequired,
+    alt: PropTypes.string,
+    dimensions: PropTypes.arrayOf(PropTypes.number).isRequired,
+  }).isRequired,
+  parallax: PropTypes.shape({
+
+  }).isRequired,
+  showOverlay: PropTypes.bool,
+};
+ParallaxImage.defaultProps = {
+  showOverlay: false,
+};
 
 export default ParallaxImage;
