@@ -14,7 +14,7 @@ import withClassName from '../../../../helpers/addClassToMarkup';
 export const processProject = async ({ uid, data: project }, includeContent = true) => ({
   uid,
   ...project,
-  name: undefined,
+  name: PrismicDOM.RichText.asText(project.name),
   head: PrismicDOM.RichText.asHtml(project.name),
   subhead: await withClassName('subhead', PrismicDOM.RichText.asHtml(project.subhead)),
   description: PrismicDOM.RichText.asHtml(project.description),
