@@ -32,6 +32,7 @@ function scrollDown() {
 
 function OverscrollTrigger({ callback }) {
   const isWindow = typeof window !== 'undefined';
+
   const overscroll = useMotionValue(0);
   const threshold = isWindow ? window.innerHeight : 0;
   const progress = useTransform(overscroll, [0, threshold], [0, 1]);
@@ -44,6 +45,8 @@ function OverscrollTrigger({ callback }) {
       if (isScrolledToBottom()) overscroll.set(overscroll.get() + e.deltaY);
       // If we're not at the bottom of the scroll, record that there is no overscroll
       else overscroll.set(0);
+
+      if (progress.get() >= 1) callback();
     }
     window.addEventListener('wheel', onScroll);
     return () => window.removeEventListener('wheel', onScroll);
