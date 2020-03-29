@@ -20,14 +20,17 @@ function isScrolledToBottom(threshold = 0) {
 function scrollDown() {
   const pageDown = window.scrollY + window.innerHeight;
   const bottom = document.body.scrollHeight - window.innerHeight;
-  spring({
-    from: window.scrollY,
-    to: Math.min(pageDown, bottom),
-    mass: 1,
-    stiffness: 400,
-    damping: 90,
-  }).start({
-    update: (value) => { window.scrollTo(window.scrollX, value); },
+  return new Promise((resolve) => {
+    spring({
+      from: window.scrollY,
+      to: Math.min(pageDown, bottom),
+      mass: 1,
+      stiffness: 400,
+      damping: 90,
+    }).start({
+      update: (value) => { window.scrollTo(window.scrollX, value); },
+      complete: resolve,
+    });
   });
 }
 
