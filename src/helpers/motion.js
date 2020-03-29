@@ -1,9 +1,15 @@
 import { useEffect } from 'react';
 import { useMotionValue } from 'framer-motion';
 
+
 export const easings = {
   ease: [0.25, 0.1, 0.25, 1],
 };
+
+
+export function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 
 // Adapted from https://github.com/framer/motion/blob/99862c082144ceb0451516bdb7777c28b0b3f02f/src/value/use-relative.ts
