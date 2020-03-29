@@ -18,14 +18,22 @@ function App({ Component, pageProps: basePageProps }) {
   // between the two when necessary
   const [bus] = useState(mitt());
 
+  // Pages can notify PanelsContent when they think they are going to perform imperative navigation
+  const [willNavigate, setWillNavigate] = useState(false);
+
   // When we get to a new page, update the page name stored in state
   const router = useRouter();
   useEffect(() => {
     const { Component: newComponent } = router.components[router.pathname];
     setPageName(newComponent.pageName);
   }, [router.route]);
+  useEffect(() => {
+    const reset = () => setWillNavigate(false);
+    router.events.on('routeChangeComplete', reset);
+    return () => router.events.off('routeChangeComplete', reset);
+  }, []);
 
-  const pprops = { ...basePageProps, setPageName, bus };
+  const pprops = { ...basePageProps, setPageName, bus, setWillNavigate };
 
   return (
     <StoreProvider>
@@ -39,6 +47,8 @@ function App({ Component, pageProps: basePageProps }) {
           // layout.
           orientation={(Component.LightContent && Component.DarkContent) ? pagePanelOrientation : 'full'}
           currPageName={pageName}
+          // We can notify PanelsLayout when we think navigation is going to occur
+          willNavigate={willNavigate}
         />
 
         {/*

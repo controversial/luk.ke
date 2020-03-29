@@ -30,6 +30,7 @@ function PanelsLayout({
   darkContent: passedDarkContent,
   orientation: passedOrientation,
   currPageName: passedCurrPageName,
+  willNavigate,
 }) {
   // This component supports "freezing" updates to certain cached state values.
   // This is useful for preserving the old state during animations.
@@ -82,7 +83,7 @@ function PanelsLayout({
     opacity: contentOpacity,
     display: displayContent ? 'block' : 'none',
     pointerEvents: (menuOpen || freezeUpdates) ? 'none' : 'auto',
-    willChange: (menuOpen || willFade) ? 'opacity' : 'auto',
+    willChange: (menuOpen || willNavigate || willFade) ? 'opacity' : 'auto',
   };
 
   const router = useRouter();
@@ -264,10 +265,12 @@ PanelsLayout.propTypes = {
   darkContent: PropTypes.element,
   orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
   currPageName: PropTypes.string,
+  willNavigate: PropTypes.bool,
 };
 PanelsLayout.defaultProps = {
   darkContent: null,
   currPageName: null,
+  willNavigate: false,
 };
 
 export default PanelsLayout;
