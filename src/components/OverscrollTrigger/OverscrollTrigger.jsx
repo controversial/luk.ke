@@ -5,6 +5,7 @@ import classNames from 'classnames/bind';
 import { motion, useMotionValue, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useTransformMulti, delay } from '../../helpers/motion';
 import { spring } from 'popmotion';
+import debounce from 'debounce';
 
 import styles from './OverscrollTrigger.module.sass';
 const cx = classNames.bind(styles);
@@ -59,6 +60,8 @@ function OverscrollTrigger({ callback, preCallback }) {
   const arrowControls = useAnimation();
   useEffect(() => arrowControls.set('visible'), []);
 
+  const debouncedCallback = debounce(callback, 1000, true);
+
   // Set up wheel event listener
   useEffect(() => {
     function onScroll(e) {
@@ -86,7 +89,9 @@ function OverscrollTrigger({ callback, preCallback }) {
         }
       }
       // Run the callback when it fills all the way up
-      if (progress.get() >= 1) callback();
+      if (progress.get() >= 1) {
+        debouncedCallback();
+      }
     }
     window.addEventListener('wheel', onScroll);
     return () => window.removeEventListener('wheel', onScroll);
