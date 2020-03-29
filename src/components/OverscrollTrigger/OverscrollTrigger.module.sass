@@ -3,6 +3,7 @@
 
 .overscroll-trigger
   color: $white
+  position: relative
   display: flex
   align-items: center
   font-size: 20px
@@ -20,3 +21,8 @@
     width: 1.25em
     height: 1.25em
     margin-right: .65em
+    transform-origin: center center
+
+    &:not(:first-child)
+      position: absolute
+      left: 0
