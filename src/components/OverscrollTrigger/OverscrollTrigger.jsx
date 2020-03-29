@@ -10,10 +10,11 @@ import styles from './OverscrollTrigger.module.sass';
 const cx = classNames.bind(styles);
 
 
-function isScrolledToBottom() {
+// Returns true if the window is scrolled within 'threshold' px of its bottom
+function isScrolledToBottom(threshold = 0) {
   const scrollBottom = window.innerHeight + window.scrollY + 1;
   const maxScroll = document.body.scrollHeight;
-  return scrollBottom >= maxScroll;
+  return (scrollBottom + threshold) >= maxScroll;
 }
 
 function scrollDown() {
@@ -81,7 +82,7 @@ function OverscrollTrigger({ callback }) {
       className={classNames('overscroll-trigger', cx('overscroll-trigger'))}
       onClick={() => {
         // If we're not at the bottom, animate scroll to the bottom
-        if (!isScrolledToBottom()) scrollDown();
+        if (!isScrolledToBottom(100)) scrollDown();
         // If we are at the bottom, fill up the overscroll progress bar, and run the callback func
         else {
           // Hide arrow controls
