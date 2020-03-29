@@ -26,6 +26,7 @@
     "lodash.clonedeep": "^4.5.0",
     "mitt": "^1.2.0",
     "next": "^9.3.1",
+    "popmotion": "9.0.0-beta-8",
     "prismic-dom": "git+https://git@github.com/controversial/prismic-dom.git",
     "prismic-javascript": "^2.7.0",
     "prop-types": "^15.7.2",
