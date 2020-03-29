@@ -8,6 +8,7 @@ import parse from 'html-react-parser';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { InView } from 'react-intersection-observer';
+import ParallaxImage from '../../components/ParallaxImage';
 
 import styles from './index.module.sass';
 const cx = classNames.bind(styles);
@@ -113,7 +114,7 @@ function DarkContent({ content: projects, bus }) {
 
   return (
     <div className={cx('images-container')}>
-      { projects.map((p) => (
+      { projects.map((p, projectIndex) => (
         <InView
           as="section"
           id={p.uid}
@@ -127,13 +128,13 @@ function DarkContent({ content: projects, bus }) {
           onChange={(inView) => { if (inView) updateProject(getIndexFromHash(projects, p.uid)); }}
         >
           {
-            p.featured_images.map(({ src, alt }) => (
-              <div
+            p.featured_images.map(({ src, alt, dimensions, show_overlay: showOverlay }, i) => (
+              <ParallaxImage
                 key={src}
-                role="img"
-                style={{ backgroundImage: `url(${src})` }}
-                aria-label={alt}
-                className={cx('image')}
+                image={{ src, alt, dimensions }}
+                style={{ top: `calc(${30 * i}vw + ${200 * projectIndex}vh)` }}
+                showOverlay={showOverlay}
+                parallax={{}}
               />
             ))
           }
