@@ -15,6 +15,7 @@ const cx = classNames.bind(styles);
 function ParallaxImage({
   image,
   parallax,
+  style,
   showOverlay,
 }) {
   const imageSize = image.dimensions;
@@ -23,6 +24,7 @@ function ParallaxImage({
   return (
     <motion.div
       className={cx('floating-image')}
+      style={{ ...style }}
     >
       <img src={image.src} alt={image.alt} style={{ ...dimensions }} />
     </motion.div>
@@ -37,10 +39,12 @@ ParallaxImage.propTypes = {
   parallax: PropTypes.shape({
 
   }).isRequired,
+  style: PropTypes.shape({ }),
   showOverlay: PropTypes.bool,
 };
 ParallaxImage.defaultProps = {
   showOverlay: false,
+  style: {},
 };
 
 export default ParallaxImage;
