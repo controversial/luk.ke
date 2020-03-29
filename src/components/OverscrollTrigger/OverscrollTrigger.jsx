@@ -11,8 +11,8 @@ const cx = classNames.bind(styles);
 function OverscrollTrigger({ callback }) {
   return (
     <div className={cx('overscroll-trigger')}>
-      <DownArrow />
-      <span>Scroll down</span>
+      <DownArrow className={cx('arrow-down')} />
+      Scroll down
     </div>
   );
 }
