@@ -46,7 +46,7 @@ function LightContent() {
 
 // Content to go in the dark section
 
-function DarkContent({ content }) {
+function DarkContent({ content, setWillNavigate }) {
   const router = useRouter();
 
   return (
@@ -62,6 +62,7 @@ function DarkContent({ content }) {
 
       <OverscrollTrigger
         callback={() => { router.push('/work'); }}
+        preCallback={(willNav) => setWillNavigate(willNav)}
       />
     </div>
   );
@@ -72,6 +73,7 @@ DarkContent.propTypes = {
     title: PropTypes.string.isRequired,
     text: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
+  setWillNavigate: PropTypes.func.isRequired,
 };
 
 
