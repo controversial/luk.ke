@@ -53,6 +53,11 @@ function PanelsLayout({
   const x = useMotionValue(0);
   const inverseX = useTransform(x, (val) => val * -1);
 
+  // We set will-change on the transformed elements before they are transformed in order to improve
+  // performance
+  const [willTransform, setWillTransform] = useState(false);
+  const [willFade, setWillFade] = useState(false);
+
   // We need imperative control over the panels container's styles for page transitions
   const panelsControls = useAnimation();
   // The variant for the panels container syncs with the variant from the top-level component
@@ -77,6 +82,7 @@ function PanelsLayout({
     opacity: contentOpacity,
     display: displayContent ? 'block' : 'none',
     pointerEvents: (menuOpen || freezeUpdates) ? 'none' : 'auto',
+    willChange: (menuOpen || willFade) ? 'opacity' : 'auto',
   };
 
   const router = useRouter();
@@ -90,6 +96,7 @@ function PanelsLayout({
     // Pause at the old state
     setFreezeUpdates(true);
     // Fade out all content
+    setWillFade(true);
     await opacityControls.start({ opacity: 0, transition: { duration: 0.35, ease: 'easeInOut' } });
     setDisplayContent(false);
     // Wait for the new route to load
@@ -107,6 +114,7 @@ function PanelsLayout({
     // Fade in all content
     setDisplayContent(true);
     await opacityControls.start({ opacity: 1, transition: { duration: 0.65, ease: 'easeOut' } });
+    setWillFade(false);
   }
 
   // The page transition function should run whenever the route changes.
@@ -132,7 +140,7 @@ function PanelsLayout({
       */}
       <motion.div
         className={cx('panels-layout', getOrientationClass(orientation), { 'menu-open': menuOpen })}
-        style={{ x }}
+        style={{ x, willChange: willTransform ? 'transform' : 'auto' }}
         variants={{
           'menu-open': { x: openOffset },
           'menu-closed': { x: 0 },
@@ -213,6 +221,8 @@ function PanelsLayout({
           position: 'relative',
           zIndex: 3,
         }}
+        onMouseEnter={() => { setWillTransform(true); setWillFade(true); }}
+        onMouseLeave={() => { setWillTransform(false); setWillFade(false); }}
       >
         {/* light menu button */}
         <motion.div

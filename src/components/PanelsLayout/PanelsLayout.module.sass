@@ -14,8 +14,6 @@
   grid-template-rows: [top] minmax(100vh, min-content) [bottom] // at least window height; grow to fit content
   grid-template-columns: [menu-left] $menu-width [viewport-left] repeat(4, 1fr [fifth]) 1fr [viewport-right] $menu-width [menu-right]
 
-  will-change: transform
-
 
   .panel.light
     position: sticky // Allows fixed position without removal from the grid layout
@@ -48,7 +46,6 @@
     overflow: hidden
     width: 100%
     min-height: 100%
-    will-change: opacity
 
   .nav-cover
     position: sticky
