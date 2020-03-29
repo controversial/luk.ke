@@ -34,7 +34,17 @@ function scrollDown() {
   });
 }
 
-function OverscrollTrigger({ callback }) {
+
+/**
+ * Renders a "scroll down" message that triggers a callback once the user has overscrolled by a
+ * certain amount (1.5x the window height by default)
+ *
+ * Props:
+ * - callback: called when the user has overscrolled
+ * - precallback: called with "true" when it's likely that the callback will be called, and
+ *   called with "false" if that's cancelled.
+ */
+function OverscrollTrigger({ callback, preCallback }) {
   const isWindow = typeof window !== 'undefined';
 
   const overscroll = useMotionValue(0);
@@ -54,6 +64,7 @@ function OverscrollTrigger({ callback }) {
     function onScroll(e) {
       // When we first start overscroll, hide the arrow
       if (isScrolledToBottom() && e.deltaY > 0 && overscroll.get() === 0) {
+        preCallback(true); // once we start overscrolling it's likely that callback will be called
         arrowControls.start('hidden')
           .then(() => delay(100))
           .then(() => { arrowIsHidden.set(1); });
@@ -63,6 +74,8 @@ function OverscrollTrigger({ callback }) {
       // If we're not at the bottom of the scroll, record that there is no overscroll
       else {
         overscroll.set(0);
+        // It's no longer likely that we will trigger
+        preCallback(false);
         // If the arrow is shown, hide it
         if (arrowIsHidden.get()) {
           arrowIsHidden.set(false);
@@ -78,6 +91,7 @@ function OverscrollTrigger({ callback }) {
     window.addEventListener('wheel', onScroll);
     return () => window.removeEventListener('wheel', onScroll);
   }, []);
+
 
   return (
     <button
@@ -98,6 +112,10 @@ function OverscrollTrigger({ callback }) {
           const unbind = arrowIsHidden.onChange(() => { unbind(); callback(); });
         }
       }}
+      // Trigger is likely whenever we hover and a click would trigger the callback
+      // However, try not to call again if we have already run the preCallback from overscroll
+      onMouseEnter={() => { if (isScrolledToBottom(100) && !overscroll.get()) preCallback(true); }}
+      onMouseLeave={() => { if (isScrolledToBottom(100) && !overscroll.get()) preCallback(false); }}
     >
       {/* "down arrow" shows before we're overscrolling */}
       <motion.svg
@@ -138,9 +156,11 @@ function OverscrollTrigger({ callback }) {
 }
 OverscrollTrigger.propTypes = {
   callback: PropTypes.func,
+  preCallback: PropTypes.func,
 };
 OverscrollTrigger.defaultProps = {
   callback: () => {},
+  preCallback: () => {},
 };
 
 export default OverscrollTrigger;
