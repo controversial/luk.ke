@@ -17,7 +17,16 @@ function ParallaxImage({
   parallax,
   showOverlay,
 }) {
-  return (<motion.div className={cx('floating-image')} />);
+  const imageSize = image.dimensions;
+  const dimensions = { width: '40vw', height: `${40 * (imageSize[1] / imageSize[0])}vw` };
+
+  return (
+    <motion.div
+      className={cx('floating-image')}
+    >
+      <img src={image.src} alt={image.alt} style={{ ...dimensions }} />
+    </motion.div>
+  );
 }
 ParallaxImage.propTypes = {
   image: PropTypes.shape({
