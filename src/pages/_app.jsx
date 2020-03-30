@@ -7,6 +7,8 @@ import { StoreProvider } from '../store';
 
 import PanelsLayout from '../components/PanelsLayout/PanelsLayout.jsx';
 
+import '../console-message';
+
 import '../styles/base.sass';
 
 
