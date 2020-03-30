@@ -154,7 +154,12 @@ function OverscrollTrigger({ callback, preCallback }) {
             a 8,8 0 1,0 16,0
             a 8,8 0 1,0 -16,0
           "
-          style={{ pathLength: pathLengthSpring, rotate: 90, scaleX: -1 }}
+          style={{
+            pathLength: pathLengthSpring,
+            opacity: useTransform(pathLengthSpring, (length) => (length > 0 ? 1 : 0)),
+            rotate: 90,
+            scaleX: -1,
+          }}
         />
       </svg>
       Scroll down
