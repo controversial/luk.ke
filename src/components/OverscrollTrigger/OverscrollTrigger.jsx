@@ -116,7 +116,10 @@ function OverscrollTrigger({ callback, preCallback }) {
           // Fill up progress bar
           overscroll.set(threshold);
           // Once the animation has gotten going, run the callback
-          const unbind = arrowIsHidden.onChange(() => { unbind(); callback(); });
+          if (arrowIsHidden.get()) callback();
+          else {
+            const unbind = arrowIsHidden.onChange(() => { unbind(); callback(); });
+          }
         }
       }}
       // Trigger is likely whenever we hover and a click would trigger the callback
