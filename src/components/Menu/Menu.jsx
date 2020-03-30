@@ -6,8 +6,10 @@ import { useRouter } from 'next/router';
 import useCache from '../../helpers/useCache';
 
 import Link from 'next/link';
-
 import links from './routes';
+
+import HeartIcon from '../../../public/static/icons/heart.svg';
+
 
 import styles from './Menu.module.sass';
 const cx = classNames.bind(styles);
@@ -43,6 +45,17 @@ function Menu({ orientation, freezeUpdates }) {
           ))
         }
       </ul>
+
+      <a
+        className={cx('signature')}
+        href="https://github.com/controversial/luk.ke"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Made with
+        <HeartIcon />
+        by Luke
+      </a>
     </nav>
   );
 }
