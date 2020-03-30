@@ -7,7 +7,6 @@ import parse from 'html-react-parser';
 
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { InView } from 'react-intersection-observer';
 import ParallaxImage from '../../components/ParallaxImage';
 
 import styles from './index.module.sass';
@@ -113,33 +112,15 @@ function DarkContent({ content: projects, bus }) {
   }
 
   return (
-    <div className={cx('images-container')}>
-      { projects.map((p, projectIndex) => (
-        <InView
-          as="section"
-          id={p.uid}
-          key={p.uid}
-          // The area we're observing the intersection on is the area between 50% from the top and
-          // 49% from the bottom.
-          rootMargin="-50% 0px -49%"
-          // Whichever project section enters this area from either side becomes the active project.
-          // Caveat: if a section just barely enters this area and then the user scrolls back the
-          // other way, the site won't go back to the previously active section
-          onChange={(inView) => { if (inView) updateProject(getIndexFromHash(projects, p.uid)); }}
-        >
-          {
-            p.featured_images.map(({ src, alt, dimensions, show_overlay: showOverlay }, i) => (
-              <ParallaxImage
-                key={src}
-                image={{ src, alt, dimensions }}
-                style={{ top: `calc(${30 * i}vw + ${200 * projectIndex}vh)` }}
-                showOverlay={showOverlay}
-                parallax={{}}
-              />
-            ))
-          }
-        </InView>
-      )) }
+    <div className={cx('scrolling-container')}>
+      {
+        projects.map((p) => (
+          <section
+            key={p.uid}
+            className={cx('project-scroll-area')}
+          />
+        ))
+      }
     </div>
   );
 }
