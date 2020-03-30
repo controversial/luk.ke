@@ -94,6 +94,8 @@
   align-items: center
   overflow: hidden
 
+  --color: #{$white}
+
   &.panel-on-right
     left: auto
     right: 0
@@ -106,7 +108,7 @@
     padding: 0
     outline: none
 
-    color: $white
+    color: var(--color)
     font-size: 20px
     @include font-weight(520)
 
@@ -128,6 +130,4 @@
   &.light
     z-index: 4
     background: $white
-
-    button
-      color: $black
+    --color: #{$black}
