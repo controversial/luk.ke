@@ -13,7 +13,7 @@ const cx = classNames.bind(styles);
 
 // Returns true if the window is scrolled within 'threshold' px of its bottom
 function isScrolledToBottom(threshold = 0) {
-  const scrollBottom = window.innerHeight + window.scrollY + document.body.scrollTop + 1;
+  const scrollBottom = window.innerHeight + window.scrollY + 1;
   const maxScroll = document.body.scrollHeight;
   return (scrollBottom + threshold) >= maxScroll;
 }
