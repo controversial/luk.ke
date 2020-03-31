@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useMotionValue } from 'framer-motion';
+import sync, { cancelSync } from 'framesync';
 
 
 export const easings = {
@@ -35,4 +34,38 @@ export function useTransformMulti(parentMotionValues, transformFunc) {
   }, [parentMotionValues, transformFunc]);
 
   return transformedValue;
+}
+
+
+// LERP FUNCTIONALITY
+
+
+export const lerp = (from, to, alpha) => (from + ((to - from) * alpha));
+export function lerper({ from, to, alpha = 0.1, restDelta = 0.1 }) {
+  // In order to mimic the popmption spring API, we return an objcet that has a start() function
+  // This start function can be called with an onUpdate callback function
+  return {
+    start(onUpdate) {
+      let position = from;
+
+      // Schedule updates to happen once per frame
+      const process = sync.update(({ delta: timeDelta }) => {
+        const framesElapsed = timeDelta / (1000 / 60); // number of 60fps frames since last update
+        // Perform lerp based on how many frames have passed
+        const effectiveAlpha = 1 - ((1 - alpha) ** framesElapsed);
+        position = lerp(position, to, effectiveAlpha);
+        // if we're within restDelta of the final position, go to the final position & stop updates
+        if (Math.abs(to - position) <= restDelta) {
+          position = to;
+          cancelSync.update(process);
+        }
+        onUpdate(position);
+      }, true);
+
+      // Return an object that has a stop() function
+      return {
+        stop() { cancelSync.update(process); },
+      };
+    },
+  };
 }
