@@ -112,16 +112,22 @@ function DarkContent({ content: projects, bus }) {
   }
 
   return (
-    <div className={cx('scrolling-container')}>
-      {
-        projects.map((p) => (
-          <section
-            key={p.uid}
-            className={cx('project-scroll-area')}
-          />
-        ))
-      }
-    </div>
+    <React.Fragment>
+      <div className={cx('parallax-container')}>
+        <div className={cx('image')} />
+      </div>
+
+      <div className={cx('scrolling-container')}>
+        {
+          projects.map((p) => (
+            <section
+              key={p.uid}
+              className={cx('project-scroll-area')}
+            />
+          ))
+        }
+      </div>
+    </React.Fragment>
   );
 }
 DarkContent.propTypes = LightContent.propTypes;
