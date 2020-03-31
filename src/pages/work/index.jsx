@@ -7,7 +7,6 @@ import parse from 'html-react-parser';
 
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import ParallaxImage from '../../components/ParallaxImage';
 
 import styles from './index.module.sass';
 const cx = classNames.bind(styles);
