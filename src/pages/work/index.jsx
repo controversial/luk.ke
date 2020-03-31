@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-import { getProjects } from '../api/content/work';
-import parse from 'html-react-parser';
-
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+
+import { motion, useViewportScroll, useTransform, useSpring } from 'framer-motion';
+import { useLerp, useVelocity } from '../../helpers/motion';
+
+import { getProjects } from '../api/content/work';
+import parse from 'html-react-parser';
 
 import styles from './index.module.sass';
 const cx = classNames.bind(styles);
@@ -110,10 +113,19 @@ function DarkContent({ content: projects, bus }) {
     }, [currProjectIndex]);
   }
 
+  const { scrollY } = useViewportScroll();
+  const inverseScrollY = useTransform(scrollY, (y) => -y);
+  const lerpedScrollY = useLerp(inverseScrollY, { alpha: 0.15 });
+  const lerpedVelocity = useLerp(useVelocity(lerpedScrollY), { alpha: 0.25 });
+  const skewY = useTransform(lerpedVelocity, [-1500, 1500], [-7, 7]);
+
   return (
     <React.Fragment>
-      <div className={cx('parallax-container')}>
-        <div className={cx('image')} />
+      <div className={cx('parallax-container', '')}>
+        <motion.div
+          className={cx('image')}
+          style={{ y: lerpedScrollY, skewY }}
+        />
       </div>
 
       <div className={cx('scrolling-container')}>

@@ -12,12 +12,12 @@
 
   .image
     position: absolute
-    top: 50%
-    left: 50%
+    top: calc(50% - 100px)
+    left: calc(50% - 150px)
     width: 300px
     height: 200px
-    background: red
-    transform: translate(-50%, -50%)
+    background: $white
+    will-change: transform
 
 .scrolling-container
   section
