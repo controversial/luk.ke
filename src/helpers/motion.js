@@ -39,6 +39,21 @@ export function useTransformMulti(parentMotionValues, transformFunc) {
 }
 
 
+// A motion value whose value is the
+export function useVelocity(parent) {
+  const velocity = useMotionValue(parent.getVelocity() || 0);
+
+  useEffect(() => {
+    function update() { velocity.set(parent.getVelocity() || 0); }
+    update();
+    const removeListener = parent.onChange(update);
+    return () => removeListener();
+  }, [parent]);
+
+  return velocity;
+}
+
+
 // LERP FUNCTIONALITY
 
 
