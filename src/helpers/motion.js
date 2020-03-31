@@ -1,3 +1,5 @@
+import { useEffect, useRef, useMemo } from 'react';
+import { useMotionValue, MotionValue } from 'framer-motion';
 import sync, { cancelSync } from 'framesync';
 
 
@@ -68,4 +70,44 @@ export function lerper({ from, to, alpha = 0.1, restDelta = 0.1 }) {
       };
     },
   };
+}
+
+// Based on the useSpring implementation included in framer-motion
+// From a MotionValue, creates a MotionValue smoothed out with linear interpolation
+export function useLerp(source, config = {}) {
+  const activeLerpAnimation = useRef(null);
+  // This is the MotionValue on which our updates will be based
+  // source can be either a number or a motionvalue
+  const lerpedValue = useMotionValue(source instanceof MotionValue ? source.get() : source);
+
+  useMemo(() => {
+    // "attach" attaches a "passive effect" to the MotionValue, which intercepts calls to "set"
+    // If 'value' has a "passive effect" attached, calls to 'set' will call that attached effect
+    // function, instead of directly updating the value.
+    // Only one function is attached at a time, so there's no need to unattach before useMemo runs
+    lerpedValue.attach((value, setFunc) => { // this is the "effect function"
+      // If there's a lerp animation running, stop it so that it won't continue to send conflicting
+      // updates
+      if (activeLerpAnimation.current) activeLerpAnimation.current.stop();
+      // Attach a new lerp animation
+      activeLerpAnimation.current = lerper({
+        from: lerpedValue.get(),
+        to: value,
+        ...config,
+      }).start(setFunc); // the animation should call the setFunc with the new value as it goes
+    });
+  // we only need to redefine what the effect function is when the config changes
+  }, Object.values(config));
+
+  // If the source value is a MotionValue, we need to trigger our internal motionValue to update
+  // whenever the source value updates.
+  useEffect(() => {
+    let unbindFunc;
+    if (source instanceof MotionValue) {
+      unbindFunc = source.onChange((v) => lerpedValue.set(parseFloat(v)));
+    }
+    return unbindFunc;
+  }, [source]);
+
+  return lerpedValue;
 }
