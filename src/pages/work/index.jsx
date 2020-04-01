@@ -115,9 +115,18 @@ function DarkContent({ content: projects, bus }) {
   return (
     <React.Fragment>
       <ParallaxScroll className={cx('parallax-container')}>
-        <ParallaxSection>
-          <ParallaxImage />
-        </ParallaxSection>
+        { projects.map((p) => (
+          <ParallaxSection key={p.uid}>
+            { p.featured_images.map((img) => (
+              <ParallaxImage
+                key={img.src}
+                img={img}
+                overlay={img.show_overlay}
+              />
+            ))}
+          </ParallaxSection>
+        ))}
+
       </ParallaxScroll>
 
       <div className={cx('scrolling-container')}>
