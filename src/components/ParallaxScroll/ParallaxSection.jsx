@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 
 import ParallaxImage from './ParallaxImage.jsx';
 
-import { MotionValue } from 'framer-motion';
+import { motion, MotionValue } from 'framer-motion';
 
 import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
@@ -12,7 +12,10 @@ const cx = classNames.bind(styles);
 
 function ParallaxSection({ children, scrollMotionValue }) {
   return (
-    <div className={cx('parallax-section')}>
+    <motion.div
+      className={cx('parallax-section')}
+      style={{ y: scrollMotionValue }}
+    >
       {
         React.Children.map(children, (child) => {
           // Wrap each child in a ParallaxImage if it's not
@@ -24,7 +27,7 @@ function ParallaxSection({ children, scrollMotionValue }) {
           return React.cloneElement(child2, { scrollMotionValue });
         })
       }
-    </div>
+    </motion.div>
   );
 }
 

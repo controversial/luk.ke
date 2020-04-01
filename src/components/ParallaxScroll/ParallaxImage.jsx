@@ -2,24 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-import { motion, MotionValue } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
 
 
-function ParallaxImage({ scrollMotionValue }) {
+function ParallaxImage() {
   return (
     <motion.div
       className={cx('parallax-image')}
-      style={{ y: scrollMotionValue }}
+      style={{ y: 0 }}
     />
   );
 }
 
-ParallaxImage.propTypes = {
-  scrollMotionValue: PropTypes.instanceOf(MotionValue),
-};
-ParallaxImage.defaultProps = { scrollMotionValue: undefined };
+ParallaxImage.propTypes = {};
+ParallaxImage.defaultProps = {};
 
 export default ParallaxImage;
