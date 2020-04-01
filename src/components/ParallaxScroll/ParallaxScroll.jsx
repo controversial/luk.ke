@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import { motion, useViewportScroll, useTransform } from 'framer-motion';
 import { useLerp, useVelocity } from '../../helpers/motion';
 
-import ParallaxImage from './ParallaxImage.jsx';
+import ParallaxSection from './ParallaxSection.jsx';
 
 import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
@@ -22,9 +22,13 @@ function ParallaxScroll({ children }) {
     <motion.div className={cx('parallax-container')} style={{ skewY }}>
       {
         React.Children.map(children, (child) => {
-          const isPxImg = child.type === ParallaxImage;
-          const pxImgChild = isPxImg ? child : <ParallaxImage>{ child }</ParallaxImage>;
-          return React.cloneElement(pxImgChild, { scrollMotionValue: lerpedScrollY });
+          // Wrap each direct child in a ParallaxSection if it's not
+          const isParallaxSection = child.type === ParallaxSection;
+          const child2 = isParallaxSection
+            ? child
+            : <ParallaxSection>{ child }</ParallaxSection>;
+          // Pass certain new props to every child ParallaxSection
+          return React.cloneElement(child2, { scrollMotionValue: lerpedScrollY });
         })
       }
     </motion.div>
