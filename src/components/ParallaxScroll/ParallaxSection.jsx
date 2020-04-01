@@ -10,11 +10,14 @@ import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
 
 
-function ParallaxSection({ children, scrollMotionValue }) {
+function ParallaxSection({ children, index, scrollMotionValue }) {
   return (
     <motion.div
       className={cx('parallax-section')}
-      style={{ y: scrollMotionValue }}
+      style={{
+        top: `${150 * index}vh`,
+        y: scrollMotionValue,
+      }}
     >
       {
         React.Children.map(children, (child) => {
@@ -33,6 +36,7 @@ function ParallaxSection({ children, scrollMotionValue }) {
 
 ParallaxSection.propTypes = {
   children: PropTypes.node.isRequired,
+  index: PropTypes.number.isRequired,
   scrollMotionValue: PropTypes.instanceOf(MotionValue),
 };
 ParallaxSection.defaultProps = { scrollMotionValue: undefined };
