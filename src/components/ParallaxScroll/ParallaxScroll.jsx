@@ -19,19 +19,21 @@ function ParallaxScroll({ children }) {
   const skewY = useTransform(lerpedVelocity, [-1500, 1500], [-7, 7]);
 
   return (
-    <motion.div className={cx('parallax-container')} style={{ skewY }}>
-      {
-        React.Children.map(children, (child) => {
-          // Wrap each direct child in a ParallaxSection if it's not
-          const isParallaxSection = child.type === ParallaxSection;
-          const child2 = isParallaxSection
-            ? child
-            : <ParallaxSection>{ child }</ParallaxSection>;
-          // Pass certain new props to every child ParallaxSection
-          return React.cloneElement(child2, { scrollMotionValue: lerpedScrollY });
-        })
-      }
-    </motion.div>
+    <div className={cx('parallax-container')}>
+      <motion.div className={cx('skew-container')} style={{ skewY }}>
+        {
+          React.Children.map(children, (child) => {
+            // Wrap each direct child in a ParallaxSection if it's not
+            const isParallaxSection = child.type === ParallaxSection;
+            const child2 = isParallaxSection
+              ? child
+              : <ParallaxSection>{ child }</ParallaxSection>;
+            // Pass certain new props to every child ParallaxSection
+            return React.cloneElement(child2, { scrollMotionValue: lerpedScrollY });
+          })
+        }
+      </motion.div>
+    </div>
   );
 }
 
