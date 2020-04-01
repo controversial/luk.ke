@@ -5,8 +5,7 @@ import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-import { motion, useViewportScroll, useTransform, useSpring } from 'framer-motion';
-import { useLerp, useVelocity } from '../../helpers/motion';
+import { ParallaxImagesScroll, ParallaxImage } from '../../components/ParallaxImages';
 
 import { getProjects } from '../api/content/work';
 import parse from 'html-react-parser';
@@ -113,20 +112,11 @@ function DarkContent({ content: projects, bus }) {
     }, [currProjectIndex]);
   }
 
-  const { scrollY } = useViewportScroll();
-  const inverseScrollY = useTransform(scrollY, (y) => -y);
-  const lerpedScrollY = useLerp(inverseScrollY, { alpha: 0.15 });
-  const lerpedVelocity = useLerp(useVelocity(lerpedScrollY), { alpha: 0.25 });
-  const skewY = useTransform(lerpedVelocity, [-1500, 1500], [-7, 7]);
-
   return (
     <React.Fragment>
-      <div className={cx('parallax-container', '')}>
-        <motion.div
-          className={cx('image')}
-          style={{ y: lerpedScrollY, skewY }}
-        />
-      </div>
+      <ParallaxImagesScroll className={cx('parallax-container')}>
+        <ParallaxImage />
+      </ParallaxImagesScroll>
 
       <div className={cx('scrolling-container')}>
         {

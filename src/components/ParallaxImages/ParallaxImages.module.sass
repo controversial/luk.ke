@@ -1,0 +1,17 @@
+@import '../../styles/colors'
+
+.parallax-container
+  position: sticky
+  top: 0
+  width: 100%
+  height: 100vh
+  margin-bottom: -100vh
+
+.parallax-image
+  position: absolute
+  top: calc(50% - 100px)
+  left: calc(50% - 150px)
+  width: 300px
+  height: 200px
+  background: linear-gradient(135deg, $gradient-1, $gradient-2)
+  will-change: transform
