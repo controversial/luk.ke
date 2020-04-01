@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 
 import { motion, MotionValue } from 'framer-motion';
 
-import styles from './ParallaxImages.module.sass';
+import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
 
 

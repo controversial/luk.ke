@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-import { ParallaxImagesScroll, ParallaxImage } from '../../components/ParallaxImages';
+import { ParallaxScroll, ParallaxImage } from '../../components/ParallaxScroll';
 
 import { getProjects } from '../api/content/work';
 import parse from 'html-react-parser';
@@ -114,9 +114,9 @@ function DarkContent({ content: projects, bus }) {
 
   return (
     <React.Fragment>
-      <ParallaxImagesScroll className={cx('parallax-container')}>
+      <ParallaxScroll className={cx('parallax-container')}>
         <ParallaxImage />
-      </ParallaxImagesScroll>
+      </ParallaxScroll>
 
       <div className={cx('scrolling-container')}>
         {

@@ -7,11 +7,11 @@ import { useLerp, useVelocity } from '../../helpers/motion';
 
 import ParallaxImage from './ParallaxImage.jsx';
 
-import styles from './ParallaxImages.module.sass';
+import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
 
 
-function ParallaxImagesScroll({ children }) {
+function ParallaxScroll({ children }) {
   const { scrollY } = useViewportScroll();
   const inverseScrollY = useTransform(scrollY, (y) => -y);
   const lerpedScrollY = useLerp(inverseScrollY, { alpha: 0.15 });
@@ -31,8 +31,8 @@ function ParallaxImagesScroll({ children }) {
   );
 }
 
-ParallaxImagesScroll.propTypes = {
+ParallaxScroll.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default ParallaxImagesScroll;
+export default ParallaxScroll;
