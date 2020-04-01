@@ -30,7 +30,9 @@ function ParallaxSection({ children, scrollMotionValue }) {
 
 ParallaxSection.propTypes = {
   children: PropTypes.node.isRequired,
-  scrollMotionValue: PropTypes.instanceOf(MotionValue).isRequired,
+  scrollMotionValue: PropTypes.instanceOf(MotionValue),
 };
+ParallaxSection.defaultProps = { scrollMotionValue: undefined };
+
 
 export default ParallaxSection;

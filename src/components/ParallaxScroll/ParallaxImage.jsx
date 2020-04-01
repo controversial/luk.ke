@@ -18,7 +18,8 @@ function ParallaxImage({ scrollMotionValue }) {
 }
 
 ParallaxImage.propTypes = {
-  scrollMotionValue: PropTypes.instanceOf(MotionValue).isRequired,
+  scrollMotionValue: PropTypes.instanceOf(MotionValue),
 };
+ParallaxImage.defaultProps = { scrollMotionValue: undefined };
 
 export default ParallaxImage;
