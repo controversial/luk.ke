@@ -27,6 +27,7 @@ const layouts = {
 function ParallaxSection({
   children, //           - The elements to display
   layout: layoutName, // - Which layout pattern should this section use?
+  size: { height }, //   - How big is this section supposed to be?
   index, //              - How many sections are before this one?
   scrollMotionValue, //  - What's the current scroll position?
 }) {
@@ -62,6 +63,10 @@ function ParallaxSection({
 ParallaxSection.propTypes = {
   children: PropTypes.node.isRequired,
   layout: PropTypes.oneOf(Object.keys(layouts)),
+  size: PropTypes.shape({
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+  }).isRequired,
   index: PropTypes.number.isRequired,
   scrollMotionValue: PropTypes.instanceOf(MotionValue),
 };
