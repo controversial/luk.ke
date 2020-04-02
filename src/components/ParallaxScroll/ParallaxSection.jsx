@@ -24,7 +24,14 @@ const layouts = {
   ],
 };
 
-function ParallaxSection({ children, index, scrollMotionValue }) {
+function ParallaxSection({
+  children, //           - The elements to display
+  layout: layoutName, // - Which layout pattern should this section use?
+  index, //              - How many sections are before this one?
+  scrollMotionValue, //  - What's the current scroll position?
+}) {
+  const layout = layouts[layoutName];
+
   return (
     <motion.div
       className={cx('parallax-section')}
@@ -34,14 +41,18 @@ function ParallaxSection({ children, index, scrollMotionValue }) {
       }}
     >
       {
-        React.Children.map(children, (child) => {
+        React.Children.map(children, (child, i) => {
+          if (i > 2) return undefined; // max 3 images per section
           // Wrap each child in a ParallaxImage if it's not
           const isParallaxImage = child.type === ParallaxImage;
           const child2 = isParallaxImage
             ? child
             : <ParallaxImage>{ child }</ParallaxImage>;
           // Pass scrollMotionValue down
-          return React.cloneElement(child2, { scrollMotionValue });
+          return React.cloneElement(child2, {
+            scrollMotionValue,
+            layout: layout[i],
+          });
         })
       }
     </motion.div>
@@ -50,10 +61,14 @@ function ParallaxSection({ children, index, scrollMotionValue }) {
 
 ParallaxSection.propTypes = {
   children: PropTypes.node.isRequired,
+  layout: PropTypes.oneOf(Object.keys(layouts)),
   index: PropTypes.number.isRequired,
   scrollMotionValue: PropTypes.instanceOf(MotionValue),
 };
-ParallaxSection.defaultProps = { scrollMotionValue: undefined };
+ParallaxSection.defaultProps = {
+  layout: 'layout-1',
+  scrollMotionValue: undefined,
+};
 
 
 export default ParallaxSection;
