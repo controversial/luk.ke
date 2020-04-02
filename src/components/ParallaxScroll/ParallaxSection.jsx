@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 
 import ParallaxImage from './ParallaxImage.jsx';
 
-import { motion, MotionValue } from 'framer-motion';
+import { motion, MotionValue, useTransform } from 'framer-motion';
 
 import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
@@ -31,6 +31,13 @@ function ParallaxSection({
   index, //              - How many sections are before this one?
   scrollMotionValue, //  - What's the current scroll position?
 }) {
+  const top = height * index;
+  // When the scrollMotionValue gets here, the section is at the bottom edge of the viewport
+  const entryScrollPos = top - (typeof window !== 'undefined' ? window.innerHeight : 0);
+  // When the scrollMotionValue gets here, the section is leaving the top edge of the viewport
+  const exitScrollPos = top + height;
+  const scrollProgress = useTransform(scrollMotionValue, [entryScrollPos, exitScrollPos], [0, 1]);
+
   const layout = layouts[layoutName];
 
   return (
@@ -51,7 +58,7 @@ function ParallaxSection({
             : <ParallaxImage>{ child }</ParallaxImage>;
           // Pass scrollMotionValue down
           return React.cloneElement(child2, {
-            scrollMotionValue,
+            scrollProgress,
             layout: layout[i],
           });
         })
