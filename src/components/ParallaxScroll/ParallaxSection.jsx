@@ -73,12 +73,14 @@ ParallaxSection.propTypes = {
   size: PropTypes.shape({
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
-  }).isRequired,
-  index: PropTypes.number.isRequired,
+  }),
+  index: PropTypes.number,
   scrollMotionValue: PropTypes.instanceOf(MotionValue),
 };
 ParallaxSection.defaultProps = {
   layout: 'layout-1',
+  size: { width: 1920 * 0.6, height: 1080 },
+  index: 0,
   scrollMotionValue: undefined,
 };
 
