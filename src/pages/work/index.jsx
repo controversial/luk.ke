@@ -132,9 +132,9 @@ function DarkContent({ content: projects, bus }) {
       <div className={cx('scrolling-container')}>
         {
           projects.map((p) => (
-            <section
+            <div
               key={p.uid}
-              className={cx('project-scroll-area')}
+              className={cx('project-scroll-space')}
             />
           ))
         }

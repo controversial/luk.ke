@@ -56,7 +56,7 @@ function ParallaxSection({
   });
 
   return (
-    <motion.div
+    <motion.section
       className={cx('parallax-section')}
       style={{
         top: `${150 * index}vh`,
@@ -82,7 +82,7 @@ function ParallaxSection({
           });
         })
       }
-    </motion.div>
+    </motion.section>
   );
 }
 
