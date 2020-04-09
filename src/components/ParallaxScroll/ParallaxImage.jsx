@@ -30,15 +30,19 @@ function ParallaxImage({ scrollProgress, layout }) {
   );
 }
 
+const layoutParams = {
+  left: PropTypes.number,
+  right: PropTypes.number,
+  top: PropTypes.number,
+  size: PropTypes.number,
+  zoom: PropTypes.number,
+};
+
 ParallaxImage.propTypes = {
   scrollProgress: PropTypes.instanceOf(MotionValue).isRequired,
   layout: PropTypes.shape({
-    from: PropTypes.shape({
-      left: Number, right: Number, top: Number, size: Number, zoom: Number,
-    }).isRequired,
-    to: PropTypes.shape({
-      left: Number, right: Number, top: Number, size: Number, zoom: Number,
-    }),
+    from: PropTypes.shape(layoutParams).isRequired,
+    to: PropTypes.shape(layoutParams),
   }),
 };
 ParallaxImage.defaultProps = {
