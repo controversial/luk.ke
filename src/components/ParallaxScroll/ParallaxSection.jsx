@@ -48,7 +48,10 @@ function ParallaxSection({
     left: dimensions?.left && Math.round(dimensions?.left * (width / 100)),
     right: dimensions?.right && Math.round(dimensions?.right * (width / 100)),
     top: dimensions?.top && Math.round(dimensions?.top * (width / 100)),
-    size: dimensions?.size && Math.round(dimensions?.size * (width / 100)),
+    size: dimensions?.size
+      && Array.isArray(dimensions.size)
+      ? dimensions.size.map((s) => s * (width / 100))
+      : Math.round(dimensions?.size * (width / 100)),
   });
 
   return (

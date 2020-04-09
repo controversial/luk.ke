@@ -22,8 +22,8 @@ function ParallaxImage({ scrollProgress, layout }) {
       style={{
         left: from.left,
         right: from.left ? undefined : from.right, // don't apply right if we applied left
-        width: from.size,
-        height: from.size,
+        width: from.size?.[0] || from.size,
+        height: from.size?.[1] || from.size,
         y,
       }}
     />
@@ -34,7 +34,7 @@ const layoutParams = {
   left: PropTypes.number,
   right: PropTypes.number,
   top: PropTypes.number,
-  size: PropTypes.number,
+  size: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
   zoom: PropTypes.number,
 };
 
