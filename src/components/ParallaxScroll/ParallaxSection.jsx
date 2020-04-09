@@ -10,16 +10,23 @@ import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
 
 
+// All position and size values are given in width percentages
+// All position values are relative to the ParallaxSection, which scrolls
+// Size is a percentage of section width and defines a square into which the image will be fit
+// ParallaxImages appear with their 'from' values when their ParallaxSection enters the bottom
+// of the viewport. They reach their 'to' values as it disappears past the top of the page
 const layouts = {
   'layout-1': [
-    // All position and size values are given in width percentages
-    // All position values are relative to the ParallaxSection, which scrolls
-    // Size is a percentage of section width and defines a square into which the image will be fit
-    // ParallaxImages appear with their 'from' values when their ParallaxSection enters the bottom
-    // of the viewport. They reach their 'to' values as it disappears past the top of the page
     {
-      from: { right: 0, top: 40, size: 33, zoom: 1.1 },
-      to: { top: 25, zoom: 1 },
+      from: { top: 75, zoom: 1.1, right: 0, size: [42, 50], zIndex: 2 },
+      to: { top: 10, zoom: 1 },
+    },
+    {
+      from: { top: 6, zoom: 1, left: 0, size: [37, 45], zIndex: 1 },
+      to: { top: 36, zoom: 1.1 },
+    },
+    {
+      from: { top: 90, zoom: 1, left: 20, size: [29, 32], zIndex: 3 },
     },
   ],
 };
