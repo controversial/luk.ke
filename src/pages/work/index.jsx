@@ -113,33 +113,20 @@ function DarkContent({ content: projects, bus }) {
   }
 
   return (
-    <React.Fragment>
-      <ParallaxScroll className={cx('parallax-container')}>
-        { projects.map((p) => (
-          <ParallaxSection key={p.uid}>
-            { p.featured_images.map((img) => (
-              <ParallaxImage
-                key={img.src}
-                img={img}
-                overlay={img.show_overlay}
-              />
-            ))}
-          </ParallaxSection>
-        ))}
-
-      </ParallaxScroll>
-
-      <div className={cx('scrolling-container')}>
-        {
-          projects.map((p) => (
-            <div
-              key={p.uid}
-              className={cx('project-scroll-space')}
+    <ParallaxScroll className={cx('parallax-container')}>
+      { projects.map((p) => (
+        <ParallaxSection key={p.uid}>
+          { p.featured_images.map((img) => (
+            <ParallaxImage
+              key={img.src}
+              img={img}
+              overlay={img.show_overlay}
             />
-          ))
-        }
-      </div>
-    </React.Fragment>
+          ))}
+        </ParallaxSection>
+      ))}
+
+    </ParallaxScroll>
   );
 }
 DarkContent.propTypes = LightContent.propTypes;

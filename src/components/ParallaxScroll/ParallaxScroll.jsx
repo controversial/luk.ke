@@ -40,25 +40,34 @@ function ParallaxScroll({ children }) {
 
 
   return (
-    <div className={cx('parallax-container')} ref={rootEl}>
-      <motion.div className={cx('skew-container')} style={{ skewY }}>
-        {
-          React.Children.map(children, (child, index) => {
-            // Wrap each direct child in a ParallaxSection if it's not
-            const isParallaxSection = child.type === ParallaxSection;
-            const child2 = isParallaxSection
-              ? child
-              : <ParallaxSection>{ child }</ParallaxSection>;
-            // Pass certain new props to every child ParallaxSection
-            return React.cloneElement(child2, {
-              scrollMotionValue: lerpedScrollY,
-              index,
-              size: { width, height: height * 1.5 },
-            });
-          })
-        }
-      </motion.div>
-    </div>
+    <React.Fragment>
+      {/* This element is fixed at the top of the scroll and has content inside it that moves up and
+          down as the user scrolls. */}
+      <div className={cx('parallax-container')} ref={rootEl}>
+        <motion.div className={cx('skew-container')} style={{ skewY }}>
+          {
+            React.Children.map(children, (child, index) => {
+              // Wrap each direct child in a ParallaxSection if it's not
+              const isParallaxSection = child.type === ParallaxSection;
+              const child2 = isParallaxSection
+                ? child
+                : <ParallaxSection>{ child }</ParallaxSection>;
+              // Pass certain new props to every child ParallaxSection
+              return React.cloneElement(child2, {
+                scrollMotionValue: lerpedScrollY,
+                index,
+                size: { width, height: height * 1.5 },
+              });
+            })
+          }
+        </motion.div>
+      </div>
+
+      {/* This element contains the  */}
+      <div className={cx('scrolling-container')}>
+        { React.Children.map(children, () => (<div className={cx('project-scroll-space')} />)) }
+      </div>
+    </React.Fragment>
   );
 }
 
