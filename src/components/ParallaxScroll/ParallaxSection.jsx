@@ -73,7 +73,7 @@ function ParallaxSection({
             layout: {
               ...layout[i],
               from: transformLayout(layout[i]?.from),
-              to: transformLayout(layout[i]?.from),
+              to: transformLayout(layout[i]?.to),
             },
           });
         })
