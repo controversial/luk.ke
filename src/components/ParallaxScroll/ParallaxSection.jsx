@@ -24,12 +24,13 @@ const layouts = {
   ],
 };
 
+
 function ParallaxSection({
-  children, //           - The elements to display
-  layout: layoutName, // - Which layout pattern should this section use?
-  size: { height }, //   - How big is this section supposed to be?
-  index, //              - How many sections are before this one?
-  scrollMotionValue, //  - What's the current scroll position?
+  children, //                - The elements to display
+  layout: layoutName, //      - Which layout pattern should this section use?
+  size: { width, height }, // - How big is this section supposed to be?
+  index, //                   - How many sections are before this one?
+  scrollMotionValue, //       - What's the current scroll position?
 }) {
   const top = height * index;
   // When the scrollMotionValue gets here, the section is at the bottom edge of the viewport
@@ -39,6 +40,16 @@ function ParallaxSection({
   const scrollProgress = useTransform(scrollMotionValue, [entryScrollPos, exitScrollPos], [0, 1]);
 
   const layout = layouts[layoutName];
+
+  // Transforms a single set of ParallaxImnage layout specifications (like left, right, top, etc)
+  // from width percentages to pixel values.
+  const transformLayout = (dimensions) => ({
+    ...dimensions,
+    left: dimensions?.left && Math.round(dimensions?.left * (width / 100)),
+    right: dimensions?.right && Math.round(dimensions?.right * (width / 100)),
+    top: dimensions?.top && Math.round(dimensions?.top * (width / 100)),
+    size: dimensions?.size && Math.round(dimensions?.size * (width / 100)),
+  });
 
   return (
     <motion.div
@@ -59,7 +70,11 @@ function ParallaxSection({
           // Pass scrollMotionValue down
           return React.cloneElement(child2, {
             scrollProgress,
-            layout: layout[i],
+            layout: {
+              ...layout[i],
+              from: transformLayout(layout[i]?.from),
+              to: transformLayout(layout[i]?.from),
+            },
           });
         })
       }
