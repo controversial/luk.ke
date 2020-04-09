@@ -43,15 +43,16 @@ function ParallaxSection({
 
   // Transforms a single set of ParallaxImnage layout specifications (like left, right, top, etc)
   // from width percentages to pixel values.
-  const transformLayout = (dimensions) => ({
-    ...dimensions,
-    left: dimensions?.left && Math.round(dimensions?.left * (width / 100)),
-    right: dimensions?.right && Math.round(dimensions?.right * (width / 100)),
-    top: dimensions?.top && Math.round(dimensions?.top * (width / 100)),
-    size: dimensions?.size
-      && Array.isArray(dimensions.size)
-      ? dimensions.size.map((s) => s * (width / 100))
-      : Math.round(dimensions?.size * (width / 100)),
+  const transformLayout = (lay) => ({
+    ...lay,
+    ...lay?.left && { left: Math.round(lay.left * (width / 100)) },
+    ...lay?.right && { right: Math.round(lay.right * (width / 100)) },
+    ...lay?.top && { top: Math.round(lay.top * (width / 100)) },
+    ...lay?.size && {
+      size: Array.isArray(lay.size)
+        ? lay.size.map((s) => s * (width / 100))
+        : Math.round(lay?.size * (width / 100)),
+    },
   });
 
   return (
