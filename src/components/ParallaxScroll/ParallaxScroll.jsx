@@ -22,23 +22,22 @@ function ParallaxScroll({ children }) {
   const rootEl = useRef(null);
 
   // Track the dimensions of the ParallaxScroll
-  const [[width, setWidth], [height, setHeight]] = [useState(0), useState(0)];
+  const [width, setWidth] = useState(0);
   const ro = new ResizeObserver(([{ contentRect }]) => {
     setWidth(contentRect.width);
-    setHeight(contentRect.height);
   });
   // Update dimensions on mount and whenever the size changes
   useEffect(() => {
     if (rootEl.current !== null) {
-      const { width: currWidth, height: currHeight } = rootEl.current.getBoundingClientRect();
-      setWidth(currWidth); setHeight(currHeight);
+      const { width: currWidth } = rootEl.current.getBoundingClientRect();
+      setWidth(currWidth);
       ro.observe(rootEl.current);
       return () => ro.unobserve(rootEl.current);
     }
     return () => {};
   }, [rootEl]);
 
-  const sectionHeight = height * 1.5;
+  const sectionHeight = width * 1.5;
 
 
   return (
