@@ -17,7 +17,7 @@ function ParallaxScroll({ children }) {
   const { scrollY } = useViewportScroll();
   const lerpedScrollY = useLerp(scrollY, { alpha: 0.15 });
   const lerpedVelocity = useLerp(useVelocity(lerpedScrollY), { alpha: 0.25 });
-  const skewY = useTransform(lerpedVelocity, [-1500, 1500], [-7, 7]);
+  const skewY = useTransform(lerpedVelocity, [-1500, 1500], [-3, 3]);
 
   const rootEl = useRef(null);
 
