@@ -56,7 +56,7 @@ function ParallaxSection({
       className={cx('parallax-section')}
       style={{
         top: `${150 * index}vh`,
-        y: scrollMotionValue,
+        y: useTransform(scrollMotionValue, (y) => -y),
       }}
     >
       {
