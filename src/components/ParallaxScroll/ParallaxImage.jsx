@@ -20,11 +20,12 @@ function ParallaxImage({ scrollProgress, layout }) {
     <motion.div
       className={cx('parallax-image')}
       style={{
+        y,
         left: from.left,
         right: from.left ? undefined : from.right, // don't apply right if we applied left
         width: from.size?.[0] || from.size,
         height: from.size?.[1] || from.size,
-        y,
+        zIndex: from.zIndex,
       }}
     />
   );
@@ -36,6 +37,7 @@ const layoutParams = {
   top: PropTypes.number,
   size: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
   zoom: PropTypes.number,
+  zIndex: PropTypes.number,
 };
 
 ParallaxImage.propTypes = {
