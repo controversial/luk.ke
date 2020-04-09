@@ -38,6 +38,8 @@ function ParallaxScroll({ children }) {
     return () => {};
   }, [rootEl]);
 
+  const sectionHeight = height * 1.5;
+
 
   return (
     <React.Fragment>
@@ -56,16 +58,19 @@ function ParallaxScroll({ children }) {
               return React.cloneElement(child2, {
                 scrollMotionValue: lerpedScrollY,
                 index,
-                size: { width, height: height * 1.5 },
+                size: { width, height: sectionHeight },
               });
             })
           }
         </motion.div>
       </div>
 
-      {/* This element contains the  */}
-      <div className={cx('scrolling-container')}>
-        { React.Children.map(children, () => (<div className={cx('project-scroll-space')} />)) }
+      {/* This element expands the scroll area to the height of all of the content inside the fixed
+          parallax-container */}
+      <div className={cx('scroll-area-spacer')}>
+        { React.Children.map(children, () => (
+          <div style={{ height: sectionHeight }} />
+        )) }
       </div>
     </React.Fragment>
   );
