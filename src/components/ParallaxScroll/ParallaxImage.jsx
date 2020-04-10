@@ -8,7 +8,7 @@ import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
 
 
-function ParallaxImage({ scrollProgress, layout }) {
+function ParallaxImage({ img, layout, scrollProgress }) {
   if (!layout.from) layout.from = layout;
   const { from } = layout;
   const to = { ...from, ...layout.to };
@@ -46,6 +46,11 @@ ParallaxImage.propTypes = {
     from: PropTypes.shape(layoutParams).isRequired,
     to: PropTypes.shape(layoutParams),
   }),
+  img: PropTypes.shape({
+    alt: PropTypes.string,
+    dimensions: PropTypes.arrayOf(PropTypes.number).isRequired,
+    src: PropTypes.string.isRequired,
+  }).isRequired,
 };
 ParallaxImage.defaultProps = {
   layout: {},
