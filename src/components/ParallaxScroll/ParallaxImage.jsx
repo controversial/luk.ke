@@ -16,6 +16,23 @@ function ParallaxImage({ img, layout, scrollProgress }) {
   const y = useTransform(scrollProgress, [0, 1], [from.top || 0, to.top || 0]);
   const s = useTransform(scrollProgress, [0, 1], [from.zoom || 1, to.zoom || 1]);
 
+  // fit image into size box specified in layout.size
+
+  const fitWidth = from.size?.[0] || from.size;
+  const fitHeight = from.size?.[1] || from.size;
+  const { dimensions: [imgWidth, imgHeight] } = img;
+
+  let width; let height;
+  // if the image aspect ratio is wider than the container box, fit by width
+  if ((imgWidth / imgHeight) > (fitWidth / fitHeight)) {
+    width = fitWidth;
+    height = width * (imgHeight / imgWidth);
+  // If the image aspect ratio is taller than the container box, fit by height
+  } else {
+    height = fitHeight;
+    width = height * (imgWidth / imgHeight);
+  }
+
   return (
     <motion.div
       className={cx('parallax-image')}
@@ -26,8 +43,14 @@ function ParallaxImage({ img, layout, scrollProgress }) {
         width: from.size?.[0] || from.size,
         height: from.size?.[1] || from.size,
         zIndex: from.zIndex,
+        // if we're up against the left or right edge, make sure the fitted image is still against
+        // that side
+        ...from.left === 0 && { justifyContent: 'flex-start' },
+        ...from.right === 0 && { justifyContent: 'flex-end' },
       }}
-    />
+    >
+      <div style={{ width, height }} />
+    </motion.div>
   );
 }
 

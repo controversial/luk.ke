@@ -26,6 +26,13 @@
 
 .parallax-image
   position: absolute
-  background: linear-gradient(135deg, $gradient-1, $gradient-2)
+  display: flex
+  justify-content: center
+  align-items: center
   will-change: transform
-  box-shadow: 0 10px 20px -5px transparentize($black, .85)
+  box-shadow: 0 0 0 2px red
+
+  & > div
+    box-shadow: 0 10px 20px -5px transparentize($black, .85)
+    background: linear-gradient(135deg, $gradient-1, $gradient-2)
+    overflow: hidden
