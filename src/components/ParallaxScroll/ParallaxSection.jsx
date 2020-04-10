@@ -18,12 +18,12 @@ const cx = classNames.bind(styles);
 const layouts = {
   'layout-1': [
     {
-      from: { top: 75, zoom: 1.1, right: 0, size: [42, 50], zIndex: 2 },
+      from: { top: 75, zoom: 1.4, right: 0, size: [45, 50], zIndex: 2 },
       to: { top: 10, zoom: 1 },
     },
     {
-      from: { top: 6, zoom: 1, left: 0, size: [37, 45], zIndex: 1 },
-      to: { top: 36, zoom: 1.1 },
+      from: { top: 6, zoom: 1, left: 0, size: [40, 45], zIndex: 1 },
+      to: { top: 36, zoom: 1.2 },
     },
     {
       from: { top: 90, zoom: 1, left: 20, size: [29, 32], zIndex: 3 },
