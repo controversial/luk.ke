@@ -14,7 +14,7 @@ function ParallaxImage({ img, layout, scrollProgress }) {
   const to = { ...from, ...layout.to };
 
   const y = useTransform(scrollProgress, [0, 1], [from.top || 0, to.top || 0]);
-  const s = useTransform(scrollProgress, [0, 1], [from.zoom || 1, to.zoom || 1]);
+  const scale = useTransform(scrollProgress, [0, 1], [from.zoom || 1, to.zoom || 1]);
 
   // fit image into size box specified in layout.size
 
@@ -49,7 +49,9 @@ function ParallaxImage({ img, layout, scrollProgress }) {
         ...from.right === 0 && { justifyContent: 'flex-end' },
       }}
     >
-      <div style={{ width, height }} />
+      <div style={{ width, height }}>
+        <motion.img src={img.src} alt={img.alt} style={{ width, height, scale }} />
+      </div>
     </motion.div>
   );
 }
