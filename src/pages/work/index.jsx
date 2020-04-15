@@ -115,7 +115,7 @@ function DarkContent({ content: projects, bus }) {
   return (
     <ParallaxScroll className={cx('parallax-container')}>
       { projects.map((p) => (
-        <ParallaxSection key={p.uid}>
+        <ParallaxSection key={p.uid} layout={p.featured_images_layout}>
           { p.featured_images.map((img) => (
             <ParallaxImage
               key={img.src}

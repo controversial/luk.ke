@@ -29,6 +29,7 @@ export const processProject = async ({ uid, data: project }, includeContent = tr
       dimensions: [dimensions.width, dimensions.height],
       show_overlay,
     })),
+  featured_images_layout: project.featured_images_layout,
 
   // If we're including the content of the page, in addition to just simple metadata, we need to
   // process all of the rich text, etc. from the "body" of the Project entry from Prismic.
