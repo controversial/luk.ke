@@ -13,7 +13,7 @@ import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
 
 
-function ParallaxScroll({ children, onFocusChange, onDirectionChange }) {
+function ParallaxScroll({ children, onFocusChange }) {
   const { scrollY } = useViewportScroll();
   const lerpedScrollY = useLerp(scrollY, { alpha: 0.15 });
   const lerpedVelocity = useLerp(useVelocity(lerpedScrollY), { alpha: 0.25 });
@@ -63,16 +63,6 @@ function ParallaxScroll({ children, onFocusChange, onDirectionChange }) {
     }
   }), [focusedIndex, sectionHeight]);
 
-  // Track which direction we're scrolling
-  const [scrollDirection, setScrollDirection] = useState(true);
-  useEffect(() => lerpedScrollY.onChange(() => {
-    const direction = lerpedScrollY.getVelocity() > 0;
-    if (direction !== scrollDirection) {
-      setScrollDirection(direction);
-      onDirectionChange(direction);
-    }
-  }));
-
 
   return (
     <React.Fragment>
@@ -112,11 +102,9 @@ function ParallaxScroll({ children, onFocusChange, onDirectionChange }) {
 ParallaxScroll.propTypes = {
   children: PropTypes.node.isRequired,
   onFocusChange: PropTypes.func,
-  onDirectionChange: PropTypes.func,
 };
 ParallaxScroll.defaultProps = {
   onFocusChange: () => {},
-  onDirectionChange: () => {},
 };
 
 export default ParallaxScroll;
