@@ -8,7 +8,7 @@ import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
 
 
-function ParallaxImage({ img, layout, overlay, scrollProgress }) {
+function ParallaxImage({ img, layout, zoom, scrollProgress }) {
   if (!layout.from) layout.from = layout;
   const { from } = layout;
   const to = { ...from, ...layout.to };
@@ -50,8 +50,11 @@ function ParallaxImage({ img, layout, overlay, scrollProgress }) {
       }}
     >
       <div style={{ width, height }}>
-        { overlay ? <div className={cx('overlay')} /> : undefined }
-        <motion.img src={img.src} alt={img.alt} style={{ width, height, scale }} />
+        <motion.img
+          src={img.src}
+          alt={img.alt}
+          style={{ width, height, scale: zoom ? scale : 1 }}
+        />
       </div>
     </motion.div>
   );
@@ -77,11 +80,11 @@ ParallaxImage.propTypes = {
     dimensions: PropTypes.arrayOf(PropTypes.number).isRequired,
     src: PropTypes.string.isRequired,
   }).isRequired,
-  overlay: PropTypes.bool,
+  zoom: PropTypes.bool,
 };
 ParallaxImage.defaultProps = {
   layout: {},
-  overlay: false,
+  zoom: true,
 };
 
 export default ParallaxImage;

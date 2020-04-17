@@ -120,7 +120,7 @@ function DarkContent({ content: projects, bus }) {
             <ParallaxImage
               key={img.src}
               img={img}
-              overlay={img.show_overlay}
+              zoom={img.zoom}
             />
           ))}
         </ParallaxSection>
