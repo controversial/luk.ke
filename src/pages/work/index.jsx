@@ -86,15 +86,8 @@ LightContent.propTypes = {
 
 // The dark section contains a parallax scrolling list of images
 function DarkContent({ content: projects, bus }) {
-  const [currProjectIndex, setCurrProject] = useState(getIndexFromHash(projects));
-
   // DarkContent controls the "current project" for both the dark and light content.
-  function updateProject(index) {
-    if (index !== currProjectIndex) {
-      bus.emit('changeProject', index);
-      setCurrProject(index);
-    }
-  }
+  function updateProject(index) { bus.emit('changeProject', index); }
 
   // When the hash changes we should change the displayed project.
   const router = useRouter();
@@ -109,11 +102,12 @@ function DarkContent({ content: projects, bus }) {
         router.events.off('hashChangeComplete', updateFromHash);
         window.removeEventListener('hashchange', updateFromHash);
       };
-    }, [currProjectIndex]);
+    });
   }
 
   return (
-    <ParallaxScroll className={cx('parallax-container')}>
+    <ParallaxScroll className={cx('parallax-container')} onFocusChange={updateProject}>
+
       { projects.map((p) => (
         <ParallaxSection key={p.uid} layout={p.featured_images_layout}>
           { p.featured_images.map((img) => (
