@@ -61,3 +61,5 @@ typings/
 .next
 out
 .now
+
+.DS_Store
