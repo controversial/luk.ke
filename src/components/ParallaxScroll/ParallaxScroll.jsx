@@ -67,8 +67,8 @@ function ParallaxScroll({ children }) {
       {/* This element expands the scroll area to the height of all of the content inside the fixed
           parallax-container */}
       <div className={cx('scroll-area-spacer')}>
-        { React.Children.map(children, () => (
-          <div style={{ height: sectionHeight }} />
+        { React.Children.map(children, (c) => (
+          <div id={c.key} style={{ height: sectionHeight }} />
         )) }
       </div>
     </React.Fragment>
