@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 import { ParallaxScroll, ParallaxSection, ParallaxImage } from '../../components/ParallaxScroll';
+import ArrowLink from '../../components/ArrowLink';
 
 import { getProjects } from '../api/content/work';
 import parse from 'html-react-parser';
@@ -67,6 +68,14 @@ function LightContent({ content: projects, bus }) {
 
       { parse(project.head) }
       { parse(project.description) }
+
+      <ArrowLink
+        className={cx('read-more')}
+        href="/work/[project]"
+        as={`/work/${project.uid}`}
+      >
+        Read more
+      </ArrowLink>
     </article>
   );
 }
