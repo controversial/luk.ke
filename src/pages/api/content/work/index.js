@@ -12,13 +12,14 @@ import withClassName from '../../../../helpers/addClassToMarkup';
  * which it will be returned from API routes.
  * @param {Object} obj - a single document fetched from Prismic
  */
-export const processProject = async ({ uid, data: project }, includeContent = true) => ({
+export const processProject = async ({ uid, data: project, tags }, includeContent = true) => ({
   uid,
   ...project,
   name: PrismicDOM.RichText.asText(project.name),
   head: PrismicDOM.RichText.asHtml(project.name),
   subhead: await withClassName('subhead', PrismicDOM.RichText.asHtml(project.subhead)),
   description: PrismicDOM.RichText.asHtml(project.description),
+  tags,
   start_date: project.start_date.split('-').slice(0, 2).map((n) => parseInt(n, 10)),
   end_date: project.end_date.split('-').slice(0, 2).map((n) => parseInt(n, 10)),
   github_link: PrismicDOM.Link.url(project.github_link),
