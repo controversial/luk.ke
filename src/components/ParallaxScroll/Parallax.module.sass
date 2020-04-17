@@ -30,42 +30,16 @@
   justify-content: center
   align-items: center
   will-change: transform
-  box-shadow: 0 0 0 2px transparentize($white, .75)
+
+  // &:hover
+  //   box-shadow: 0 0 0 2px transparentize($gradient-1, .25)
 
   & > div
     position: relative
-    box-shadow: 0 10px 20px -5px transparentize($black, .85)
+    box-shadow: 0 5px 20px -5px transparentize($black, .8)
     overflow: hidden
-    cursor: pointer
-    isolation: isolate
-
-    .overlay
-      position: absolute
-      top: 0
-      left: 0
-      width: 100%
-      height: 100%
-      background: linear-gradient(135deg, $gradient-1, $gradient-2)
-      opacity: .35
-      mix-blend-mode: multiply
-      z-index: 2
-      transition: opacity .25s
-
-    .overlay + img
-      opacity: .8
 
     img
       position: relative
       z-index: 1
-      opacity: .9
-      transition: opacity .25s
-
-    &:hover
-      .overlay
-        opacity: 0
-
-      img
-        opacity: 1
-
-      .overlay + img
-        opacity: .95
+      transition: opacity .15s
