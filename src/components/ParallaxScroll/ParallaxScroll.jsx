@@ -13,7 +13,7 @@ import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
 
 
-function ParallaxScroll({ children }) {
+function ParallaxScroll({ children, onFocusChange }) {
   const { scrollY } = useViewportScroll();
   const lerpedScrollY = useLerp(scrollY, { alpha: 0.15 });
   const lerpedVelocity = useLerp(useVelocity(lerpedScrollY), { alpha: 0.25 });
@@ -38,6 +38,30 @@ function ParallaxScroll({ children }) {
   }, [rootEl]);
 
   const sectionHeight = width * 1.5;
+
+  // Track which section has the greatest proportion of its area onscreen
+  const [focusedIndex, setFocusedIndex] = useState(0);
+  // On first render, report the index of the section that's focused
+  useEffect(() => { onFocusChange(focusedIndex); }, []);
+  // Set up an event listener to report the index of the focused section every time it changes
+  useEffect(() => lerpedScrollY.onChange((y) => {
+    const childrenArray = React.Children.toArray(children);
+    // What proportion of each child's area is onscreen?
+    const proportions = childrenArray.map((_, index) => {
+      const top = index * sectionHeight - y; // relative to viewport
+      const bottom = top + sectionHeight;
+      let pxOnscreen = sectionHeight
+        - Math.max(bottom - window.innerHeight, 0) // pixels cut off the bottom of the viewport
+        - Math.max(0 - top, 0); //                    pixels cut off the top of the screen
+      pxOnscreen = Math.max(pxOnscreen, 0);
+      return pxOnscreen;
+    });
+    const idx = proportions.indexOf(Math.max(...proportions));
+    if (idx !== focusedIndex) {
+      setFocusedIndex(idx);
+      onFocusChange(idx);
+    }
+  }), [focusedIndex, sectionHeight]);
 
 
   return (
@@ -77,6 +101,10 @@ function ParallaxScroll({ children }) {
 
 ParallaxScroll.propTypes = {
   children: PropTypes.node.isRequired,
+  onFocusChange: PropTypes.func,
+};
+ParallaxScroll.defaultProps = {
+  onFocusChange: () => {},
 };
 
 export default ParallaxScroll;
