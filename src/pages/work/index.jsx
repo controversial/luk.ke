@@ -60,9 +60,14 @@ function LightContent({ content: projects, bus }) {
   }, []);
 
   return (
-    <div className={cx('project-overview')}>
+    <article className={cx('project-overview')}>
+      <ul className={cx('tags-list')}>
+        { project.tags.map((t) => <li>{t}</li>)}
+      </ul>
+
       { parse(project.head) }
-    </div>
+      { parse(project.description) }
+    </article>
   );
 }
 LightContent.propTypes = {
