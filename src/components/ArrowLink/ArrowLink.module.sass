@@ -1,0 +1,21 @@
+@import '../../styles/mixins'
+
+.arrow-link
+  color: inherit
+  text-decoration: none
+  @include font-weight(600)
+  font-family: 'Manrope Variable' sans-serif
+
+  display: inline-flex
+  align-items: center
+
+  .arrow
+    transform: rotate(-90deg)
+    width: 1.2em
+    height: 1.2em
+    margin-left: .5em
+    margin-top: .05em
+    transition: transform .15s
+
+  &:hover .arrow
+    transform: translateX(.25em) rotate(-90deg)
