@@ -7,6 +7,7 @@ import Head from 'next/head';
 
 import { ParallaxScroll, ParallaxSection, ParallaxImage } from '../../components/ParallaxScroll';
 import ArrowLink from '../../components/ArrowLink';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { getProjects } from '../api/content/work';
 import parse from 'html-react-parser';
@@ -49,34 +50,70 @@ function WorkIndex() {
 
 // The light section displays information about the current case study
 
+const translateMagnitude = 120;
+const lightContentTransitionVariants = {
+  enter: (direction) => ({ opacity: 0, y: direction ? translateMagnitude : -translateMagnitude }),
+  center: {
+    y: 0,
+    opacity: 1,
+    // this is the transition for the entering element
+    transition: {
+      duration: 0.35, delay: 0.2, y: { ease: 'circOut' }, opacity: { ease: 'easeOut' },
+    },
+  },
+  exit: (direction) => ({
+    y: direction ? -translateMagnitude : translateMagnitude,
+    opacity: 0,
+    // this is the transition for the exiting element
+    transition: {
+      duration: 0.35, y: { ease: 'circIn' }, opacity: { duration: 0.25, ease: 'easeIn' },
+    },
+  }),
+};
+
 function LightContent({ content: projects, bus }) {
   // Start out displaying whichever project the URL hash dictates.
   const [currProjectIndex, setCurrProject] = useState(getIndexFromHash(projects));
+  const [scrollDirection, setScrollDirection] = useState(1);
   const project = projects[currProjectIndex];
   // We change what project we display when we receive an event that says to do so.
   // These events are emitted from DarkContent
   useEffect(() => {
-    bus.on('changeProject', setCurrProject);
+    bus.on('changeProject', (index) => {
+      setScrollDirection(index > currProjectIndex ? 1 : 0);
+      setCurrProject(index);
+    });
     return () => bus.off('changeProject', setCurrProject);
   }, []);
 
   return (
-    <article className={cx('project-overview')}>
-      <ul className={cx('tags-list')}>
-        { project.tags.map((t) => <li>{t}</li>)}
-      </ul>
+    <AnimatePresence initial={false} custom={scrollDirection}>
+      <motion.article
+        className={cx('project-overview')}
+        key={project.uid}
 
-      { parse(project.head) }
-      { parse(project.description) }
-
-      <ArrowLink
-        className={cx('read-more')}
-        href="/work/[project]"
-        as={`/work/${project.uid}`}
+        initial="enter"
+        animate="center"
+        exit="exit"
+        variants={lightContentTransitionVariants}
+        custom={scrollDirection}
       >
-        Read more
-      </ArrowLink>
-    </article>
+        <ul className={cx('tags-list')}>
+          { project.tags.map((t) => <li>{t}</li>)}
+        </ul>
+
+        { parse(project.head) }
+        { parse(project.description) }
+
+        <ArrowLink
+          className={cx('read-more')}
+          href="/work/[project]"
+          as={`/work/${project.uid}`}
+        >
+          Read more
+        </ArrowLink>
+      </motion.article>
+    </AnimatePresence>
   );
 }
 LightContent.propTypes = {
