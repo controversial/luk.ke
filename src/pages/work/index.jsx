@@ -100,7 +100,7 @@ function WorkPageLightContent({ content: projects, bus }) {
         custom={scrollDirection}
       >
         <ul className={cx('tags-list')}>
-          { project.tags.map((t) => <li key={t}>{t}</li>) }
+          { project.tags.slice(0, 3).map((t) => <li key={t}>{t}</li>) }
         </ul>
 
         { parse(project.head) }
