@@ -99,7 +99,7 @@ function LightContent({ content: projects, bus }) {
         custom={scrollDirection}
       >
         <ul className={cx('tags-list')}>
-          { project.tags.map((t) => <li>{t}</li>)}
+          { project.tags.map((t) => <li key={t}>{t}</li>) }
         </ul>
 
         { parse(project.head) }
