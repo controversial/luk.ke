@@ -79,11 +79,12 @@ function WorkPageLightContent({ content: projects, bus }) {
   // We change what project we display when we receive an event that says to do so.
   // These events are emitted from DarkContent
   useEffect(() => {
-    bus.on('changeProject', (index) => {
+    const onChangeProject = (index) => {
       setScrollDirection(index > currProjectIndex ? 1 : 0);
       setCurrProject(index);
-    });
-    return () => bus.off('changeProject', setCurrProject);
+    };
+    bus.on('changeProject', onChangeProject);
+    return () => bus.off('changeProject', onChangeProject);
   }, []);
 
   return (
