@@ -88,33 +88,35 @@ function WorkPageLightContent({ content: projects, bus }) {
   }, []);
 
   return (
-    <AnimatePresence initial={false} custom={scrollDirection}>
-      <motion.article
-        className={cx('project-overview')}
-        key={project.uid}
+    <div className={cx('project-info-wrapper')}>
+      <AnimatePresence initial={false} custom={scrollDirection}>
+        <motion.article
+          className={cx('project-overview')}
+          key={project.uid}
 
-        initial="enter"
-        animate="center"
-        exit="exit"
-        variants={lightContentTransitionVariants}
-        custom={scrollDirection}
-      >
-        <ul className={cx('tags-list')}>
-          { project.tags.slice(0, 3).map((t) => <li key={t}>{t}</li>) }
-        </ul>
-
-        { parse(project.head) }
-        { parse(project.description) }
-
-        <ArrowLink
-          className={cx('read-more')}
-          href="/work/[project]"
-          as={`/work/${project.uid}`}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          variants={lightContentTransitionVariants}
+          custom={scrollDirection}
         >
-          Read more
-        </ArrowLink>
-      </motion.article>
-    </AnimatePresence>
+          <ul className={cx('tags-list')}>
+            { project.tags.slice(0, 3).map((t) => <li key={t}>{t}</li>) }
+          </ul>
+
+          { parse(project.head) }
+          { parse(project.description) }
+
+          <ArrowLink
+            className={cx('read-more')}
+            href="/work/[project]"
+            as={`/work/${project.uid}`}
+          >
+            Read more
+          </ArrowLink>
+        </motion.article>
+      </AnimatePresence>
+    </div>
   );
 }
 WorkPageLightContent.propTypes = {
