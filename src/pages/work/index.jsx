@@ -71,7 +71,7 @@ const lightContentTransitionVariants = {
   }),
 };
 
-function LightContent({ content: projects, bus }) {
+function WorkPageLightContent({ content: projects, bus }) {
   // Start out displaying whichever project the URL hash dictates.
   const [currProjectIndex, setCurrProject] = useState(getIndexFromHash(projects));
   const [scrollDirection, setScrollDirection] = useState(1);
@@ -116,7 +116,7 @@ function LightContent({ content: projects, bus }) {
     </AnimatePresence>
   );
 }
-LightContent.propTypes = {
+WorkPageLightContent.propTypes = {
   content: PropTypes.arrayOf(PropTypes.shape({
     uid: PropTypes.string.isRequired,
     head: PropTypes.string.isRequired,
@@ -136,7 +136,7 @@ LightContent.propTypes = {
 
 
 // The dark section contains a parallax scrolling list of images
-function DarkContent({ content: projects, bus }) {
+function WorkPageDarkContent({ content: projects, bus }) {
   // DarkContent controls the "current project" for both the dark and light content.
   function updateProject(index) { bus.emit('changeProject', index); }
 
@@ -174,12 +174,12 @@ function DarkContent({ content: projects, bus }) {
     </ParallaxScroll>
   );
 }
-DarkContent.propTypes = LightContent.propTypes;
+WorkPageDarkContent.propTypes = WorkPageLightContent.propTypes;
 
 
 Object.assign(WorkIndex, {
-  LightContent,
-  DarkContent,
+  LightContent: WorkPageLightContent,
+  DarkContent: WorkPageDarkContent,
   pageName: 'Work',
   panelOrientation: 'left',
 

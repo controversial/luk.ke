@@ -36,7 +36,7 @@ function Hello() {
 
 // Content to go in the light section
 
-function LightContent() {
+function HomepageLightContent() {
   return (
     <div>
       <div className={cx('gradient')} />
@@ -46,7 +46,7 @@ function LightContent() {
 
 // Content to go in the dark section
 
-function DarkContent({ content, setWillNavigate }) {
+function HomepageDarkContent({ content, setWillNavigate }) {
   const router = useRouter();
 
   return (
@@ -68,7 +68,7 @@ function DarkContent({ content, setWillNavigate }) {
   );
 }
 
-DarkContent.propTypes = {
+HomepageDarkContent.propTypes = {
   content: PropTypes.exact({
     title: PropTypes.string.isRequired,
     text: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -80,8 +80,8 @@ DarkContent.propTypes = {
 // Define everything that needs to be a property of the exported component
 
 Object.assign(Hello, {
-  LightContent,
-  DarkContent,
+  LightContent: HomepageLightContent,
+  DarkContent: HomepageDarkContent,
   pageName: 'Hello',
   panelOrientation: 'right',
 
