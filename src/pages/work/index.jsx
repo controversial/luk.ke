@@ -123,6 +123,8 @@ WorkPageLightContent.propTypes = {
   content: PropTypes.arrayOf(PropTypes.shape({
     uid: PropTypes.string.isRequired,
     head: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string).isRequired,
     featured_images: PropTypes.arrayOf(PropTypes.shape({
       src: PropTypes.string,
       alt: PropTypes.string,
