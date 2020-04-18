@@ -24,22 +24,19 @@ function CaseStudy({ project }) {
   /* eslint-enable */
   return (
     <div className={cx('page')}>
-      { parse(content.head) }
+      { parse(project.head) }
     </div>
   );
 }
 
 CaseStudy.propTypes = {
-  content: PropTypes.shape({
+  project: PropTypes.shape({
     uid: PropTypes.string.isRequired,
     head: PropTypes.string.isRequired,
     subhead: PropTypes.string.isRequired,
     tags: PropTypes.arrayOf(PropTypes.string).isRequired,
-    featured_images: PropTypes.arrayOf(PropTypes.shape({
-      src: PropTypes.string,
-      alt: PropTypes.string,
-      dimensions: PropTypes.arrayOf(PropTypes.number),
-      show_overlay: PropTypes.bool,
+    content: PropTypes.arrayOf(PropTypes.shape({
+      type: PropTypes.oneOf(['section_heading', 'content', 'image', 'image_gallery', 'video', 'video_gallery', 'embed']),
     })).isRequired,
   }).isRequired,
 };
@@ -49,7 +46,7 @@ Object.assign(CaseStudy, {
   pageName: 'Work',
 
   async getInitialProps(ctx) {
-    return { content: await getProject(ctx.req, ctx.query.project) };
+    return { project: await getProject(ctx.req, ctx.query.project) };
   },
 });
 
