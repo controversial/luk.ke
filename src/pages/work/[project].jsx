@@ -7,7 +7,7 @@ import classNames from 'classnames/bind';
 import { getProject } from '../api/content/work/[project]';
 import parse, { domToReact } from 'html-react-parser';
 
-import styles from './[project].module.sass';
+import styles from './project.module.sass';
 const cx = classNames.bind(styles);
 
 
