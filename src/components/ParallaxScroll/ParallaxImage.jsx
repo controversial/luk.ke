@@ -9,6 +9,8 @@ const cx = classNames.bind(styles);
 
 
 function ParallaxImage({ img, layout, zoom, scrollProgress }) {
+  if (!Object.keys(layout).length) return <React.Fragment />;
+
   if (!layout.from) layout.from = layout;
   const { from } = layout;
   const to = { ...from, ...layout.to };
@@ -72,9 +74,9 @@ const layoutParams = {
 };
 
 ParallaxImage.propTypes = {
-  scrollProgress: PropTypes.instanceOf(MotionValue).isRequired,
+  scrollProgress: PropTypes.instanceOf(MotionValue),
   layout: PropTypes.shape({
-    from: PropTypes.shape(layoutParams).isRequired,
+    from: PropTypes.shape(layoutParams),
     to: PropTypes.shape(layoutParams),
   }),
   img: PropTypes.shape({
@@ -85,6 +87,7 @@ ParallaxImage.propTypes = {
   zoom: PropTypes.bool,
 };
 ParallaxImage.defaultProps = {
+  scrollProgress: new MotionValue(0),
   layout: {},
   zoom: true,
 };
