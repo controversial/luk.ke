@@ -22,9 +22,11 @@ function CaseStudy({ project }) {
     }, domToReact(children));
   }
   /* eslint-enable */
+  const asTextBlock = { replace: (node) => addClassName(node, cx('block', 'text-block')) };
+
   return (
     <div className={cx('page')}>
-      { parse(project.head) }
+      { parse(project.head, asTextBlock) }
     </div>
   );
 }
