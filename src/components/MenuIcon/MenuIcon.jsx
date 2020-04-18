@@ -24,7 +24,7 @@ function MenuIcon() {
           'menu-closed': {
             width: '100%',
             rotate: 0,
-            y: '-.5em',
+            y: '-.45em',
           },
           'menu-open': {
             width: '90%',

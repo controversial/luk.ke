@@ -109,19 +109,20 @@
     outline: none
 
     color: var(--color)
+    font-family: 'Manrope Variable', sans-serif
     font-size: 20px
-    @include font-weight(520)
+    @include font-weight(560)
 
     margin-top: 10px
     cursor: pointer
 
     display: flex
-    flex-direction: ropw
+    flex-direction: row
     align-items: center
 
     .label
       font-size: 20px
-      margin: 0 .9em
+      margin: .2em .9em 0
 
   &.panel-on-right button
     flex-direction: row-reverse
@@ -131,3 +132,6 @@
     z-index: 4
     background: $white
     --color: #{$black}
+
+    button
+      @include font-weight(600)
