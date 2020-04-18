@@ -10,7 +10,7 @@ import ArrowLink from '../../components/ArrowLink';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { getProjects } from '../api/content/work';
-import parse from 'html-react-parser';
+import parse, { domToReact } from 'html-react-parser';
 
 import styles from './index.module.sass';
 const cx = classNames.bind(styles);
@@ -87,6 +87,12 @@ function WorkPageLightContent({ content: projects, bus }) {
     return () => bus.off('changeProject', onChangeProject);
   }, []);
 
+  // Replace function for html-react-parser that turns tags into h2 elements
+  const replaceWithH2 = ({ type, attribs, children }) => {
+    if (type === 'tag') return React.createElement('h2', attribs, domToReact(children));
+    return undefined;
+  };
+
   return (
     <div className={cx('project-info-wrapper')}>
       <AnimatePresence initial={false} custom={scrollDirection}>
@@ -104,7 +110,7 @@ function WorkPageLightContent({ content: projects, bus }) {
             { project.tags.slice(0, 3).map((t) => <li key={t}>{t}</li>) }
           </ul>
 
-          { parse(project.head) }
+          { parse(project.head, { replace: replaceWithH2 }) }
           { parse(project.description) }
 
           <ArrowLink
