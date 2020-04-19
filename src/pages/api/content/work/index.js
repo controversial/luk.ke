@@ -47,10 +47,14 @@ export const processProject = async ({ uid, data: project, tags }, includeConten
       }
       // Images
       if (type === 'image') {
-        return { type, src: item.image.url, alt: item.image.alt };
+        return { type, frame: item.frame, src: item.image.url, alt: item.image.alt };
       }
       if (type === 'image_gallery') {
-        return { type, images: items.map(({ image }) => ({ src: image.url, alt: image.alt })) };
+        return {
+          type,
+          frame: item.frame,
+          images: items.map(({ image }) => ({ src: image.url, alt: image.alt })),
+        };
       }
       // Videos
       if (type === 'video') {
