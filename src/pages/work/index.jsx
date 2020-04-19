@@ -143,11 +143,14 @@ WorkPageLightContent.propTypes = {
     on: PropTypes.func,
     off: PropTypes.func,
   }).isRequired,
+
+  freezeUpdates: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
 };
+WorkPageLightContent.defaultProps = { freezeUpdates: false };
 
 
 // The dark section contains a parallax scrolling list of images
-function WorkPageDarkContent({ content: projects, bus }) {
+function WorkPageDarkContent({ content: projects, bus, freezeUpdates }) {
   // DarkContent controls the "current project" for both the dark and light content.
   function updateProject(index) { bus.emit('changeProject', index); }
 
@@ -168,7 +171,11 @@ function WorkPageDarkContent({ content: projects, bus }) {
   }
 
   return (
-    <ParallaxScroll className={cx('parallax-container')} onFocusChange={updateProject}>
+    <ParallaxScroll
+      className={cx('parallax-container')}
+      freeze={freezeUpdates}
+      onFocusChange={updateProject}
+    >
 
       { projects.map((p) => (
         <ParallaxSection key={p.uid} layout={p.featured_images_layout}>
@@ -186,6 +193,7 @@ function WorkPageDarkContent({ content: projects, bus }) {
   );
 }
 WorkPageDarkContent.propTypes = WorkPageLightContent.propTypes;
+WorkPageDarkContent.defaultProps = WorkPageLightContent.defaultProps;
 
 
 Object.assign(WorkIndex, {
