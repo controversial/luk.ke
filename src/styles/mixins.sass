@@ -1,4 +1,6 @@
-@mixin font-weight($weight, $letter-spacing: 0em)
+@mixin font-weight($weight, $letter-spacing: null)
   font-weight: $weight
   font-variation-settings: 'wght' $weight
-  letter-spacing: $letter-spacing
+
+  @if $letter-spacing != null
+    letter-spacing: $letter-spacing
