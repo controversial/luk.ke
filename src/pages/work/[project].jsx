@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 
 import Error from 'next/error';
 
-// component imports here
+import TagsList from '../../components/TagsList';
 
 import { getProject } from '../api/content/work/[project]';
 import parse, { domToReact } from 'html-react-parser';
@@ -20,7 +20,7 @@ function CaseStudy({ project, errorCode }) {
     const existingClassName = attribs.class;
     delete attribs.class;
     return React.createElement(tag, {
-      ...attribs, className: cx(...(existingClassName || ''), className).trim(),
+      ...attribs, className: cx(existingClassName || '', className).trim(),
     }, domToReact(children));
   }
   /* eslint-enable */
@@ -32,6 +32,9 @@ function CaseStudy({ project, errorCode }) {
   return (
     <div className={cx('page')}>
       { parse(project.head, asTextBlock) }
+      <div className={cx('block', 'text-block')}>
+        <TagsList max={5}>{ project.tags }</TagsList>
+      </div>
       { parse(project.subhead, asTextBlock) }
     </div>
   );
