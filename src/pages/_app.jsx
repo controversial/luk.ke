@@ -26,8 +26,8 @@ function App({ Component, pageProps: basePageProps }) {
   // When we get to a new page, update the page name stored in state
   const router = useRouter();
   useEffect(() => {
-    const { Component: newComponent } = router.components[router.pathname];
-    setPageName(newComponent.pageName);
+    const newComponent = router.components[router.pathname]?.Component;
+    if (newComponent) setPageName(newComponent.pageName);
   }, [router.route]);
   useEffect(() => {
     const reset = () => setWillNavigate(false);
