@@ -13,11 +13,16 @@ import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
 
 
-function ParallaxScroll({ children, onFocusChange }) {
+function ParallaxScroll({ children, freeze, onFocusChange }) {
   const { scrollY } = useViewportScroll();
   const lerpedScrollY = useLerp(scrollY, { alpha: 0.15 });
   const lerpedVelocity = useLerp(useVelocity(lerpedScrollY), { alpha: 0.25 });
   const skewY = useTransform(lerpedVelocity, [-1500, 1500], [-3, 3]);
+
+  // Nullify the scroll effect if "freeze" is set
+  const noEffect = (value, set) => set(value);
+  const freezeEffect = () => {};
+  scrollY.attach(freeze ? freezeEffect : noEffect);
 
   const rootEl = useRef(null);
 
@@ -101,6 +106,7 @@ function ParallaxScroll({ children, onFocusChange }) {
 
 ParallaxScroll.propTypes = {
   children: PropTypes.node.isRequired,
+  freeze: PropTypes.bool.isRequired,
   onFocusChange: PropTypes.func,
 };
 ParallaxScroll.defaultProps = {
