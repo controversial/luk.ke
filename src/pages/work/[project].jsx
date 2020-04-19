@@ -20,11 +20,11 @@ function CaseStudy({ project, errorCode }) {
     const existingClassName = attribs.class;
     delete attribs.class;
     return React.createElement(tag, {
-      ...attribs, className: `${existingClassName || ''} ${className}`.trim(),
+      ...attribs, className: cx(...(existingClassName || ''), className).trim(),
     }, domToReact(children));
   }
   /* eslint-enable */
-  const asTextBlock = { replace: (node) => addClassName(node, cx('block', 'text-block')) };
+  const asTextBlock = { replace: (node) => addClassName(node, ['block', 'text-block']) };
 
 
   if (errorCode) return <Error statusCode={errorCode} />;
@@ -32,6 +32,7 @@ function CaseStudy({ project, errorCode }) {
   return (
     <div className={cx('page')}>
       { parse(project.head, asTextBlock) }
+      { parse(project.subhead, asTextBlock) }
     </div>
   );
 }
