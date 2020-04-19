@@ -170,7 +170,7 @@ function PanelsLayout({
         >
           <div className={cx('nav-cover')} />
           <motion.div className={cx('content')} style={contentStyles}>
-            {lightContent}
+            { React.cloneElement(lightContent, { freezeUpdates }) }
           </motion.div>
         </motion.div>
 
@@ -185,7 +185,7 @@ function PanelsLayout({
               }[orientation] }}
             >
               <motion.div className={cx('content')} style={contentStyles}>
-                {darkContent}
+                { React.cloneElement(darkContent, { freezeUpdates }) }
               </motion.div>
             </motion.div>
           ) }
