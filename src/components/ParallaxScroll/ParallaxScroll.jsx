@@ -43,6 +43,7 @@ function ParallaxScroll({ children, freeze, onFocusChange }) {
   }, [rootEl]);
 
   const sectionHeight = width * 1.5;
+  const lastSectionHeight = width * 1.25;
 
   // Track which section has the greatest proportion of its area onscreen
   const [focusedIndex, setFocusedIndex] = useState(0);
@@ -96,9 +97,10 @@ function ParallaxScroll({ children, freeze, onFocusChange }) {
       {/* This element expands the scroll area to the height of all of the content inside the fixed
           parallax-container */}
       <div className={cx('scroll-area-spacer')}>
-        { React.Children.map(children, (c) => (
-          <div id={c.key} style={{ height: sectionHeight }} />
-        )) }
+        { React.Children.map(children, (c, idx) => {
+          const isLast = idx === React.Children.count(children) - 1;
+          return <div id={c.key} style={{ height: isLast ? lastSectionHeight : sectionHeight }} />;
+        }) }
       </div>
     </React.Fragment>
   );
