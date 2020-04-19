@@ -5,9 +5,10 @@ import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
+import { AnimatePresence, motion } from 'framer-motion';
 import { ParallaxScroll, ParallaxSection, ParallaxImage } from '../../components/ParallaxScroll';
 import ArrowLink from '../../components/ArrowLink';
-import { AnimatePresence, motion } from 'framer-motion';
+import TagsList from '../../components/TagsList';
 
 import { getProjects } from '../api/content/work';
 import parse, { domToReact } from 'html-react-parser';
@@ -106,9 +107,7 @@ function WorkPageLightContent({ content: projects, bus }) {
           variants={lightContentTransitionVariants}
           custom={scrollDirection}
         >
-          <ul className={cx('tags-list')}>
-            { project.tags.slice(0, 3).map((t) => <li key={t}>{t}</li>) }
-          </ul>
+          <TagsList max={3}>{ project.tags }</TagsList>
 
           { parse(project.head, { replace: replaceWithH2 }) }
           { parse(project.description) }
