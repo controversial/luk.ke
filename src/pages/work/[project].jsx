@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
+import Head from 'next/head';
 import Error from 'next/error';
 
 import TagsList from '../../components/TagsList';
@@ -54,54 +55,65 @@ function CaseStudy({ project, errorCode }) {
   if (errorCode) return <Error statusCode={errorCode} />;
 
   return (
-    <article className={cx('page')}>
-      {/* Header content */}
+    <React.Fragment>
+      <Head>
+        <title>
+          { project.name && `${project.name} | ` }
+          Luke Deen Taylor
+        </title>
+      </Head>
 
-      { parse(project.head, asTextBlock) }
-      <div className={cx('block', 'text-block')}>
-        <TagsList max={5}>{ project.tags }</TagsList>
-      </div>
-      { parse(project.subhead, asTextBlock) }
+      <article className={cx('page')}>
+        {/* Header content */}
 
-      {/* Primary image (if it exists) */}
-      {
-        primaryImage && (
-          <FramedFigure
-            className={cx('block')}
-            frameStyle={primaryImage.frame}
-            caption={primaryImage.caption && parse(primaryImage.caption)}
-          >
-            <img src={primaryImage.src} alt={primaryImage.alt} />
-          </FramedFigure>
-        )
-      }
+        { parse(project.head, asTextBlock) }
+        <div className={cx('block', 'text-block')}>
+          <TagsList max={5}>{ project.tags }</TagsList>
+        </div>
+        { parse(project.subhead, asTextBlock) }
 
-      {/* Body content */}
-      {
-        contentSections.map((section) => (
-          <section key={section[0].content}>
-            {
-              section.map((block, idx) => {
-                let out;
-                if (block.type === 'section_heading') out = parse(block.content, asTextBlock);
-                if (block.type === 'content') out = parse(block.content, asTextBlock);
+        {/* Primary image (if it exists) */}
+        {
+          primaryImage && (
+            <FramedFigure
+              className={cx('block')}
+              frameStyle={primaryImage.frame}
+              caption={primaryImage.caption && parse(primaryImage.caption)}
+            >
+              <img src={primaryImage.src} alt={primaryImage.alt} />
+            </FramedFigure>
+          )
+        }
 
-                return React.Children.map(out, (el, idx2) => (
-                  // eslint-disable-next-line react/no-array-index-key
-                  React.cloneElement(el, { key: `${idx}-${idx2}` })
-                ));
-              })
-            }
-          </section>
-        ))
-      }
-    </article>
+        {/* Body content */}
+        {
+          contentSections.map((section) => (
+            <section key={section[0].content}>
+              {
+                section.map((block, idx) => {
+                  let out;
+                  if (block.type === 'section_heading') out = parse(block.content, asTextBlock);
+                  if (block.type === 'content') out = parse(block.content, asTextBlock);
+                  // TODO: implement image, image_gallery, video, video_gallery, embed
+
+                  return React.Children.map(out, (el, idx2) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    React.cloneElement(el, { key: `${idx}-${idx2}` })
+                  ));
+                })
+              }
+            </section>
+          ))
+        }
+      </article>
+    </React.Fragment>
   );
 }
 
 CaseStudy.propTypes = {
   project: PropTypes.shape({
     uid: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     head: PropTypes.string.isRequired,
     subhead: PropTypes.string.isRequired,
     tags: PropTypes.arrayOf(PropTypes.string).isRequired,
