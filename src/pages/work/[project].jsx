@@ -51,7 +51,11 @@ function CaseStudy({ project, errorCode }) {
       {/* Primary image (if it exists) */}
       {
         primaryImage && (
-          <FramedFigure className={cx('block')}>
+          <FramedFigure
+            className={cx('block')}
+            frameStyle={primaryImage.frame}
+            caption={primaryImage.caption && parse(primaryImage.caption)}
+          >
             <img src={primaryImage.src} alt={primaryImage.alt} />
           </FramedFigure>
         )
