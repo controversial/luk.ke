@@ -72,6 +72,19 @@
     margin-top: 0
 
 
+  .block.not-implemented
+    background: hsla(350deg, 95%, 43%, 0.15)
+    border: 3px solid hsl(350deg, 85%, 50%)
+    box-shadow: 0 5px 20px -5px rgba(0, 0, 0, 0.15)
+    border-radius: 8px
+    padding: 30px 0
+    margin-top: 40px
+    color: hsl(350deg, 40%, 45%)
+    font-family: 'Manrope Variable'
+    @include font-weight(650)
+    text-align: center
+    cursor: default
+
   section
     padding: 4em 0
 
@@ -83,7 +96,6 @@
 
     h2:first-child
       margin-top: 0
-
 
   // If there's no featured image (a section directly follows the subhead) then we should reduce its
      margin to something sensible

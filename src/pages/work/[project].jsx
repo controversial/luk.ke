@@ -93,8 +93,8 @@ function CaseStudy({ project, errorCode }) {
                 section.map((block, idx) => {
                   let out;
                   if (block.type === 'section_heading') out = parse(block.content, asTextBlock);
-                  if (block.type === 'content') out = parse(block.content, asTextBlock);
-                  if (block.type === 'image') {
+                  else if (block.type === 'content') out = parse(block.content, asTextBlock);
+                  else if (block.type === 'image') {
                     out = (
                       <FramedFigure
                         className={cx('block', 'image')}
@@ -104,6 +104,8 @@ function CaseStudy({ project, errorCode }) {
                         <img src={block.src} alt={block.alt} />
                       </FramedFigure>
                     );
+                  } else {
+                    out = <div className={cx('block', 'text', 'not-implemented')}>{`Not implemented: ${block.type}`}</div>;
                   }
 
                   // TODO: implement image_gallery, video, video_gallery, embed
