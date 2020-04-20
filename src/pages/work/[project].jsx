@@ -75,6 +75,26 @@ function CaseStudy({ project, errorCode }) {
           </FramedFigure>
         )
       }
+
+      {/* Body content */}
+      {
+        contentSections.map((section) => (
+          <section key={section[0].content}>
+            {
+              section.map((block, idx) => {
+                let out;
+                if (block.type === 'section_heading') out = parse(block.content, asTextBlock);
+                if (block.type === 'content') out = parse(block.content, asTextBlock);
+
+                return React.Children.map(out, (el, idx2) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  React.cloneElement(el, { key: `${idx}-${idx2}` })
+                ));
+              })
+            }
+          </section>
+        ))
+      }
     </article>
   );
 }
