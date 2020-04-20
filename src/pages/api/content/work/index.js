@@ -39,7 +39,11 @@ export const processProject = async ({ uid, data: project, tags }, includeConten
     content: project.body.map(({ slice_type: type, primary: item, items }) => {
       // Breaks between sections
       if (type === 'section_heading') {
-        return { type, content: PrismicDOM.RichText.asHtml(item.section_title) };
+        return {
+          type,
+          id: item.section_id,
+          content: PrismicDOM.RichText.asHtml(item.section_title),
+        };
       }
       // Blocks of rich text content
       if (type === 'content') {

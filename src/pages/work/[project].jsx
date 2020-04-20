@@ -88,7 +88,7 @@ function CaseStudy({ project, errorCode }) {
         {/* Body content */}
         {
           contentSections.map((section) => (
-            <section key={section[0].content}>
+            <section key={section[0].id} id={section[0].id}>
               {
                 section.map((block, idx) => {
                   let out;
