@@ -36,6 +36,21 @@ function CaseStudy({ project, errorCode }) {
     content = content.slice(1);
   }
 
+  // Split page content up into sections
+
+  const contentSections = [];
+  // If the first content block doesn't explicitly define the start of a section, we create a bucket
+  // for that beginning content to go into.
+  if (content[0]?.type !== 'section_heading') contentSections.push([]);
+  content.forEach((block) => {
+    // Whenever we reach a section heading, we start a new section
+    if (block.type === 'section_heading') contentSections.push([]);
+    // We put all blocks into the last section that was established, until we reach another heading
+    const lastSection = contentSections[contentSections.length - 1];
+    lastSection.push(block);
+  });
+
+
   if (errorCode) return <Error statusCode={errorCode} />;
 
   return (
