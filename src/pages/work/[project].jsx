@@ -16,6 +16,8 @@ const cx = classNames.bind(styles);
 
 
 function CaseStudy({ project, errorCode }) {
+  if (errorCode) return <Error statusCode={errorCode} />;
+
   /* eslint-disable react/prop-types */
   function addClassName({ name: tag, attribs, children, parent }, className) {
     if (!attribs || parent) return undefined; // only apply to the root node
@@ -51,8 +53,6 @@ function CaseStudy({ project, errorCode }) {
     lastSection.push(block);
   });
 
-
-  if (errorCode) return <Error statusCode={errorCode} />;
 
   return (
     <React.Fragment>
