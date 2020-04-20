@@ -26,7 +26,7 @@ function CaseStudy({ project, errorCode }) {
     }, domToReact(children));
   }
   /* eslint-enable */
-  const asTextBlock = { replace: (node) => addClassName(node, ['block', 'text-block']) };
+  const asTextBlock = { replace: (node) => addClassName(node, ['block', 'text']) };
 
   // If the first piece of page content is an image, this image becomes the "primary image" and is
   // removed from the main array of content
@@ -67,7 +67,7 @@ function CaseStudy({ project, errorCode }) {
         {/* Header content */}
 
         { parse(project.head, asTextBlock) }
-        <div className={cx('block', 'text-block')}>
+        <div className={cx('block', 'text')}>
           <TagsList max={5}>{ project.tags }</TagsList>
         </div>
         { parse(project.subhead, asTextBlock) }
