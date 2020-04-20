@@ -158,7 +158,8 @@ function PanelsLayout({
 
         {/* Light panel */}
         <motion.div
-          layoutTransition={freezeUpdates ? false : { duration: 0.5, ease: [0.5, 0.1, 0.25, 1] }}
+          layoutTransition={(!freezeUpdates && !displayContent)
+            && { duration: 0.5, ease: [0.5, 0.1, 0.25, 1] }}
           onAnimationComplete={lightPanelAnimCallback}
           className={cx('panel', 'light')}
           style={{ gridColumn: {
