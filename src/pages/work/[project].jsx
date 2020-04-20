@@ -5,6 +5,7 @@ import classNames from 'classnames/bind';
 import Error from 'next/error';
 
 import TagsList from '../../components/TagsList';
+import FramedFigure from '../../components/FramedFigure';
 
 import { getProject } from '../api/content/work/[project]';
 import parse, { domToReact } from 'html-react-parser';
@@ -26,17 +27,36 @@ function CaseStudy({ project, errorCode }) {
   /* eslint-enable */
   const asTextBlock = { replace: (node) => addClassName(node, ['block', 'text-block']) };
 
+  // If the first piece of page content is an image, this image becomes the "primary image" and is
+  // removed from the main array of content
+  let primaryImage = null;
+  let { content } = project;
+  if (content[0]?.type === 'image') {
+    primaryImage = content[0]; // eslint-disable-line prefer-destructuring
+    content = content.slice(1);
+  }
 
   if (errorCode) return <Error statusCode={errorCode} />;
 
   return (
-    <div className={cx('page')}>
+    <article className={cx('page')}>
+      {/* Header content */}
+
       { parse(project.head, asTextBlock) }
       <div className={cx('block', 'text-block')}>
         <TagsList max={5}>{ project.tags }</TagsList>
       </div>
       { parse(project.subhead, asTextBlock) }
-    </div>
+
+      {/* Primary image (if it exists) */}
+      {
+        primaryImage && (
+          <FramedFigure className={cx('block')}>
+            <img src={primaryImage.src} alt={primaryImage.alt} />
+          </FramedFigure>
+        )
+      }
+    </article>
   );
 }
 
