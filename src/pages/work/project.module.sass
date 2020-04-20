@@ -13,6 +13,7 @@
   font-family: 'Inter Variable', 'Helvetica Neue', sans-serif
   color: transparentize($black, .25)
   font-size: 20px
+  line-height: 1.3
   padding: 50px 40px
 
   .block
@@ -26,7 +27,7 @@
     margin: 40px 0
 
     &.primary-image
-      margin: 0
+      margin: 0 0 4em
 
   h1, h2, h3, h4, h5, h6
     font-family: 'Manrope Variable', sans-serif
@@ -55,8 +56,24 @@
     margin: .6em 0 2.75em
     line-height: 1.3
 
+  p.block:not(.subhead)
+    margin: 0
+
+  p.block:not(.subhead) + p
+    margin-top: .6em
+
+  ul.block, ol.block
+    margin: 1em 0 0
+
+    li:not(:first-child)
+      margin-top: .5em
+
+  h2.block + ul, h2.block + ol
+    margin-top: 0
+
+
   section
-    margin-top: 8em
+    padding: 4em 0
 
     display: flex
     flex-direction: column
@@ -64,14 +81,14 @@
     justify-content: flex-start
     width: 100%
 
-    h2
+    h2:first-child
       margin-top: 0
 
 
   // If there's no featured image (a section directly follows the subhead) then we should reduce its
      margin to something sensible
   .subhead + section
-    margin-top: 0
+    padding-top: 0
 
 
   @media (max-width: 700px)
