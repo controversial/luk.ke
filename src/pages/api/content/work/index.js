@@ -47,13 +47,23 @@ export const processProject = async ({ uid, data: project, tags }, includeConten
       }
       // Images
       if (type === 'image') {
-        return { type, frame: item.frame, src: item.image.url, alt: item.image.alt };
+        return {
+          type,
+          frame: item.frame,
+          src: item.image.url,
+          alt: item.image.alt,
+          caption: PrismicDOM.RichText.asHtml(item.caption) || null,
+        };
       }
       if (type === 'image_gallery') {
         return {
           type,
           frame: item.frame,
-          images: items.map(({ image }) => ({ src: image.url, alt: image.alt })),
+          images: items.map(({ image, caption }) => ({
+            src: image.url,
+            alt: image.alt,
+            caption: PrismicDOM.RichText.asHtml(caption) || null,
+          })),
         };
       }
       // Videos
