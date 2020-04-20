@@ -76,7 +76,7 @@ function CaseStudy({ project, errorCode }) {
         {
           primaryImage && (
             <FramedFigure
-              className={cx('block')}
+              className={cx('block', 'image', 'primary-image')}
               frameStyle={primaryImage.frame}
               caption={primaryImage.caption && parse(primaryImage.caption)}
             >
@@ -94,7 +94,19 @@ function CaseStudy({ project, errorCode }) {
                   let out;
                   if (block.type === 'section_heading') out = parse(block.content, asTextBlock);
                   if (block.type === 'content') out = parse(block.content, asTextBlock);
-                  // TODO: implement image, image_gallery, video, video_gallery, embed
+                  if (block.type === 'image') {
+                    out = (
+                      <FramedFigure
+                        className={cx('block', 'image')}
+                        frameStyle={block.frame}
+                        caption={block.caption && parse(block.caption)}
+                      >
+                        <img src={block.src} alt={block.alt} />
+                      </FramedFigure>
+                    );
+                  }
+
+                  // TODO: implement image_gallery, video, video_gallery, embed
 
                   return React.Children.map(out, (el, idx2) => (
                     // eslint-disable-next-line react/no-array-index-key
