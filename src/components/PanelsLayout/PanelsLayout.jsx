@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { useStore } from '../../store';
-import useCache from '../../helpers/useCache';
+import useFreezable from '../../helpers/useFreezable';
 
 import { useRouter } from 'next/router';
 
@@ -37,10 +37,10 @@ function PanelsLayout({
   // In this component, freezeUpdates=true implies that we are in the middle of a page transition
   const [freezeUpdates, setFreezeUpdates] = useState(false);
   // Make freezable cached copies of all the data passed in props
-  const lightContent = useCache(passedLightContent, freezeUpdates);
-  const darkContent = useCache(passedDarkContent, freezeUpdates);
-  const orientation = useCache(passedOrientation, freezeUpdates);
-  const currPageName = useCache(passedCurrPageName, freezeUpdates);
+  const lightContent = useFreezable(passedLightContent, freezeUpdates);
+  const darkContent = useFreezable(passedDarkContent, freezeUpdates);
+  const orientation = useFreezable(passedOrientation, freezeUpdates);
+  const currPageName = useFreezable(passedCurrPageName, freezeUpdates);
 
   // Whether or not the menu is open is recorded in the global application store
   const { state: { menuOpen, dimensions }, dispatch } = useStore();

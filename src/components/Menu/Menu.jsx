@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
-import useCache from '../../helpers/useCache';
+import useFreezable from '../../helpers/useFreezable';
 
 import Link from 'next/link';
 import links from './routes';
@@ -18,7 +18,7 @@ const cxUnscoped = classNames;
 
 function Menu({ orientation, freezeUpdates }) {
   const router = useRouter();
-  const currentRoute = useCache(router.route, freezeUpdates);
+  const currentRoute = useFreezable(router.route, freezeUpdates);
 
   const alignment = orientation === 'right' ? 'right' : 'left'; // full -> left
 
