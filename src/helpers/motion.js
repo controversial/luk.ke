@@ -39,7 +39,7 @@ export function useTransformMulti(parentMotionValues, transformFunc) {
 }
 
 
-// A motion value whose value is the
+// A motion value whose value is the velocity of a passed parent motion value
 export function useVelocity(parent) {
   const velocity = useMotionValue(parent.getVelocity() || 0);
 
@@ -51,6 +51,22 @@ export function useVelocity(parent) {
   }, [parent]);
 
   return velocity;
+}
+
+
+// Like framer-motion's built-in useViewportScroll but looks at scroll values from the body instead
+// of from the root element
+let hasListener = false;
+const bodyScroll = new MotionValue((typeof document !== 'undefined' && document?.body?.scrollTop) || 0);
+
+export function useBodyScroll() {
+  if (!hasListener && typeof document !== 'undefined') {
+    document.body.addEventListener('scroll', () => {
+      bodyScroll.set(document.body.scrollTop);
+    }, { passive: true });
+    hasListener = true;
+  }
+  return bodyScroll;
 }
 
 
