@@ -12,7 +12,7 @@ const cx = classNames.bind(styles);
 
 
 // Returns true if the window is scrolled within 'threshold' px of its bottom
-function isScrolledToBottom(threshold = 0) {
+export function isScrolledToBottom(threshold = 0) {
   const scrollBottom = document.body.offsetHeight + document.body.scrollTop + 1;
   const maxScroll = document.body.scrollHeight;
   return (scrollBottom + threshold) >= maxScroll;
@@ -65,8 +65,6 @@ function OverscrollTrigger({ callback, preCallback }) {
   // Set up wheel event listener
   useEffect(() => {
     function onScroll(e) {
-      // Make sure Safari keeps sending events
-      if (window.safari && isScrolledToBottom() && e.deltaY > 0) e.preventDefault();
       // When we first start overscroll, hide the arrow
       if (isScrolledToBottom() && e.deltaY > 0 && overscroll.get() === 0) {
         preCallback(true); // once we start overscrolling it's likely that callback will be called

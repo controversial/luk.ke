@@ -8,6 +8,7 @@ import { StoreProvider } from '../store';
 
 import PanelsLayout from '../components/PanelsLayout/PanelsLayout.jsx';
 
+import setSafariScrollFix from '../safari-scroll-fix';
 import '../console-message';
 
 import '../styles/base.sass';
@@ -16,12 +17,14 @@ import '../styles/base.sass';
 function App({ Component, pageProps: basePageProps }) {
   const { panelOrientation: pagePanelOrientation, pageName: initialPageName } = Component;
 
+  useEffect(setSafariScrollFix, []);
+
   const [pageName, setPageName] = useState(initialPageName);
   // This event emitter is passed to both LightContent and DarkContent and can be used to pass data
   // between the two when necessary
   const [bus] = useState(mitt());
 
-  // Pages can notify PanelsContent when they think they are going to perform imperative navigation
+  // Pages can notify PanelsLayout when they think they are going to perform imperative navigation
   const [willNavigate, setWillNavigate] = useState(false);
 
   // When we get to a new page, update the page name stored in state
