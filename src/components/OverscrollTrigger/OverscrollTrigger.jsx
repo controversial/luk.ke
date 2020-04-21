@@ -13,23 +13,23 @@ const cx = classNames.bind(styles);
 
 // Returns true if the window is scrolled within 'threshold' px of its bottom
 function isScrolledToBottom(threshold = 0) {
-  const scrollBottom = window.innerHeight + window.scrollY + 1;
+  const scrollBottom = document.body.offsetHeight + document.body.scrollTop + 1;
   const maxScroll = document.body.scrollHeight;
   return (scrollBottom + threshold) >= maxScroll;
 }
 
 function scrollDown() {
-  const pageDown = window.scrollY + window.innerHeight;
-  const bottom = document.body.scrollHeight - window.innerHeight;
+  const pageDown = document.body.scrollTop + document.body.offsetHeight; // one "window height" down
+  const bottom = document.body.scrollHeight - document.body.offsetHeight; // bottom of page
   return new Promise((resolve) => {
     spring({
-      from: window.scrollY,
+      from: document.body.scrollTop,
       to: Math.min(pageDown, bottom),
       mass: 1,
       stiffness: 400,
       damping: 90,
     }).start({
-      update: (value) => { window.scrollTo(window.scrollX, value); },
+      update: (value) => { document.body.scrollTo(document.body.scrollLeft, value); },
       complete: resolve,
     });
   });
@@ -49,7 +49,7 @@ function OverscrollTrigger({ callback, preCallback }) {
   const isWindow = typeof window !== 'undefined';
 
   const overscroll = useMotionValue(0);
-  const threshold = isWindow ? window.innerHeight * 1.5 : 0;
+  const threshold = isWindow ? document.body.offsetHeight * 1.5 : 0; // how much overscroll triggers
   const progress = useTransform(overscroll, [0, threshold], [0, 1]);
   const arrowIsHidden = useMotionValue(0); // set to 1 when arrow is hidden
   // pathLength is always 0 while the arrow is not hidden
@@ -95,8 +95,8 @@ function OverscrollTrigger({ callback, preCallback }) {
         debouncedCallback();
       }
     }
-    window.addEventListener('wheel', onScroll);
-    return () => window.removeEventListener('wheel', onScroll);
+    document.body.addEventListener('wheel', onScroll);
+    return () => document.body.removeEventListener('wheel', onScroll);
   }, []);
 
 
