@@ -126,6 +126,16 @@ function PanelsLayout({
   }, [orientation, menuOpen]);
 
 
+  // On Safari, prevent scroll while the menu is open to fix a bug
+  useEffect(() => {
+    function preventScrollOnSafari(e) {
+      if (window.safari && menuOpen) e.preventDefault();
+    }
+    window.addEventListener('wheel', preventScrollOnSafari);
+    return () => window.removeEventListener('wheel', preventScrollOnSafari);
+  }, [menuOpen]);
+
+
   return (
     // Using display: contents makes this behave like a Fragment but we can add Framer Motion props
     // to it, which propagate to children.
