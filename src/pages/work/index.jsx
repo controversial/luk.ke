@@ -11,6 +11,7 @@ import ArrowLink from '../../components/ArrowLink';
 import TagsList from '../../components/TagsList';
 
 import { getProjects } from '../api/content/work';
+import { getLazyPlaceholder } from '../../helpers/image';
 import parse, { domToReact } from 'html-react-parser';
 
 import styles from './index.module.sass';
@@ -167,16 +168,6 @@ function WorkPageDarkContent({ content: projects, bus, freezeUpdates }) {
         window.removeEventListener('hashchange', updateFromHash);
       };
     });
-  }
-
-  // Gets a placeholder version of an image that fits in an 100x100 square and will be displayed
-  // before lazy loading
-  function getLazyPlaceholder(img, size = 100) {
-    const url = new URL(img);
-    url.searchParams.append('w', size);
-    url.searchParams.append('h', size);
-    url.searchParams.append('fit', 'fit');
-    return url.href;
   }
 
   return (
