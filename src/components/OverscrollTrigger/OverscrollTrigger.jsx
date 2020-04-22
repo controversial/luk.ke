@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
@@ -60,7 +60,7 @@ function OverscrollTrigger({ callback, preCallback }) {
   const arrowControls = useAnimation();
   useEffect(() => arrowControls.set('visible'), []);
 
-  const debouncedCallback = debounce(callback, 1000, true);
+  const debouncedCallback = useCallback(debounce(callback, 1000, true), [callback]);
 
   // Set up wheel event listener
   useEffect(() => {
