@@ -9,6 +9,7 @@ import TagsList from '../../components/TagsList';
 import FramedFigure from '../../components/FramedFigure';
 
 import { getProject } from '../api/content/work/[project]';
+import { getLazyPlaceholder } from '../../helpers/image';
 import parse, { domToReact } from 'html-react-parser';
 
 import styles from './project.module.sass';
@@ -101,7 +102,12 @@ function CaseStudy({ project, errorCode }) {
                         frameStyle={block.frame}
                         caption={block.caption && parse(block.caption)}
                       >
-                        <img src={block.src} alt={block.alt} />
+                        <img
+                          src={getLazyPlaceholder(block.src, 200)}
+                          data-src={block.src}
+                          className="lazyload"
+                          alt={block.alt}
+                        />
                       </FramedFigure>
                     );
                   } else {
