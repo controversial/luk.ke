@@ -55,7 +55,8 @@ function ParallaxImage({ img, layout, zoom, scrollProgress }) {
     >
       <div style={{ width, height }}>
         <motion.img
-          src={img.src}
+          src={img.lazyPlaceholder || img.src}
+          {...img.lazyPlaceholder && { 'data-src': img.src, className: 'lazyload' }}
           alt={img.alt}
           style={{ width, height, scale: zoom ? scale : 1 }}
         />
@@ -83,6 +84,7 @@ ParallaxImage.propTypes = {
     alt: PropTypes.string,
     dimensions: PropTypes.arrayOf(PropTypes.number).isRequired,
     src: PropTypes.string.isRequired,
+    lazyPlaceholder: PropTypes.string,
   }).isRequired,
   zoom: PropTypes.bool,
 };

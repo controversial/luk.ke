@@ -169,6 +169,16 @@ function WorkPageDarkContent({ content: projects, bus, freezeUpdates }) {
     });
   }
 
+  // Gets a placeholder version of an image that fits in an 100x100 square and will be displayed
+  // before lazy loading
+  function getLazyPlaceholder(img, size = 100) {
+    const url = new URL(img);
+    url.searchParams.append('w', size);
+    url.searchParams.append('h', size);
+    url.searchParams.append('fit', 'fit');
+    return url.href;
+  }
+
   return (
     <ParallaxScroll
       className={cx('parallax-container')}
@@ -181,7 +191,7 @@ function WorkPageDarkContent({ content: projects, bus, freezeUpdates }) {
           { p.featured_images.map((img) => (
             <ParallaxImage
               key={img.src}
-              img={img}
+              img={{ ...img, lazyPlaceholder: getLazyPlaceholder(img.src) }}
               zoom={img.zoom}
             />
           ))}
