@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import { motion, useTransform, MotionValue } from 'framer-motion';
+import debounce from 'debounce';
 
 import { getResizedImage } from '../../helpers/image';
 
@@ -37,15 +38,33 @@ function ParallaxImage({ img, layout, zoom, scrollProgress }) {
     width = height * (imgWidth / imgHeight);
   }
 
-  // Compute the optimal size at which to request the image (only recompute for layout changes)
-  const sizeToFetch = useMemo(() => [width, height]
+  // Compute the optimal size at which to request the image
+  const headroom = 1.2;
+  const getSizeToFetch = (dims) => dims
     // Get the largest size at which the image will ever be displayed
     .map((dim) => dim * (Math.max(from.zoom, to.zoom, 1) || 1)) // scale by max image could scale
     .map((dim) => dim * (window.devicePixelRatio || 1)) //         scale by device pixel ratio
+    .map((dim) => dim * headroom) //                               room to spare
     .map(((dim) => Math.ceil(dim))) //                             use whole-pixel values
     // Make sure we're never upscaling and requesting an unnecessarily large image
-    .map((dim, i) => Math.min(dim, [imgWidth, imgHeight][i])),
-  [layout]);
+    .map((dim, i) => Math.min(dim, [imgWidth, imgHeight][i]));
+
+  const [sizeToFetch, setSizeToFetch] = useState(getSizeToFetch([width, height]));
+
+  // When layout size increases, request a higher size image, but only if we've stopped resizing for
+  // at least half a second.
+  const debouncedSetSizeToFetch = useCallback(debounce((value) => setSizeToFetch(value), 500), []);
+  const previousSize = useRef(sizeToFetch);
+  useEffect(() => {
+    const newSize = getSizeToFetch([width, height]);
+    if (previousSize.current[0] * headroom < newSize[0]) { // checks if the old image is too small
+      debouncedSetSizeToFetch(newSize);
+      previousSize.current = newSize;
+    }
+  }, [layout]);
+
+  const fullSizeSrc = getResizedImage(img.src, sizeToFetch);
+  const [previousSrc, setPreviousSrc] = useState(img.lazyPlaceholder || fullSizeSrc);
 
 
   return (
@@ -68,11 +87,16 @@ function ParallaxImage({ img, layout, zoom, scrollProgress }) {
     >
       <div style={{ width, height }}>
         <motion.img
-          src={img.lazyPlaceholder || img.src}
-          {...img.lazyPlaceholder && {
-            'data-src': getResizedImage(img.src, sizeToFetch),
+          // When previousSrc != fullSizeSrc, that means we need to lazy-load this image. Once lazy-
+          // loading is complete, we set 'src' to the updated value and remove the old lazy-loading
+          // instructions. This way, the next time we lazy-load a higher resolution, we have the
+          // previous resolution as the fallback, rather than the initial lowest resolution.
+          src={previousSrc}
+          {...previousSrc !== fullSizeSrc && {
+            'data-src': fullSizeSrc,
             className: 'lazyload',
           }}
+          onLoad={() => setPreviousSrc(fullSizeSrc)}
           alt={img.alt}
           style={{ width, height, scale: zoom ? scale : 1 }}
         />
