@@ -11,6 +11,9 @@ import PanelsLayout from '../components/PanelsLayout/PanelsLayout.jsx';
 import setSafariScrollFix from '../safari-scroll-fix';
 import '../console-message';
 
+import 'lazysizes';
+import 'lazysizes/plugins/attrchange/ls.attrchange';
+
 import '../styles/base.sass';
 
 
