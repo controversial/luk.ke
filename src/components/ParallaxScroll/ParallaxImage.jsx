@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import { motion, useTransform, MotionValue } from 'framer-motion';
+
+import { getResizedImage } from '../../helpers/image';
 
 import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
@@ -35,6 +37,17 @@ function ParallaxImage({ img, layout, zoom, scrollProgress }) {
     width = height * (imgWidth / imgHeight);
   }
 
+  // Compute the optimal size at which to request the image (only recompute for layout changes)
+  const sizeToFetch = useMemo(() => [width, height]
+    // Get the largest size at which the image will ever be displayed
+    .map((dim) => dim * (Math.max(from.zoom, to.zoom, 1) || 1)) // scale by max image could scale
+    .map((dim) => dim * (window.devicePixelRatio || 1)) //         scale by device pixel ratio
+    .map(((dim) => Math.ceil(dim))) //                             use whole-pixel values
+    // Make sure we're never upscaling and requesting an unnecessarily large image
+    .map((dim, i) => Math.min(dim, [imgWidth, imgHeight][i])),
+  [layout]);
+
+
   return (
     <motion.div
       className={cx('parallax-image')}
@@ -56,7 +69,10 @@ function ParallaxImage({ img, layout, zoom, scrollProgress }) {
       <div style={{ width, height }}>
         <motion.img
           src={img.lazyPlaceholder || img.src}
-          {...img.lazyPlaceholder && { 'data-src': img.src, className: 'lazyload' }}
+          {...img.lazyPlaceholder && {
+            'data-src': getResizedImage(img.src, sizeToFetch),
+            className: 'lazyload',
+          }}
           alt={img.alt}
           style={{ width, height, scale: zoom ? scale : 1 }}
         />
