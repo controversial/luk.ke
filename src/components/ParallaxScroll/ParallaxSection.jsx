@@ -27,7 +27,7 @@ function ParallaxSection({
   const exitScrollPos = top + height;
   const scrollProgress = useTransform(scrollMotionValue, [entryScrollPos, exitScrollPos], [0, 1]);
 
-  const layout = layouts[layoutName];
+  const layout = layouts[layoutName] || [];
 
   // Transforms a single set of ParallaxImnage layout specifications (like left, right, top, etc)
   // from width percentages to pixel values.
@@ -53,7 +53,7 @@ function ParallaxSection({
     >
       {
         React.Children.map(children, (child, i) => {
-          if (i > 2) return undefined; // max 3 images per section
+          if (i >= layout.length) return undefined;
           // Wrap each child in a ParallaxImage if it's not
           const isParallaxImage = child.type === ParallaxImage;
           const child2 = isParallaxImage
