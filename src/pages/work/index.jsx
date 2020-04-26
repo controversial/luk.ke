@@ -87,7 +87,7 @@ function WorkPageLightContent({ content: projects, bus }) {
     };
     bus.on('changeProject', onChangeProject);
     return () => bus.off('changeProject', onChangeProject);
-  }, []);
+  }, [currProjectIndex]);
 
   // Replace function for html-react-parser that turns tags into h2 elements
   const replaceWithH2 = ({ type, attribs, children }) => {
