@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import { motion, useMotionValue, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useTransformMulti, delay } from '../../helpers/motion';
 import { spring } from 'popmotion';
-import debounce from 'debounce';
+import debounce from 'lodash/debounce';
 
 import styles from './OverscrollTrigger.module.sass';
 const cx = classNames.bind(styles);
@@ -60,7 +60,10 @@ function OverscrollTrigger({ callback, preCallback }) {
   const arrowControls = useAnimation();
   useEffect(() => arrowControls.set('visible'), []);
 
-  const debouncedCallback = useCallback(debounce(callback, 1000, true), [callback]);
+  const debouncedCallback = useCallback(
+    debounce(callback, 1000, { leading: true, trailing: false }),
+    [callback],
+  );
 
   // Set up wheel event listener
   useEffect(() => {
