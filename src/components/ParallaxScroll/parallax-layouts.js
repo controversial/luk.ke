@@ -38,7 +38,7 @@ export default {
 
   'layout-3': [
     {
-      from: { top: 30, zoom: 1.15, left: 0, size: [52.5, 45], zIndex: 1 },
+      from: { top: 30, zoom: 1.25, left: 0, size: [52.5, 45], zIndex: 1 },
       to: { zoom: 1 },
     },
     {

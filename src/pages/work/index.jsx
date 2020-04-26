@@ -182,7 +182,7 @@ function WorkPageDarkContent({ content: projects, bus, freezeUpdates }) {
           { p.featured_images.map((img) => (
             <ParallaxImage
               key={img.src}
-              img={{ ...img, lazyPlaceholder: getResizedImage(img.src) }}
+              img={{ ...img, lazyPlaceholder: getResizedImage(img.src, 100) }}
               zoom={img.zoom}
             />
           ))}
