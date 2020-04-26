@@ -35,4 +35,19 @@ export default {
       to: { top: 45, zoom: 1.1 },
     },
   ],
+
+  'layout-3': [
+    {
+      from: { top: 30, zoom: 1.15, left: 0, size: [52.5, 45], zIndex: 1 },
+      to: { zoom: 1 },
+    },
+    {
+      from: { top: 95, zoom: 1, left: 20, size: [40, 47.5], zIndex: 2 },
+      to: { top: 45, zoom: 1.1 },
+    },
+    {
+      from: { top: 100, zoom: 1.1, right: 0, size: [40, 47.5], zIndex: 3 },
+      to: { top: 10, zoom: 1 },
+    },
+  ],
 };
