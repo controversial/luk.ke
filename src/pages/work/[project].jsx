@@ -45,7 +45,7 @@ function CaseStudy({ project, errorCode }) {
   const contentSections = [];
   // If the first content block doesn't explicitly define the start of a section, we create a bucket
   // for that beginning content to go into.
-  if (content[0]?.type !== 'section_heading') contentSections.push([]);
+  if (content[0] && content[0]?.type !== 'section_heading') contentSections.push([]);
   content.forEach((block) => {
     // Whenever we reach a section heading, we start a new section
     if (block.type === 'section_heading') contentSections.push([]);
