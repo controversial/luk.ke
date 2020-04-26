@@ -13,6 +13,8 @@ const cx = classNames.bind(styles);
 function ParallaxImage({ img, layout, zoom, scrollProgress }) {
   if (!Object.keys(layout).length) return <React.Fragment />;
 
+  const { video } = img;
+
   if (!layout.from) layout.from = layout;
   const { from } = layout;
   const to = { ...from, ...layout.to };
@@ -97,15 +99,31 @@ function ParallaxImage({ img, layout, zoom, scrollProgress }) {
       animate={{ opacity: 1, transition: { opacity: { duration: 0.3, ease: 'easeInOut' } } }}
     >
       <div style={{ width, height }}>
-        <motion.img
-          src={img.lazyPlaceholder || img.src}
-          data-src={img.src}
-          data-srcset={srcset.map(([src, w]) => `${src} ${w}w`).join(',')}
-          sizes={`${imageSizeToUse}px`}
-          className="lazyload"
-          alt={img.alt}
-          style={{ width, height, scale: zoom ? scale : 1 }}
-        />
+        {
+          !video
+            ? (
+              <motion.img
+                src={img.lazyPlaceholder || img.src}
+                data-src={img.src}
+                data-srcset={srcset.map(([src, w]) => `${src} ${w}w`).join(',')}
+                sizes={`${imageSizeToUse}px`}
+                className="lazyload"
+                alt={img.alt}
+                style={{ width, height, scale: zoom ? scale : 1 }}
+              />
+            )
+            : (
+              <motion.video
+                src={video}
+                poster={img.src}
+                playsinline
+                muted
+                loop
+                onLoadedData={(e) => e.target.play()}
+                style={{ width, height, scale: zoom ? scale : 1 }}
+              />
+            )
+        }
       </div>
     </motion.div>
   );
@@ -130,6 +148,7 @@ ParallaxImage.propTypes = {
     alt: PropTypes.string,
     dimensions: PropTypes.arrayOf(PropTypes.number).isRequired,
     src: PropTypes.string.isRequired,
+    video: PropTypes.string,
     lazyPlaceholder: PropTypes.string,
   }).isRequired,
   zoom: PropTypes.bool,
