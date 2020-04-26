@@ -118,8 +118,11 @@ function ParallaxImage({ img, layout, zoom, scrollProgress }) {
                 poster={img.src}
                 playsinline
                 muted
-                loop
                 onLoadedData={(e) => e.target.play()}
+                onEnded={(e) => {
+                  e.target.currentTime = 0.1; // skip a couple frames to prevent white flashes
+                  e.target.play();
+                }}
                 style={{ width, height, scale: zoom ? scale : 1 }}
               />
             )
