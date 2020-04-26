@@ -24,12 +24,12 @@ export const processProject = async ({ uid, data: project, tags }, includeConten
   end_date: project.end_date.split('-').slice(0, 2).map((n) => parseInt(n, 10)),
   github_link: PrismicDOM.Link.url(project.github_link),
   featured_images: project.featured_images
-    .map(({ image: { url, alt, dimensions }, video, zoom }) => ({
+    .map(({ image: { url, alt, dimensions }, video, video_mode, zoom }) => ({
       src: url,
       alt,
       dimensions: [dimensions.width, dimensions.height],
       zoom,
-      ...video.url && { video: video.url },
+      ...video.url && { video: { src: video.url, mode: video_mode } },
     })),
   featured_images_layout: project.featured_images_layout,
 
