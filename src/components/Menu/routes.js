@@ -3,4 +3,5 @@
 export default {
   Hello: ['/'],
   Work: ['/work', '/work/[project]'],
+  Contact: ['/contact'],
 };
