@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
@@ -21,6 +21,26 @@ function ParallaxImage({ img, layout, zoom, scrollProgress }) {
 
   const y = useTransform(scrollProgress, [0, 1], [from.top || 0, to.top || 0]);
   const scale = useTransform(scrollProgress, [0, 1], [from.zoom || 1, to.zoom || 1]);
+
+  // Add event listener to attach videos with mode 'progress' to scroll position
+  const videoEl = useRef(null);
+  useEffect(() => {
+    if (video && video.mode === 'progress') {
+      return scrollProgress.onChange((p) => {
+        if (videoEl.current && p >= 0 && p <= 1) {
+          const bounds = videoEl.current.getBoundingClientRect();
+          const enter = window.innerHeight;
+          const exit = 0 - bounds.height;
+          let elementProgress = (bounds.top - enter) / (exit - enter);
+          elementProgress = Math.min(Math.max(elementProgress, 0), 1);
+          const videoTime = elementProgress * videoEl.current.duration || 0;
+          videoEl.current.currentTime = videoTime;
+        }
+      });
+    }
+
+    return undefined;
+  }, [videoEl, video && video.src, video && video.mode]);
 
   // fit image into size box specified in layout.size
 
@@ -114,16 +134,24 @@ function ParallaxImage({ img, layout, zoom, scrollProgress }) {
             )
             : (
               <motion.video
-                src={video}
+                ref={videoEl}
+                src={video.src}
                 poster={img.src}
                 playsinline
                 muted
-                onLoadedData={(e) => e.target.play()}
-                onEnded={(e) => {
-                  e.target.currentTime = 0.1; // skip a couple frames to prevent white flashes
-                  e.target.play();
-                }}
+                preload="auto"
+
                 style={{ width, height, scale: zoom ? scale : 1 }}
+
+                onLoadedData={(e) => {
+                  if (video.mode === 'loop') e.target.play();
+                }}
+                onEnded={(e) => {
+                  if (video.mode === 'loop') {
+                    e.target.currentTime = 0.1; // skip a couple frames to prevent white flashes
+                    e.target.play();
+                  }
+                }}
               />
             )
         }
@@ -151,7 +179,10 @@ ParallaxImage.propTypes = {
     alt: PropTypes.string,
     dimensions: PropTypes.arrayOf(PropTypes.number).isRequired,
     src: PropTypes.string.isRequired,
-    video: PropTypes.string,
+    video: PropTypes.shape({
+      src: PropTypes.string.isRequired,
+      mode: PropTypes.oneOf(['loop', 'progress']),
+    }),
     lazyPlaceholder: PropTypes.string,
   }).isRequired,
   zoom: PropTypes.bool,
