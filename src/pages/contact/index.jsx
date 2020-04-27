@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import { getContactPage } from '../api/content/contact';
 
+import ArrowLink from '../../components/ArrowLink';
 import Head from 'next/head';
 
 import styles from './index.module.sass';
@@ -23,14 +24,41 @@ function Contact() {
 
 function ContactPageLightContent() {
   return (
-    <div>Light</div>
+    <div className={cx('light-content')}>
+      <h1>
+        Send&nbsp;a
+        <br />
+        message
+      </h1>
+
+      <form action="/api/contact" className={cx('contact-form')}>
+        <div className={cx('row')}>
+          <input type="text" name="name" placeholder="Your name" />
+          <input type="text" name="email" placeholder="Your email" />
+        </div>
+        <textarea name="message" placeholder="What’s up?" />
+
+        <ArrowLink type="submit" onClick={(e) => { e.preventDefault(); alert('hiii'); }}>
+          Send your message
+        </ArrowLink>
+      </form>
+    </div>
   );
 }
 
 
-function ContactPageDarkContent({ content }) {
+function ContactPageDarkContent({ content: { title, links } }) {
   return (
-    <div>{ content.title }</div>
+    <div className={cx('dark-content')}>
+      <h1>{ title }</h1>
+      <ul>
+        { links.map(({ label, url }) => (
+          <li key={url}>
+            <ArrowLink href={url} target="_blank" rel="noopener noreferrer">{label}</ArrowLink>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 ContactPageDarkContent.propTypes = {
