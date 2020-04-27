@@ -10,12 +10,12 @@ const cx = classNames.bind(styles);
 
 export default function ArrowLink({ children, className, ...props }) {
   const { href } = props;
-  const isAbsolute = (() => {
+  const isAbsoluteUrl = (() => {
     try { return !!new URL(href); } catch (e) { return false; }
   })();
 
   // Absolute (external) URLs can't be wrapped in a Link
-  if (isAbsolute) {
+  if (isAbsoluteUrl) {
     return (
       <a className={classNames(cx('arrow-link'), className)} {...props}>
         { children }
@@ -25,13 +25,23 @@ export default function ArrowLink({ children, className, ...props }) {
   }
 
   // Internal URLs need to be wrapped in a Link
+  if (href) {
+    return (
+      <Link {...props}>
+        <a className={classNames(cx('arrow-link'), className)}>
+          { children }
+          <ArrowDownIcon className={cx('arrow')} />
+        </a>
+      </Link>
+    );
+  }
+
+  // If there's no href at all, just use a button
   return (
-    <Link {...props}>
-      <a className={classNames(cx('arrow-link'), className)}>
-        { children }
-        <ArrowDownIcon className={cx('arrow')} />
-      </a>
-    </Link>
+    <button type="button" className={classNames(cx('arrow-link'), className)} {...props}>
+      { children }
+      <ArrowDownIcon className={cx('arrow')} />
+    </button>
   );
 }
 
