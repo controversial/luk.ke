@@ -36,7 +36,9 @@ function ContactPageLightContent() {
           <input type="text" name="name" placeholder="Your name" />
           <input type="text" name="email" placeholder="Your email" />
         </div>
-        <textarea name="message" placeholder="What’s up?" />
+        <div className={cx('row')}>
+          <textarea rows="5" name="message" placeholder="What’s up?" cols="0" />
+        </div>
 
         <ArrowLink type="submit" onClick={(e) => { e.preventDefault(); alert('hiii'); }}>
           Send your message

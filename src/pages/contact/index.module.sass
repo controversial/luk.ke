@@ -1,4 +1,5 @@
 @import '../../styles/colors.sass'
+@import '../../styles/fonts.sass'
 @import '../../styles/mixins.sass'
 @import '../../styles/dimensions.sass'
 
@@ -48,3 +49,49 @@ $top-padding: 40px
 
       & > a > svg[class]
         margin-left: .6em
+
+
+.light-content
+  form
+    display: flex
+    flex-direction: column
+    align-items: stretch
+    justify-content: flex-start
+
+    .row
+      display: flex
+      flex-direction: row
+      margin-bottom: 20px
+
+      & > *
+        flex: 1 1 0
+        width: 0
+        min-width: 0
+
+        &:not(:last-child)
+          margin-right: 10px
+
+  input,
+  textarea
+    background: none
+    border: none
+    outline: 0
+    resize: none
+    font-family: $font-inter
+    font-size: 24px
+    color: transparentize($black, .1)
+    @include font-weight(500)
+
+    &::placeholder
+      color: transparentize($black, .8)
+
+    &:focus::placeholder
+      color: transparentize($black, .7)
+
+  input
+    padding: .2em 0
+    margin-top: -.2em
+
+  button
+    font-size: 20px
+    @include font-weight(650)
