@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
@@ -9,6 +9,12 @@ import Head from 'next/head';
 
 import styles from './index.module.sass';
 const cx = classNames.bind(styles);
+
+
+function useInputState(initialValue = '') {
+  const [value, setValue] = useState(initialValue);
+  return [value, (e) => setValue(e.target.value)];
+}
 
 
 function Contact() {
@@ -23,6 +29,18 @@ function Contact() {
 
 
 function ContactPageLightContent() {
+  const [name, onNameChange] = useInputState();
+  const [email, onEmailChange] = useInputState();
+  const [message, onMessageChange] = useInputState();
+
+  function submit() {
+    console.log('submitting');
+    console.log('name: ', name);
+    console.log('email: ', email);
+    console.log('message: ', message);
+  }
+
+
   return (
     <div className={cx('contact-page', 'light-content')}>
       <h1>
@@ -31,18 +49,22 @@ function ContactPageLightContent() {
         message
       </h1>
 
-      <form action="/api/contact" className={cx('contact-form')}>
+      <form
+        action="/api/contact"
+        className={cx('contact-form')}
+        onSubmit={(e) => { e.preventDefault(); submit(); }}
+      >
         <div className={cx('row')}>
-          <input type="text" name="name" placeholder="Your name" />
+          <input type="text" name="name" placeholder="Your name" value={name} onChange={onNameChange} />
         </div>
         <div className={cx('row')}>
-          <input type="text" name="email" placeholder="Your email" />
+          <input type="text" name="email" placeholder="Your email" value={email} onChange={onEmailChange} />
         </div>
         <div className={cx('row')}>
-          <textarea rows="5" name="message" placeholder="What’s up?" cols="0" />
+          <textarea rows="5" name="message" placeholder="What’s up?" cols="0" value={message} onChange={onMessageChange} />
         </div>
 
-        <ArrowLink type="submit" onClick={(e) => { e.preventDefault(); alert('hiii'); }}>
+        <ArrowLink type="submit">
           Send your message
         </ArrowLink>
       </form>
