@@ -34,6 +34,8 @@ function ContactPageLightContent() {
       <form action="/api/contact" className={cx('contact-form')}>
         <div className={cx('row')}>
           <input type="text" name="name" placeholder="Your name" />
+        </div>
+        <div className={cx('row')}>
           <input type="text" name="email" placeholder="Your email" />
         </div>
         <div className={cx('row')}>
