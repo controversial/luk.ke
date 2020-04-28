@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
+import fetch from 'isomorphic-unfetch';
 import { getContactPage } from '../api/content/contact';
 
 import ArrowLink from '../../components/ArrowLink';
@@ -21,7 +22,7 @@ function Contact() {
   return (
     <React.Fragment>
       <Head>
-        <title>Luke Deen Taylor</title>
+        <title>Contact | Luke Deen Taylor</title>
       </Head>
     </React.Fragment>
   );
@@ -32,12 +33,14 @@ function ContactPageLightContent() {
   const [name, onNameChange] = useInputState();
   const [email, onEmailChange] = useInputState();
   const [message, onMessageChange] = useInputState();
+  const form = useRef(null);
 
-  function submit() {
-    console.log('submitting');
-    console.log('name: ', name);
-    console.log('email: ', email);
-    console.log('message: ', message);
+  async function submit() {
+    const response = await fetch(form.current.action, {
+      method: 'POST',
+      body: new URLSearchParams(new FormData(form.current)),
+    }).then((r) => r.json());
+    console.log(response);
   }
 
 
@@ -50,6 +53,7 @@ function ContactPageLightContent() {
       </h1>
 
       <form
+        ref={form}
         action="/api/contact"
         className={cx('contact-form')}
         onSubmit={(e) => { e.preventDefault(); submit(); }}
