@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import classNames from 'classnames/bind';
 
 import { getContactPage } from '../api/content/contact';
 
@@ -24,7 +24,7 @@ function Contact() {
 
 function ContactPageLightContent() {
   return (
-    <div className={cx('light-content')}>
+    <div className={cx('contact-page', 'light-content')}>
       <h1>
         Send&nbsp;a
         <br />
@@ -49,7 +49,7 @@ function ContactPageLightContent() {
 
 function ContactPageDarkContent({ content: { title, links } }) {
   return (
-    <div className={cx('dark-content')}>
+    <div className={cx('contact-page', 'dark-content')}>
       <h1>{ title }</h1>
       <ul>
         { links.map(({ label, url }) => (
