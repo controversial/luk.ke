@@ -58,18 +58,8 @@ $top-padding: 40px
     align-items: stretch
     justify-content: flex-start
 
-    .row
-      display: flex
-      flex-direction: row
+    & > :not(:last-child)
       margin-bottom: 20px
-
-      & > *
-        flex: 1 1 0
-        width: 0
-        min-width: 0
-
-        &:not(:last-child)
-          margin-right: 10px
 
   input,
   textarea
