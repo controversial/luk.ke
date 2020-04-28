@@ -1,3 +1,4 @@
+@import '../../styles/colors.sass'
 @import '../../styles/dimensions.sass'
 
 $h1-line-height: 75px
@@ -18,6 +19,30 @@ $top-padding: 40px
 .dark-content
   padding-top: $nav-height + $top-padding
   text-align: right
+  padding-bottom: 80px
 
   h1
     margin-top: $h1-line-height // line up with second line of right side title
+
+  ul
+    display: inline-block
+    list-style-type: none
+    padding: 0
+    margin: 0
+    font-size: 20px
+
+    li
+      margin-bottom: 12px
+      color: transparentize($white, .15)
+
+      a
+        padding: 4px 0
+
+      &:first-child a
+        padding-top: 0
+
+      &:last-child a
+        padding-bottom: 0
+
+      & > a > svg[class]
+        margin-left: .6em
