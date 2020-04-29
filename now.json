@@ -1,6 +1,7 @@
 {
   "env": {
-    "GITHUB_TOKEN": "@portfolio_github_token"
+    "GITHUB_TOKEN": "@portfolio_github_token",
+    "SENDGRID_API_KEY": "@portfolio_sendgrid_api_key"
   },
   "github": {
     "silent": true
