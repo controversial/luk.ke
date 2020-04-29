@@ -16,6 +16,7 @@
   "homepage": "https://luk.ke",
   "dependencies": {
     "@next/bundle-analyzer": "^9.3.6",
+    "@sendgrid/mail": "^7.1.0",
     "classnames": "^2.2.6",
     "domhandler": "^3.0.0",
     "domutils": "^2.0.0",
