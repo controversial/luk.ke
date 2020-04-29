@@ -3,7 +3,15 @@ import sgMail from '@sendgrid/mail';
 import Prismic from 'prismic-javascript';
 import { apiEndpoint as prismicApiEndpoint } from '../../helpers/prismic';
 
+import { delay } from '../../helpers/motion';
+
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+
+if (process.env.DISABLE_EMAIL === 'true') {
+  console.warn('Note: contact form emails will be suppressed due to the presence of the DISABLE_EMAIL flag');
+}
+
 
 const targetEmail = new Promise((resolve) => {
   const address = Prismic.getApi(prismicApiEndpoint)
@@ -35,7 +43,9 @@ export default async (req, res) => {
   if (!req.body.message) return res.status(400).json({ error: "'message' is required" });
 
   try {
-    await sgMail.send(await message(req.body));
+    if (process.env.DISABLE_EMAIL !== 'true') {
+      await sgMail.send(await message(req.body));
+    } else await delay(300);
   } catch (e) {
     return res.status(500).json({ error: e?.response?.body || e.message || e });
   }
