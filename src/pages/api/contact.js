@@ -1,8 +1,22 @@
 import sgMail from '@sendgrid/mail';
+
+import Prismic from 'prismic-javascript';
+import { apiEndpoint as prismicApiEndpoint } from '../../helpers/prismic';
+
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const message = ({ name, email, message: body }) => ({
-  to: 'luke@deentaylor.com',
+const targetEmail = new Promise((resolve) => {
+  const address = Prismic.getApi(prismicApiEndpoint)
+    .then((prism) => prism.query(Prismic.Predicates.at('document.type', 'contact')))
+    .then(({ results }) => results[0].data)
+    .then((data) => data.contact_form_address)
+    .catch(() => 'luke@deentaylor.com');
+
+  resolve(address);
+});
+
+const message = async ({ name, email, message: body }) => ({
+  to: await targetEmail,
   from: {
     name: 'Portfolio Contact Form',
     email: 'contact@luk.ke',
@@ -21,9 +35,9 @@ export default async (req, res) => {
   if (!req.body.message) return res.status(400).json({ error: "'message' is required" });
 
   try {
-    await sgMail.send(message(req.body));
+    await sgMail.send(await message(req.body));
   } catch (e) {
-    return res.status(500).json({ error: e?.response?.body || e });
+    return res.status(500).json({ error: e?.response?.body || e.message || e });
   }
 
   return res.json({ message: 'Sent successfully' });
