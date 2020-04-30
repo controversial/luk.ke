@@ -24,5 +24,8 @@
     margin-top: .05em
     transition: transform .15s
 
-  &:hover .arrow
+  &:not(:disabled):hover .arrow
     transform: translateX(.25em) rotate(-90deg)
+
+  &:disabled
+    cursor: default

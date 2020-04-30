@@ -65,6 +65,12 @@ $top-padding: 40px
     & > :not(:last-child)
       margin-bottom: 20px
 
+    & > *
+      transition: opacity .25s
+
+    & > :disabled
+      opacity: 0.6
+
   input,
   textarea
     background: none
@@ -85,6 +91,9 @@ $top-padding: 40px
   input
     padding: .2em 0
     margin-top: -.2em
+
+  textarea
+    padding: 0
 
   button
     font-size: 20px
