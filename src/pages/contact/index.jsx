@@ -61,13 +61,15 @@ function ContactPageLightContent() {
         className={cx('contact-form')}
         onSubmit={(e) => { e.preventDefault(); submit(); }}
       >
-        <input type="text" name="name" placeholder="Your name" value={name} onChange={onNameChange} />
-        <input type="text" name="email" placeholder="Your email" value={email} onChange={onEmailChange} />
-        <textarea rows="5" name="message" placeholder="What’s up?" cols="0" value={message} onChange={onMessageChange} />
+        <fieldset disabled={['loading', 'complete'].includes(formState)}>
+          <input type="text" name="name" placeholder="Your name" value={name} onChange={onNameChange} />
+          <input type="text" name="email" placeholder="Your email" value={email} onChange={onEmailChange} />
+          <textarea rows="5" name="message" placeholder="What’s up?" cols="0" value={message} onChange={onMessageChange} />
 
-        <ArrowLink type="submit">
-          Send your message
-        </ArrowLink>
+          <ArrowLink type="submit">
+            Send your message
+          </ArrowLink>
+        </fieldset>
       </form>
     </div>
   );
