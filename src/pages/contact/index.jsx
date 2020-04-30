@@ -5,6 +5,8 @@ import classNames from 'classnames/bind';
 import fetch from 'isomorphic-unfetch';
 import { getContactPage } from '../api/content/contact';
 
+import { motion, AnimatePresence } from 'framer-motion';
+import { easings } from '../../helpers/motion';
 import ArrowLink from '../../components/ArrowLink';
 import Head from 'next/head';
 
@@ -48,29 +50,60 @@ function ContactPageLightContent() {
 
 
   return (
-    <div className={cx('contact-page', 'light-content')}>
-      <h1>
-        Send&nbsp;a
-        <br />
-        message
-      </h1>
+    <div className={cx('overflow-wrapper')}>
+      <AnimatePresence initial={false}>
+        {
+          formState !== 'complete'
+            // before submission is complete, show the form
+            ? (
+              <motion.div
+                className={cx('contact-page', 'light-content')}
+                key="form"
+                initial={{ x: '-50%', opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: '-50%', opacity: 0 }}
+                transition={{ duration: 0.3, ease: easings.ease, opacity: { duration: 0.2 } }}
+              >
+                {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+                <h1>Send&nbsp;a<br />message</h1>
+                <form
+                  ref={form}
+                  action="/api/contact"
+                  className={cx('contact-form')}
+                  onSubmit={(e) => { e.preventDefault(); submit(); }}
+                >
+                  <fieldset disabled={['loading', 'complete'].includes(formState)}>
+                    <input type="text" name="name" placeholder="Your name" value={name} onChange={onNameChange} />
+                    <input type="text" name="email" placeholder="Your email" value={email} onChange={onEmailChange} />
+                    <textarea rows="5" name="message" placeholder="What’s up?" cols="0" value={message} onChange={onMessageChange} />
 
-      <form
-        ref={form}
-        action="/api/contact"
-        className={cx('contact-form')}
-        onSubmit={(e) => { e.preventDefault(); submit(); }}
-      >
-        <fieldset disabled={['loading', 'complete'].includes(formState)}>
-          <input type="text" name="name" placeholder="Your name" value={name} onChange={onNameChange} />
-          <input type="text" name="email" placeholder="Your email" value={email} onChange={onEmailChange} />
-          <textarea rows="5" name="message" placeholder="What’s up?" cols="0" value={message} onChange={onMessageChange} />
+                    <ArrowLink type="submit">
+                      Send your message
+                    </ArrowLink>
+                  </fieldset>
+                </form>
+              </motion.div>
+            )
 
-          <ArrowLink type="submit">
-            Send your message
-          </ArrowLink>
-        </fieldset>
-      </form>
+            // After submission is complete, show a thank you message
+            : (
+              <motion.div
+                className={cx('contact-page', 'light-content')}
+                key="successMessage"
+                initial={{ x: '50%', opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: '50%', opacity: 0 }}
+                transition={{ duration: 0.3, ease: easings.ease, opacity: { duration: 0.2, delay: 0.05 } }} // eslint-disable-line max-len
+              >
+                {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+                <h1>Got&nbsp;it,<br />thanks!</h1>
+                <p>
+                  I’ll be in touch soon!
+                </p>
+              </motion.div>
+            )
+        }
+      </AnimatePresence>
     </div>
   );
 }

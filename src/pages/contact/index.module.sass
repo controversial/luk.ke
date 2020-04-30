@@ -52,6 +52,11 @@ $top-padding: 40px
 
 
 .light-content
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+
   form fieldset
     display: flex
     flex-direction: column
@@ -99,3 +104,12 @@ $top-padding: 40px
   button
     font-size: 20px
     @include font-weight(650)
+
+
+.overflow-wrapper
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  overflow: hidden
