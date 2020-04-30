@@ -35,12 +35,15 @@ function ContactPageLightContent() {
   const [message, onMessageChange] = useInputState();
   const form = useRef(null);
 
+  const [formState, setFormState] = useState('initial'); // 'initial', 'loading', 'complete', or 'error'
+
   async function submit() {
+    setFormState('loading');
     const response = await fetch(form.current.action, {
       method: 'POST',
       body: new URLSearchParams(new FormData(form.current)),
-    }).then((r) => r.json());
-    console.log(response);
+    });
+    setFormState(response.ok ? 'complete' : 'error');
   }
 
 
