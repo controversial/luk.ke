@@ -30,10 +30,10 @@
     "lodash": "^4.17.15",
     "lodash.clonedeep": "^4.5.0",
     "mitt": "^1.2.0",
-    "next": "^9.3.3",
+    "next": "^9.3.6",
     "popmotion": "9.0.0-beta-8",
     "prismic-dom": "git+https://git@github.com/controversial/prismic-dom.git",
-    "prismic-javascript": "^2.7.0",
+    "prismic-javascript": "^2.7.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -48,7 +48,7 @@
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-react-hooks": "^3.0.0",
-    "node-sass": "^4.13.1"
+    "eslint-plugin-react-hooks": "^4.0.0",
+    "node-sass": "^4.14.0"
   }
 }
