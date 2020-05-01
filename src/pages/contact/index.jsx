@@ -6,6 +6,9 @@ import fetch from 'isomorphic-unfetch';
 import { getContactPage } from '../api/content/contact';
 import parse from 'html-react-parser';
 
+import { useForm } from 'react-hook-form';
+import { emailRegex } from '../../helpers/email';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { easings } from '../../helpers/motion';
 import ArrowLink from '../../components/ArrowLink';
@@ -13,12 +16,6 @@ import Head from 'next/head';
 
 import styles from './index.module.sass';
 const cx = classNames.bind(styles);
-
-
-function useInputState(initialValue = '') {
-  const [value, setValue] = useState(initialValue);
-  return [value, (e) => setValue(e.target.value)];
-}
 
 
 function Contact() {
@@ -35,20 +32,18 @@ function Contact() {
 function ContactPageLightContent({
   content: { contact_form_success_message: contactFormSuccessMessage },
 }) {
-  const [name, onNameChange] = useInputState();
-  const [email, onEmailChange] = useInputState();
-  const [message, onMessageChange] = useInputState();
   const form = useRef(null);
 
-  const [formState, setFormState] = useState('initial'); // 'initial', 'loading', 'complete', or 'error'
+  const [formState, setFormState] = useState('initial'); // 'initial', 'loading', or 'complete'
+  const { handleSubmit, register, errors } = useForm();
 
-  async function submit() {
+  async function submit(values) {
     setFormState('loading');
     const response = await fetch(form.current.action, {
       method: 'POST',
-      body: new URLSearchParams(new FormData(form.current)),
+      body: new URLSearchParams(values),
     });
-    setFormState(response.ok ? 'complete' : 'error');
+    setFormState(response.ok ? 'complete' : 'initial');
   }
 
 
@@ -72,14 +67,33 @@ function ContactPageLightContent({
                 <h1>Send&nbsp;a<br />message</h1>
                 <form
                   ref={form}
-                  action="/api/contact"
                   className={cx('contact-form')}
-                  onSubmit={(e) => { e.preventDefault(); submit(); }}
+                  noValidate
+                  action="/api/contact"
+                  onSubmit={handleSubmit(submit)}
                 >
                   <fieldset disabled={['loading', 'complete'].includes(formState)}>
-                    <input type="text" name="name" placeholder="Your name" value={name} onChange={onNameChange} />
-                    <input type="text" name="email" placeholder="Your email" value={email} onChange={onEmailChange} />
-                    <textarea rows="5" name="message" placeholder="What’s up?" cols="0" value={message} onChange={onMessageChange} />
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Your name"
+                      className={cx('field', { error: errors.name })}
+                      ref={register({ required: true })}
+                    />
+                    <input
+                      type="text"
+                      name="email"
+                      placeholder="Your email"
+                      className={cx('field', { error: errors.email })}
+                      ref={register({ required: true, pattern: emailRegex })}
+                    />
+                    <textarea
+                      name="message"
+                      placeholder="What’s up?"
+                      rows="5"
+                      className={cx('field', { error: errors.message })}
+                      ref={register({ required: true })}
+                    />
 
                     <ArrowLink type="submit">
                       Send your message
