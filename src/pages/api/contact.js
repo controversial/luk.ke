@@ -1,4 +1,5 @@
 import sgMail from '@sendgrid/mail';
+import { isEmail } from '../../helpers/email';
 
 import Prismic from 'prismic-javascript';
 import { apiEndpoint as prismicApiEndpoint } from '../../helpers/prismic';
@@ -40,6 +41,7 @@ export default async (req, res) => {
 
   if (!req.body.name) return res.status(400).json({ error: "'name' is required" });
   if (!req.body.email) return res.status(400).json({ error: "'email' is required" });
+  if (!isEmail(req.body.email)) return res.status(400).json({ error: "'email' is invalid" });
   if (!req.body.message) return res.status(400).json({ error: "'message' is required" });
 
   try {
