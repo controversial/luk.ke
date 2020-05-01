@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 
 import fetch from 'isomorphic-unfetch';
 import { getContactPage } from '../api/content/contact';
+import parse from 'html-react-parser';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { easings } from '../../helpers/motion';
@@ -31,7 +32,9 @@ function Contact() {
 }
 
 
-function ContactPageLightContent() {
+function ContactPageLightContent({
+  content: { contact_form_success_message: contactFormSuccessMessage },
+}) {
   const [name, onNameChange] = useInputState();
   const [email, onEmailChange] = useInputState();
   const [message, onMessageChange] = useInputState();
@@ -96,10 +99,7 @@ function ContactPageLightContent() {
                 transition={{ duration: 0.3, ease: easings.ease, opacity: { duration: 0.2, delay: 0.05 } }} // eslint-disable-line max-len
               >
                 {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
-                <h1>Got&nbsp;it,<br />thanks!</h1>
-                <p>
-                  I’ll be in touch soon!
-                </p>
+                { parse(contactFormSuccessMessage) }
               </motion.div>
             )
         }
@@ -107,6 +107,16 @@ function ContactPageLightContent() {
     </div>
   );
 }
+ContactPageLightContent.propTypes = {
+  content: PropTypes.exact({
+    title: PropTypes.string.isRequired,
+    links: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+    })).isRequired,
+    contact_form_success_message: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 
 function ContactPageDarkContent({ content: { title, links } }) {
@@ -123,15 +133,7 @@ function ContactPageDarkContent({ content: { title, links } }) {
     </div>
   );
 }
-ContactPageDarkContent.propTypes = {
-  content: PropTypes.exact({
-    title: PropTypes.string.isRequired,
-    links: PropTypes.arrayOf(PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired,
-    })).isRequired,
-  }).isRequired,
-};
+ContactPageDarkContent.propTypes = ContactPageLightContent.propTypes;
 
 
 Object.assign(Contact, {

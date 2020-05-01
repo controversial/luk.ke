@@ -1,4 +1,5 @@
 import Prismic from 'prismic-javascript';
+import PrismicDOM from 'prismic-dom';
 import initApi from '../../../helpers/prismic';
 
 
@@ -11,6 +12,7 @@ export async function getContactPage(req) {
   return {
     title: data.title[0].text,
     links: data.links.map(({ label, link: { url } }) => ({ label, url })),
+    contact_form_success_message: PrismicDOM.RichText.asHtml(data.contact_form_success_message),
   };
 }
 
