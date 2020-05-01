@@ -66,6 +66,7 @@ function ContactPageLightContent({
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: '-50%', opacity: 0 }}
                 transition={{ duration: 0.3, ease: easings.ease, opacity: { duration: 0.2 } }}
+                style={{ willChange: ['loading', 'complete'].includes(formState) ? 'transform' : 'auto' }}
               >
                 {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
                 <h1>Send&nbsp;a<br />message</h1>
