@@ -50,8 +50,6 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^3.0.0",
-    "node-sass": "^4.13.1",
-    "styled-jsx": "^3.2.5",
-    "styled-jsx-plugin-sass": "^0.3.0"
+    "node-sass": "^4.13.1"
   }
 }
