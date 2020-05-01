@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer } from 'react';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash.clonedeep';
+import cloneDeep from 'lodash/cloneDeep';
 
 const StoreContext = createContext();
 const initialState = {
