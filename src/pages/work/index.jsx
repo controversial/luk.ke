@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 import { AnimatePresence, motion } from 'framer-motion';
+import { useBodyScroll } from '../../helpers/motion';
 import { ParallaxScroll, ParallaxSection, ParallaxImage } from '../../components/ParallaxScroll';
 import ArrowLink from '../../components/ArrowLink';
 import TagsList from '../../components/TagsList';
@@ -89,6 +90,15 @@ function WorkPageLightContent({ content: projects, bus }) {
     return () => bus.off('changeProject', onChangeProject);
   }, [currProjectIndex]);
 
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollTimeout = useRef(null);
+  const scroll = useBodyScroll();
+  useEffect(() => scroll.onChange(() => {
+    clearTimeout(scrollTimeout.current);
+    setIsScrolling(true);
+    scrollTimeout.current = setTimeout(() => setIsScrolling(false), 500);
+  }), [isScrolling]);
+
   // Replace function for html-react-parser that turns tags into h2 elements
   const replaceWithH2 = ({ type, attribs, children }) => {
     if (type === 'tag') return React.createElement('h2', attribs, domToReact(children));
@@ -107,6 +117,8 @@ function WorkPageLightContent({ content: projects, bus }) {
           exit="exit"
           variants={lightContentTransitionVariants}
           custom={scrollDirection}
+
+          style={{ willChange: isScrolling ? 'opacity, transform' : 'auto' }}
         >
           <TagsList max={3}>{ project.tags }</TagsList>
 
