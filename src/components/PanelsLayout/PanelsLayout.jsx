@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { useStore } from '../../store';
@@ -86,6 +86,11 @@ function PanelsLayout({
     willChange: (menuOpen || willNavigate || willFade) ? 'opacity' : 'auto',
   };
 
+  // This ref is used for non-stale access to passedOrientation, since the value of
+  // passedOrientation changes over the course of the async onNavigate function.
+  const orientationRef = useRef(passedOrientation);
+  orientationRef.current = passedOrientation;
+
   const router = useRouter();
   // This function orchestrates the animation sequence for page transitions!
   async function onNavigate() {
@@ -102,6 +107,9 @@ function PanelsLayout({
     setDisplayContent(false);
     // Wait for the new route to load
     await routeChanged; // TODO: handle errors
+    // Check whether the light panel will change position as the result of this transition
+    const orientationWillChange = orientationRef.current !== orientation;
+    const lightPanelWillMove = orientationWillChange || menuOpen;
     // Without animation, close the menu and transform the light panel to stay in place
     if (menuOpen) lightPanelControls.set({ x: openOffset });
     panelsControls.set('menu-closed');
@@ -110,7 +118,9 @@ function PanelsLayout({
     // Let the new page content/attributes flow in
     setFreezeUpdates(false);
     // Wait for the panel to finish sliding
-    await new Promise((resolve) => setLightPanelAnimCallback(() => resolve));
+    if (lightPanelWillMove) {
+      await new Promise((resolve) => setLightPanelAnimCallback(() => resolve));
+    }
     setLightPanelAnimCallback(null);
     // Fade in all content
     setDisplayContent(true);
