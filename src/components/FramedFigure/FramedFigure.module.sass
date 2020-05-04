@@ -1,3 +1,4 @@
+@import '../../styles/colors'
 @import '../../styles/mixins'
 
 
@@ -14,7 +15,7 @@
     border-radius: 8px
     overflow: hidden
 
-    box-shadow: 0 6px 15px -5px rgba(0, 0, 0, 0.2), 0 10px 50px -10px rgba(0, 0, 0, 0.5)
+    box-shadow: 0 6px 15px -5px rgba(0, 0, 0, 0.1), 0 5px 50px -10px rgba(0, 0, 0, 0.2)
 
     .chrome
       padding: 11px 19px
@@ -31,7 +32,6 @@
     .main
       display: block
       width: 100%
-      box-shadow: 0 -1px 0 0 rgba(172, 212, 255, .1)
 
 
     // no frame
@@ -43,6 +43,7 @@
     // dark frame
     &.dark
       background: #26262C
+      box-shadow: 0 6px 15px -5px rgba(0, 0, 0, 0.2), 0 10px 50px -10px rgba(0, 0, 0, 0.5)
 
       .chrome .stoplight
         &:nth-child(1)
@@ -54,9 +55,25 @@
         &:nth-child(3)
           background: #217C23
 
+      .main
+        box-shadow: 0 -1px 0 0 rgba(172, 212, 255, .1)
 
-    // TODO: light frame
 
+    &.light
+      background: $white
+
+      .chrome .stoplight
+        &:nth-child(1)
+          background: #ED6B60
+
+        &:nth-child(2)
+          background: #F7C250
+
+        &:nth-child(3)
+          background: #63C655
+
+      .main
+        box-shadow: 0 -1px 0 0 rgba(69, 82, 97, 0.1)
 
   figcaption
     margin: 1.5em 15% 0
