@@ -31,21 +31,15 @@ function CaseStudy({ project, errorCode }) {
   /* eslint-enable */
   const asTextBlock = { replace: (node) => addClassName(node, ['block', 'text']) };
 
-  // If the first piece of page content is an image, this image becomes the "primary image" and is
-  // removed from the main array of content
-  let primaryImage = null;
-  let { content } = project;
-  if (content[0]?.type === 'image') {
-    primaryImage = content[0]; // eslint-disable-line prefer-destructuring
-    content = content.slice(1);
-  }
+  const heroImage = project?.content?.hero;
+  const content = project?.content?.blocks;
 
   // Split page content up into sections
 
   const contentSections = [];
   // If the first content block doesn't explicitly define the start of a section, we create a bucket
   // for that beginning content to go into.
-  if (content[0] && content[0]?.type !== 'section_heading') contentSections.push([]);
+  if (content?.[0] && content[0].type !== 'section_heading') contentSections.push([]);
   content.forEach((block) => {
     // Whenever we reach a section heading, we start a new section
     if (block.type === 'section_heading') contentSections.push([]);
@@ -75,13 +69,13 @@ function CaseStudy({ project, errorCode }) {
 
         {/* Primary image (if it exists) */}
         {
-          primaryImage && (
+          heroImage && (
             <FramedFigure
               className={cx('block', 'image', 'primary-image')}
-              frameStyle={primaryImage.frame}
-              caption={primaryImage.caption && parse(primaryImage.caption)}
+              frameStyle={heroImage.frame}
+              caption={heroImage.caption && parse(heroImage.caption)}
             >
-              <img src={primaryImage.src} alt={primaryImage.alt} />
+              <img src={heroImage.src} alt={heroImage.alt} />
             </FramedFigure>
           )
         }
@@ -137,9 +131,17 @@ CaseStudy.propTypes = {
     head: PropTypes.string.isRequired,
     subhead: PropTypes.string.isRequired,
     tags: PropTypes.arrayOf(PropTypes.string).isRequired,
-    content: PropTypes.arrayOf(PropTypes.shape({
-      type: PropTypes.oneOf(['section_heading', 'content', 'image', 'image_gallery', 'video', 'video_gallery', 'embed']),
-    })).isRequired,
+    content: PropTypes.shape({
+      hero: PropTypes.shape({
+        src: PropTypes.string,
+        alt: PropTypes.string,
+        caption: PropTypes.string,
+        frame: PropTypes.string,
+      }),
+      blocks: PropTypes.arrayOf(PropTypes.shape({
+        type: PropTypes.oneOf(['section_heading', 'content', 'image', 'image_gallery', 'video', 'video_gallery', 'embed']),
+      })).isRequired,
+    }).isRequired,
   }),
   errorCode: PropTypes.number,
 };

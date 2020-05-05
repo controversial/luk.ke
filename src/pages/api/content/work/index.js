@@ -37,54 +37,63 @@ export const processProject = async ({ uid, data: project, tags }, includeConten
   // process all of the rich text, etc. from the "body" of the Project entry from Prismic.
   body: undefined,
   ...includeContent && {
-    content: project.body.map(({ slice_type: type, primary: item, items }) => {
-      // Breaks between sections
-      if (type === 'section_heading') {
-        return {
-          type,
-          id: item.section_id,
-          content: PrismicDOM.RichText.asHtml(item.section_title),
-        };
-      }
-      // Blocks of rich text content
-      if (type === 'content') {
-        return { type, content: PrismicDOM.RichText.asHtml(item.text_content) };
-      }
-      // Images
-      if (type === 'image') {
-        return {
-          type,
-          frame: item.frame,
-          src: item.image.url,
-          alt: item.image.alt,
-          caption: PrismicDOM.RichText.asHtml(item.caption) || null,
-        };
-      }
-      if (type === 'image_gallery') {
-        return {
-          type,
-          frame: item.frame,
-          images: items.map(({ image, caption }) => ({
-            src: image.url,
-            alt: image.alt,
-            caption: PrismicDOM.RichText.asHtml(caption) || null,
-          })),
-        };
-      }
-      // Videos
-      if (type === 'video') {
-        return { type, src: items?.[0]?.video?.url };
-      }
-      if (type === 'video_gallery') {
-        return { type, srcs: items.map(({ video }) => video.url) };
-      }
-      // Embeds
-      if (type === 'embed') {
-        return { type, content: item.embed?.html, meta: { ...item.embed, html: undefined } };
-      }
+    content: {
+      hero: {
+        src: project.hero_image.url,
+        alt: project.hero_image.alt,
+        frame: project.hero_image_frame,
+        caption: PrismicDOM.RichText.asHtml(project.hero_image_caption) || null,
+      },
 
-      return { type, content: Object.keys(item || {}).length ? item : items };
-    }),
+      blocks: project.body.map(({ slice_type: type, primary: item, items }) => {
+        // Breaks between sections
+        if (type === 'section_heading') {
+          return {
+            type,
+            id: item.section_id,
+            content: PrismicDOM.RichText.asHtml(item.section_title),
+          };
+        }
+        // Blocks of rich text content
+        if (type === 'content') {
+          return { type, content: PrismicDOM.RichText.asHtml(item.text_content) };
+        }
+        // Images
+        if (type === 'image') {
+          return {
+            type,
+            src: item.image.url,
+            alt: item.image.alt,
+            frame: item.frame,
+            caption: PrismicDOM.RichText.asHtml(item.caption) || null,
+          };
+        }
+        if (type === 'image_gallery') {
+          return {
+            type,
+            frame: item.frame,
+            images: items.map(({ image, caption }) => ({
+              src: image.url,
+              alt: image.alt,
+              caption: PrismicDOM.RichText.asHtml(caption) || null,
+            })),
+          };
+        }
+        // Videos
+        if (type === 'video') {
+          return { type, src: items?.[0]?.video?.url };
+        }
+        if (type === 'video_gallery') {
+          return { type, srcs: items.map(({ video }) => video.url) };
+        }
+        // Embeds
+        if (type === 'embed') {
+          return { type, content: item.embed?.html, meta: { ...item.embed, html: undefined } };
+        }
+
+        return { type, content: Object.keys(item || {}).length ? item : items };
+      }),
+    }
   },
 });
 
