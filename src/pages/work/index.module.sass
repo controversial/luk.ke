@@ -20,7 +20,9 @@ article.project-overview
   bottom: 80px
   width: 100%
   max-width: 800px
-  padding: 0 70px 50px 60px
+  // shift article content slightly upwards on large screens
+  // (on small page heights, bottom padding < 0 has no effect)
+  padding: 0 70px calc(20vh - 140px) 60px
 
 
   h2
