@@ -213,6 +213,7 @@ Object.assign(WorkIndex, {
   DarkContent: WorkPageDarkContent,
   pageName: 'Work',
   panelOrientation: 'left',
+  missingH1: true,
 
   async getInitialProps(ctx) {
     return { content: await getProjects(ctx.req) };
