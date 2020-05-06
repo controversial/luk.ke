@@ -133,11 +133,10 @@ export function useLerp(source, config = {}) {
   // If the source value is a MotionValue, we need to trigger our internal motionValue to update
   // whenever the source value updates.
   useEffect(() => {
-    let unbindFunc;
     if (source instanceof MotionValue) {
-      unbindFunc = source.onChange((v) => lerpedValue.set(parseFloat(v)));
+      return source.onChange((v) => lerpedValue.set(parseFloat(v)));
     }
-    return unbindFunc;
+    return undefined;
   }, [source]);
 
   return lerpedValue;
