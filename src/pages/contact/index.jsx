@@ -64,7 +64,7 @@ function ContactPageLightContent({
                 style={{ willChange: ['loading', 'complete'].includes(formState) ? 'transform' : 'auto' }}
               >
                 {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
-                <h1>Send&nbsp;a<br />message</h1>
+                <h2>Send&nbsp;a<br />message</h2>
                 <form
                   ref={form}
                   className={cx('contact-form')}
