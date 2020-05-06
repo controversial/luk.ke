@@ -23,6 +23,11 @@ function ParallaxImage({ img, layout, zoom, scrollProgress }) {
   const scale = useTransform(scrollProgress, [0, 1], [from.zoom || 1, to.zoom || 1]);
 
   // Add event listener to attach videos with mode 'progress' to scroll position
+
+  // Note on videos with 'progress' mode: videos should be encoded in ffmpeg as h.264 videos with a
+  // small value for `keyint`. This increases file size a lot, but ensures that there will be enough
+  // key frames in the video to allow very quick seeking to arbitrary positions in the video.
+  // Example:  ffmpeg -i input.mp4 -vcodec libx264 -x264opts keyint=1 output.mp4
   const videoEl = useRef(null);
   useEffect(() => {
     if (video && video.mode === 'progress') {
