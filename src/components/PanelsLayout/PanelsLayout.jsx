@@ -30,6 +30,7 @@ function PanelsLayout({
   darkContent: passedDarkContent,
   orientation: passedOrientation,
   currPageName: passedCurrPageName,
+  provideH1: passedProvideH1,
   willNavigate,
 }) {
   // This component supports "freezing" updates to certain cached state values.
@@ -41,6 +42,7 @@ function PanelsLayout({
   const darkContent = useFreezable(passedDarkContent, freezeUpdates);
   const orientation = useFreezable(passedOrientation, freezeUpdates);
   const currPageName = useFreezable(passedCurrPageName, freezeUpdates);
+  const provideH1 = useFreezable(passedProvideH1, freezeUpdates);
 
   // Whether or not the menu is open is recorded in the global application store
   const { state: { menuOpen, dimensions }, dispatch } = useStore();
@@ -260,7 +262,16 @@ function PanelsLayout({
             onClick={() => { dispatch('setMenuOpen', true); }}
           >
             <MenuIcon />
-            <div className={cx('label')}>{ currPageName || 'Menu' }</div>
+            {
+              // For SEO, it’s important to have exactly one h1 element on every page. Some pages
+              // might tell us that they don't provide a h1 element in their markup. Fortunately,
+              // we already have an element on each page that renders the page title - the menu
+              // button! In cases where the h1 would otherwise be missing, we can just turn the menu
+              // button label into a h1.
+              provideH1
+                ? <h1 className={cx('label')}>{ currPageName || 'Menu' }</h1>
+                : <div className={cx('label')}>{ currPageName || 'Menu' }</div>
+            }
           </motion.button>
         </motion.div>
         {/* dark menu button */}
@@ -286,11 +297,13 @@ PanelsLayout.propTypes = {
   darkContent: PropTypes.element,
   orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
   currPageName: PropTypes.string,
+  provideH1: PropTypes.bool,
   willNavigate: PropTypes.bool,
 };
 PanelsLayout.defaultProps = {
   darkContent: null,
   currPageName: null,
+  provideH1: false,
   willNavigate: false,
 };
 

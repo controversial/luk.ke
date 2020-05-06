@@ -17,11 +17,19 @@ import '../styles/base.sass';
 
 
 function App({ Component, pageProps: basePageProps }) {
-  const { panelOrientation: pagePanelOrientation, pageName: initialPageName } = Component;
+  // Unpack the configuration options that attach to the Component function
+  const {
+    panelOrientation: pagePanelOrientation,
+    pageName: initialPageName,
+    missingH1: componentIsMissingH1,
+  } = Component;
 
+  // Enable fix for Safari overscroll behavior
   useEffect(setSafariScrollFix, []);
 
+  // The pageName starts out with the value attached to the Component, but it can be changed!
   const [pageName, setPageName] = useState(initialPageName);
+
   // This event emitter is passed to both LightContent and DarkContent and can be used to pass data
   // between the two when necessary
   const [bus] = useState(mitt());
@@ -59,6 +67,8 @@ function App({ Component, pageProps: basePageProps }) {
           // layout.
           orientation={(Component.LightContent && Component.DarkContent) ? pagePanelOrientation : 'full'}
           currPageName={pageName}
+          // PanelsLayout should provide an h1 element if the page component says it's missing one
+          provideH1={componentIsMissingH1}
           // We can notify PanelsLayout when we think navigation is going to occur
           willNavigate={willNavigate}
         />
