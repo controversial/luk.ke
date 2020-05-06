@@ -39,6 +39,12 @@
     @include font-weight(730)
     color: $white
 
+    \:global(.gradient)
+      @supports(-webkit-background-clip: text)
+        background: linear-gradient(135deg, $gradient-1, $gradient-2)
+        -webkit-text-fill-color: transparent
+        -webkit-background-clip: text
+
   p
     margin: 0 0 1em
 
