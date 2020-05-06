@@ -45,7 +45,7 @@ function ParallaxImage({ img, layout, zoom, scrollProgress }) {
     }
 
     return undefined;
-  }, [videoEl, video && video.src, video && video.mode]);
+  }, [videoEl, scrollProgress, video?.src, video?.mode]);
 
   // fit image into size box specified in layout.size
 
