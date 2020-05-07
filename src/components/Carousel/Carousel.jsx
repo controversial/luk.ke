@@ -22,7 +22,12 @@ function Carousel({
 
   return (
     <div className={classNames(className, cx('main'))}>
-      { children }
+      {
+        React.Children.map(
+          children,
+          (c) => React.cloneElement(c, { style: { width: `${itemWidth}px` } }),
+        )
+      }
     </div>
   );
 }
