@@ -114,10 +114,15 @@ function CaseStudy({ project, errorCode }) {
                       </FramedFigure>
                     );
                   } else if (block.type === 'image_gallery') {
+                    const carouselSpacing = windowWidth * 0.04 + 60;
+                    // full width minus the two blocks of spacing we need to leave. .6 instead of .5
+                    // so that we show slightly less than half the items to the left / right sides
+                    const carouselItemWidth = (windowWidth - (carouselSpacing * 2)) * 0.6;
                     out = (
                       <Carousel
                         className={cx('block', 'carousel', 'image-gallery')}
-                        spacing={Math.floor(windowWidth * 0.04 + 60)}
+                        spacing={Math.floor(carouselSpacing)}
+                        itemWidth={Math.floor(carouselItemWidth)}
                       >
                         { block.images.map(({ src, alt, caption }) => (
                           <FramedFigure

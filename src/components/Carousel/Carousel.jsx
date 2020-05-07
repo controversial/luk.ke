@@ -9,6 +9,7 @@ const cx = classNames.bind(styles);
 function Carousel({
   children,
   spacing,
+  itemWidth,
   className,
 }) {
   // Check for missing / duplicate keys on children
@@ -18,6 +19,7 @@ function Carousel({
   if (missingKeys || hasDuplicates) {
     throw new Error('Each child of Carousel must have a unique "key" prop');
   }
+
   return (
     <div className={classNames(className, cx('main'))}>
       { children }
@@ -28,11 +30,13 @@ function Carousel({
 Carousel.propTypes = {
   children: PropTypes.node.isRequired,
   spacing: PropTypes.number,
+  itemWidth: PropTypes.number,
   className: PropTypes.string,
 };
 Carousel.defaultProps = {
   className: undefined,
   spacing: 50,
+  itemWidth: 300,
 };
 
 export default Carousel;
