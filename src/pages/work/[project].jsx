@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
@@ -48,6 +48,14 @@ function CaseStudy({ project, errorCode }) {
     const lastSection = contentSections[contentSections.length - 1];
     lastSection.push(block);
   });
+
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+  useEffect(() => {
+    const update = () => setWindowWidth(window.innerWidth);
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
 
 
   return (
@@ -107,7 +115,10 @@ function CaseStudy({ project, errorCode }) {
                     );
                   } else if (block.type === 'image_gallery') {
                     out = (
-                      <Carousel className={cx('block', 'carousel', 'image-gallery')}>
+                      <Carousel
+                        className={cx('block', 'carousel', 'image-gallery')}
+                        spacing={Math.floor(windowWidth * 0.04 + 60)}
+                      >
                         { block.images.map(({ src, alt, caption }) => (
                           <FramedFigure
                             className={cx('carousel-item')}
