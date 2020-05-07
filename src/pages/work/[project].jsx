@@ -7,6 +7,7 @@ import Error from 'next/error';
 
 import TagsList from '../../components/TagsList';
 import FramedFigure from '../../components/FramedFigure';
+import Carousel from '../../components/Carousel';
 
 import { getProject } from '../api/content/work/[project]';
 import { getResizedImage } from '../../helpers/image';
@@ -104,11 +105,31 @@ function CaseStudy({ project, errorCode }) {
                         />
                       </FramedFigure>
                     );
+                  } else if (block.type === 'image_gallery') {
+                    out = (
+                      <Carousel className={cx('block', 'carousel', 'image-gallery')}>
+                        { block.images.map(({ src, alt, caption }) => (
+                          <FramedFigure
+                            className={cx('carousel-item')}
+                            frameStyle={block.frame}
+                            caption={caption && parse(caption)}
+                            key={src}
+                          >
+                            <img
+                              src={getResizedImage(src, 200)}
+                              data-src={src}
+                              className="lazyload"
+                              alt={alt}
+                            />
+                          </FramedFigure>
+                        ))}
+                      </Carousel>
+                    );
                   } else {
                     out = <div className={cx('block', 'text', 'not-implemented')}>{`Not implemented: ${block.type}`}</div>;
                   }
 
-                  // TODO: implement image_gallery, video, video_gallery, embed
+                  // TODO: implement video, video_gallery, embed
 
                   return React.Children.map(out, (el, idx2) => (
                     // eslint-disable-next-line react/no-array-index-key
