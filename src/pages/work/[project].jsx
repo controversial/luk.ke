@@ -49,7 +49,7 @@ function CaseStudy({ project, errorCode }) {
     lastSection.push(block);
   });
 
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+  const [windowWidth, setWindowWidth] = useState(0);
   useEffect(() => {
     const update = () => setWindowWidth(window.innerWidth);
     update();
@@ -118,7 +118,7 @@ function CaseStudy({ project, errorCode }) {
                     // full width minus the two blocks of spacing we need to leave. .6 instead of .5
                     // so that we show slightly less than half the items to the left / right sides
                     const carouselItemWidth = (windowWidth - (carouselSpacing * 2)) * 0.6;
-                    out = (
+                    out = windowWidth === 0 ? <React.Fragment /> : (
                       <Carousel
                         className={cx('block', 'carousel', 'image-gallery')}
                         spacing={Math.floor(carouselSpacing)}
