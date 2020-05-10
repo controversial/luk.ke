@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
+
+import { motion } from 'framer-motion';
 
 import styles from './Carousel.module.sass';
 const cx = classNames.bind(styles);
 
+
+function CarouselItem({
+  children,
+}) {
+  return (
+    <motion.div className={cx('item')}>
+      { children }
+    </motion.div>
+  );
+}
+CarouselItem.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 function Carousel({
   children: childrenProp,
@@ -21,7 +36,15 @@ function Carousel({
 
   return (
     <div className={classNames(className, cx('main'))}>
-      { children.map((c) => React.cloneElement(c, { style: { width: `${itemWidth}px` } })) }
+      {
+        children.map((c) => {
+          return (
+            <CarouselItem key={c.key}>
+              { c }
+            </CarouselItem>
+          );
+        })
+      }
     </div>
   );
 }
