@@ -9,15 +9,17 @@ const cx = classNames.bind(styles);
 
 
 function CarouselItem({
+  deltaFromCenter,
   children,
 }) {
   return (
-    <motion.div className={cx('item')}>
+    <motion.div className={cx('item', { selected: deltaFromCenter === 0 })}>
       { children }
     </motion.div>
   );
 }
 CarouselItem.propTypes = {
+  deltaFromCenter: PropTypes.number.isRequired,
   children: PropTypes.node.isRequired,
 };
 
@@ -34,12 +36,17 @@ function Carousel({
   const hasDuplicates = keys.some((val, idx, arr) => (arr.indexOf(val) !== idx));
   if (missingKeys || hasDuplicates) throw new Error('Each child of Carousel must have a unique "key" prop');
 
+  const [currentKey, setCurrentKey] = useState(keys[0]);
+
   return (
     <div className={classNames(className, cx('main'))}>
       {
         children.map((c) => {
+          const centerIndex = children.findIndex((c2) => c2.key === currentKey);
+          const deltaFromCenter = children.indexOf(c) - centerIndex;
+
           return (
-            <CarouselItem key={c.key}>
+            <CarouselItem key={c.key} deltaFromCenter={deltaFromCenter}>
               { c }
             </CarouselItem>
           );
