@@ -10,18 +10,27 @@ const cx = classNames.bind(styles);
 
 function CarouselItem({
   deltaFromCenter,
+  setCurrent,
   children,
 }) {
   return (
-    <motion.div className={cx('item', { selected: deltaFromCenter === 0 })}>
+    <motion.div
+      className={cx('item', { selected: deltaFromCenter === 0 })}
+      onClick={setCurrent}
+    >
       { children }
     </motion.div>
   );
 }
 CarouselItem.propTypes = {
   deltaFromCenter: PropTypes.number.isRequired,
+  setCurrent: PropTypes.func,
   children: PropTypes.node.isRequired,
 };
+CarouselItem.defaultProps = {
+  setCurrent: () => {},
+};
+
 
 function Carousel({
   children: childrenProp,
@@ -46,7 +55,11 @@ function Carousel({
           const deltaFromCenter = children.indexOf(c) - centerIndex;
 
           return (
-            <CarouselItem key={c.key} deltaFromCenter={deltaFromCenter}>
+            <CarouselItem
+              key={c.key}
+              deltaFromCenter={deltaFromCenter}
+              setCurrent={() => setCurrentKey(c.key)}
+            >
               { c }
             </CarouselItem>
           );
