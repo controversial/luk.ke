@@ -75,27 +75,29 @@ function Carousel({
   const totalWidth = (itemWidth * indices.length) + (spacing * indices.length - 1);
 
   return (
-    <div
-      className={classNames(className, cx('main'))}
-      style={{ width: totalWidth }}
-    >
-      {
-        renderChildren.map((child, index) => {
-          // the center element is at position 2 and should have 'deltaFromCenter' of 0
-          const deltaFromCenter = index - 2;
+    <div className={classNames(className, cx('wrapper'))}>
+      <div
+        className={cx('main')}
+        style={{ width: totalWidth }}
+      >
+        {
+          renderChildren.map((child, index) => {
+            // the center element is at position 2 and should have 'deltaFromCenter' of 0
+            const deltaFromCenter = index - 2;
 
-          return (
-            <CarouselItem
-              key={child.key}
-              deltaFromCenter={deltaFromCenter}
-              style={{ width: itemWidth }}
-              setCurrent={() => setCurrentKey(child.key)}
-            >
-              { React.cloneElement(child) }
-            </CarouselItem>
-          );
-        })
-      }
+            return (
+              <CarouselItem
+                key={child.key}
+                deltaFromCenter={deltaFromCenter}
+                style={{ width: itemWidth }}
+                setCurrent={() => setCurrentKey(child.key)}
+              >
+                { React.cloneElement(child) }
+              </CarouselItem>
+            );
+          })
+        }
+      </div>
     </div>
   );
 }
