@@ -11,16 +11,14 @@ const cx = classNames.bind(styles);
 function CarouselItem({
   deltaFromCenter,
   style,
-  setCurrent,
+  setAsCurrent,
   children,
-  key,
 }) {
   return (
     <motion.div
       className={cx('item', { selected: deltaFromCenter === 0 })}
-      onClick={setCurrent}
+      onClick={setAsCurrent}
       style={{ ...style }}
-      key={key}
       positionTransition={{ duration: 0.5 }}
     >
       { children }
@@ -29,13 +27,9 @@ function CarouselItem({
 }
 CarouselItem.propTypes = {
   deltaFromCenter: PropTypes.number.isRequired,
-  setCurrent: PropTypes.func,
-  style: PropTypes.shape({ width: Number, x: Number }).isRequired,
-  key: PropTypes.string.isRequired,
+  style: PropTypes.shape({ width: Number }).isRequired,
+  setAsCurrent: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
-};
-CarouselItem.defaultProps = {
-  setCurrent: () => {},
 };
 
 
@@ -90,7 +84,7 @@ function Carousel({
                 key={child.key}
                 deltaFromCenter={deltaFromCenter}
                 style={{ width: itemWidth }}
-                setCurrent={() => setCurrentKey(child.key)}
+                setAsCurrent={() => setCurrentKey(child.key)}
               >
                 { React.cloneElement(child) }
               </CarouselItem>
