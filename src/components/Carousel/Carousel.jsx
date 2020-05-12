@@ -21,6 +21,7 @@ function CarouselItem({
       onClick={setCurrent}
       style={{ ...style }}
       key={key}
+      positionTransition={{ duration: 0.5 }}
     >
       { children }
     </motion.div>
