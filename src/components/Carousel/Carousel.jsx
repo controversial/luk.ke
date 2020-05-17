@@ -11,14 +11,14 @@ const cx = classNames.bind(styles);
 function CarouselItem({
   deltaFromCenter,
   style,
-  setAsCurrent,
+  moveCarouselBy,
   dragMotionValue,
   children,
 }) {
   return (
     <motion.div
       className={cx('item', { selected: deltaFromCenter === 0 })}
-      onClick={setAsCurrent}
+      onClick={() => moveCarouselBy(deltaFromCenter)}
       drag="x"
       style={{ ...style, x: dragMotionValue }}
       dragConstraints={{ left: 0, right: 0 }}
@@ -30,7 +30,7 @@ function CarouselItem({
 CarouselItem.propTypes = {
   deltaFromCenter: PropTypes.number.isRequired,
   style: PropTypes.shape({ width: Number }).isRequired,
-  setAsCurrent: PropTypes.func.isRequired,
+  moveCarouselBy: PropTypes.func.isRequired,
   dragMotionValue: PropTypes.instanceOf(MotionValue).isRequired,
   children: PropTypes.node.isRequired,
 };
@@ -58,10 +58,15 @@ function Carousel({
   // Invariant at this point: `children` has five or more elements
 
   // Initially, the first element is selected
-  const [currentKey, setCurrentKey] = useState(keys[0]);
-
+  const [currentKey, setCurrentKey] = useState(children2[0].key);
   // What index in the children array is the item that is currently centered?
   const centerIndex = children2.findIndex((c2) => c2.key === currentKey);
+  // Function to move the current index of the carousel by a given number of elements
+  const moveBy = (delta) => {
+    const newIndex = (centerIndex + delta + children2.length) % children2.length;
+    setCurrentKey(children2[newIndex].key);
+  };
+
   // We render two elements on either side of the center element, no matter how big the array is.
   // This array contains the indices, in the five-element-minimum `children` array, of those els.
   const indices = [centerIndex - 2, centerIndex - 1, centerIndex, centerIndex + 1, centerIndex + 2]
@@ -88,7 +93,7 @@ function Carousel({
                 deltaFromCenter={deltaFromCenter}
                 dragMotionValue={dragX}
                 style={{ width: itemWidth }}
-                setAsCurrent={() => setCurrentKey(child.key)}
+                moveCarouselBy={moveBy}
               >
                 { React.cloneElement(child) }
               </CarouselItem>
