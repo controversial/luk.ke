@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, MotionValue } from 'framer-motion';
 
 import styles from './Carousel.module.sass';
 const cx = classNames.bind(styles);
@@ -12,14 +12,16 @@ function CarouselItem({
   deltaFromCenter,
   style,
   setAsCurrent,
+  dragMotionValue,
   children,
 }) {
   return (
     <motion.div
       className={cx('item', { selected: deltaFromCenter === 0 })}
       onClick={setAsCurrent}
-      style={{ ...style }}
-      positionTransition={{ duration: 0.5 }}
+      drag="x"
+      style={{ ...style, x: dragMotionValue }}
+      dragConstraints={{ left: 0, right: 0 }}
     >
       { children }
     </motion.div>
@@ -29,6 +31,7 @@ CarouselItem.propTypes = {
   deltaFromCenter: PropTypes.number.isRequired,
   style: PropTypes.shape({ width: Number }).isRequired,
   setAsCurrent: PropTypes.func.isRequired,
+  dragMotionValue: PropTypes.instanceOf(MotionValue).isRequired,
   children: PropTypes.node.isRequired,
 };
 
@@ -66,13 +69,13 @@ function Carousel({
     .map((i) => i % children2.length); // wrap around
   const renderChildren = indices.map((i) => children2[i]);
 
-  const totalWidth = (itemWidth * indices.length) + (spacing * indices.length - 1);
+  const dragX = useMotionValue(0);
 
   return (
     <div className={classNames(className, cx('wrapper'))}>
       <div
         className={cx('main')}
-        style={{ width: totalWidth }}
+        style={{ width: (itemWidth * indices.length) + (spacing * indices.length - 1) }}
       >
         {
           renderChildren.map((child, index) => {
@@ -83,6 +86,7 @@ function Carousel({
               <CarouselItem
                 key={child.key}
                 deltaFromCenter={deltaFromCenter}
+                dragMotionValue={dragX}
                 style={{ width: itemWidth }}
                 setAsCurrent={() => setCurrentKey(child.key)}
               >
