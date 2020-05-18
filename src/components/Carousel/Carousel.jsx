@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-import { motion, useMotionValue, MotionValue } from 'framer-motion';
+import { motion, useMotionValue, MotionValue, useAnimation } from 'framer-motion';
 
 import styles from './Carousel.module.sass';
 const cx = classNames.bind(styles);
@@ -22,6 +22,19 @@ function CarouselItem({
       drag="x"
       style={{ ...style, x: dragMotionValue }}
       dragConstraints={{ left: 0, right: 0 }}
+      // Pretty easy to drag past the constraint
+      dragElastic={0.8}
+      // Make the snap back to center on release instant (we undo this visually when we start the
+      // animation to the new position).
+      // TODO: do this conditionally (not when we're not moving). Possibly: implement custom logic
+      // using a custom set of dragControls
+      dragTransition={{ bounceStiffness: 1000000, bounceDamping: 1000000 }}
+      onDragEnd={(e, { offset: { x: offset }, velocity: { x: velocity } }) => {
+        const dist = Math.abs(offset);
+        if (dist > style.width || dist > window.innerWidth / 2) { // TODO: better heuristic
+          moveCarouselBy(-Math.sign(offset), velocity);
+        }
+      }}
     >
       { children }
     </motion.div>
@@ -61,12 +74,6 @@ function Carousel({
   const [currentKey, setCurrentKey] = useState(children2[0].key);
   // What index in the children array is the item that is currently centered?
   const centerIndex = children2.findIndex((c2) => c2.key === currentKey);
-  // Function to move the current index of the carousel by a given number of elements
-  const moveBy = (delta) => {
-    const newIndex = (centerIndex + delta + children2.length) % children2.length;
-    setCurrentKey(children2[newIndex].key);
-  };
-
   // We render two elements on either side of the center element, no matter how big the array is.
   // This array contains the indices, in the five-element-minimum `children` array, of those els.
   const indices = [centerIndex - 2, centerIndex - 1, centerIndex, centerIndex + 1, centerIndex + 2]
@@ -75,12 +82,40 @@ function Carousel({
   const renderChildren = indices.map((i) => children2[i]);
 
   const dragX = useMotionValue(0);
+  const containerControls = useAnimation();
+
+  // Function to move the current index of the carousel by a given number of elements
+  const moveBy = async (delta, dragVelocity) => {
+    if (delta === 0) return;
+    const newIndex = (centerIndex + delta + children2.length) % children2.length;
+    // Move translation from CarouselItems to Carousel
+    containerControls.set({ x: dragX.get() });
+    // Animate container to new position using inertial animation that snaps there
+    const newPosition = -1 * delta * (itemWidth + spacing);
+    await containerControls.start({
+      x: newPosition,
+      transition: {
+        type: 'inertia',
+        min: newPosition,
+        max: newPosition,
+        velocity: dragVelocity || 0,
+        bounceStiffness: 200,
+        bounceDamping: 40,
+        timeConstant: 750,
+        restDelta: 1,
+      },
+    });
+    // Invisibly change centered element and remove transform
+    setCurrentKey(children2[newIndex].key);
+    containerControls.set({ x: 0 });
+  };
 
   return (
     <div className={classNames(className, cx('wrapper'))}>
-      <div
+      <motion.div
         className={cx('main')}
         style={{ width: (itemWidth * indices.length) + (spacing * indices.length - 1) }}
+        animate={containerControls}
       >
         {
           renderChildren.map((child, index) => {
@@ -100,7 +135,7 @@ function Carousel({
             );
           })
         }
-      </div>
+      </motion.div>
     </div>
   );
 }
