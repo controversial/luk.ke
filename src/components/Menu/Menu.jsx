@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
-import useFreezable from '../../helpers/useFreezable';
+import useFreezable from 'helpers/useFreezable';
 
 import Link from 'next/link';
 import links from './routes';

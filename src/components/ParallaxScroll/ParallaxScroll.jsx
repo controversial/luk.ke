@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import ResizeObserver from 'resize-observer-polyfill';
 
 import { motion, useTransform } from 'framer-motion';
-import { useLerp, useVelocity, useBodyScroll } from '../../helpers/motion';
+import { useLerp, useVelocity, useBodyScroll } from 'helpers/motion';
 
 import ParallaxSection from './ParallaxSection.jsx';
 

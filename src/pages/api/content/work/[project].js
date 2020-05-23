@@ -1,5 +1,5 @@
 // import Prismic from 'prismic-javascript';
-import initApi from '../../../../helpers/prismic';
+import initApi from 'helpers/prismic';
 import { processProject } from './index';
 
 /**

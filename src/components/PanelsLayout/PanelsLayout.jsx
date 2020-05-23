@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
-import { useStore } from '../../store';
-import useFreezable from '../../helpers/useFreezable';
+import { useStore } from 'store';
+import useFreezable from 'helpers/useFreezable';
 
 import { useRouter } from 'next/router';
 
 import { motion, useMotionValue, useTransform, useAnimation } from 'framer-motion';
-import { useTransformMulti, easings } from '../../helpers/motion';
+import { useTransformMulti, easings } from 'helpers/motion';
 
 import Menu from '../Menu/Menu.jsx';
 import MenuIcon from '../MenuIcon/MenuIcon.jsx';
 
-import getOrientationClass from '../../helpers/getOrientationClass';
+import getOrientationClass from 'helpers/getOrientationClass';
 
 import styles from './PanelsLayout.module.sass';
 const cx = classNames.bind(styles);

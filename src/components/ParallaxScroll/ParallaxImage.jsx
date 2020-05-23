@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 
 import { motion, useTransform, MotionValue } from 'framer-motion';
 
-import { getResizedImage } from '../../helpers/image';
+import { getResizedImage } from 'helpers/image';
 
 import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);

@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 import Prismic from 'prismic-javascript';
 import PrismicDOM from 'prismic-dom';
-import initApi from '../../../../helpers/prismic';
-import withClassName from '../../../../helpers/addClassToMarkup';
+import initApi from 'helpers/prismic';
+import withClassName from 'helpers/addClassToMarkup';
 
 
 // Helper functions

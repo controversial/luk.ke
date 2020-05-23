@@ -6,11 +6,11 @@ import { getContactPage } from '../api/content/contact';
 import parse from 'html-react-parser';
 
 import { useForm } from 'react-hook-form';
-import { emailRegex } from '../../helpers/email';
+import { emailRegex } from 'helpers/email';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { easings } from '../../helpers/motion';
-import ArrowLink from '../../components/ArrowLink';
+import { easings } from 'helpers/motion';
+import ArrowLink from 'components/ArrowLink';
 import Head from 'next/head';
 
 import styles from './index.module.sass';

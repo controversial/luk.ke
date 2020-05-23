@@ -5,12 +5,12 @@ import classNames from 'classnames/bind';
 import Head from 'next/head';
 import Error from 'next/error';
 
-import TagsList from '../../components/TagsList';
-import FramedFigure from '../../components/FramedFigure';
-import Carousel from '../../components/Carousel';
+import TagsList from 'components/TagsList';
+import FramedFigure from 'components/FramedFigure';
+import Carousel from 'components/Carousel';
 
 import { getProject } from '../api/content/work/[project]';
-import { getResizedImage } from '../../helpers/image';
+import { getResizedImage } from 'helpers/image';
 import parse, { domToReact } from 'html-react-parser';
 
 import styles from './project.module.sass';

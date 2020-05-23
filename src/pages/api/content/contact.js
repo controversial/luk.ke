@@ -1,6 +1,6 @@
 import Prismic from 'prismic-javascript';
 import PrismicDOM from 'prismic-dom';
-import initApi from '../../../helpers/prismic';
+import initApi from 'helpers/prismic';
 
 
 export async function getContactPage(req) {

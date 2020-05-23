@@ -9,8 +9,8 @@ import { getHomepage } from '../api/content/hello';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import AgeCounter from '../../components/AgeCounter/AgeCounter.jsx';
-import OverscrollTrigger from '../../components/OverscrollTrigger';
+import AgeCounter from 'components/AgeCounter/AgeCounter.jsx';
+import OverscrollTrigger from 'components/OverscrollTrigger';
 
 import styles from './index.module.sass';
 const cx = classNames.bind(styles);

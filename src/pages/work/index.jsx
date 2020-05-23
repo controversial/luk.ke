@@ -6,13 +6,13 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useBodyScroll } from '../../helpers/motion';
-import { ParallaxScroll, ParallaxSection, ParallaxImage } from '../../components/ParallaxScroll';
-import ArrowLink from '../../components/ArrowLink';
-import TagsList from '../../components/TagsList';
+import { useBodyScroll } from 'helpers/motion';
+import { ParallaxScroll, ParallaxSection, ParallaxImage } from 'components/ParallaxScroll';
+import ArrowLink from 'components/ArrowLink';
+import TagsList from 'components/TagsList';
 
 import { getProjects } from '../api/content/work';
-import { getResizedImage } from '../../helpers/image';
+import { getResizedImage } from 'helpers/image';
 import parse, { domToReact } from 'html-react-parser';
 
 import styles from './index.module.sass';

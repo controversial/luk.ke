@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import { motion, useMotionValue, useTransform, useSpring, useAnimation } from 'framer-motion';
-import { useTransformMulti, delay } from '../../helpers/motion';
+import { useTransformMulti, delay } from 'helpers/motion';
 import { spring } from 'popmotion';
 import debounce from 'lodash/debounce';
 

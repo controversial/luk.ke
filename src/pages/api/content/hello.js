@@ -2,7 +2,7 @@
 
 import Prismic from 'prismic-javascript';
 import PrismicDOM from 'prismic-dom';
-import initApi from '../../../helpers/prismic';
+import initApi from 'helpers/prismic';
 
 import { getTotalStars } from '../stars';
 

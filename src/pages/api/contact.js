@@ -1,10 +1,10 @@
 import sgMail from '@sendgrid/mail';
-import { isEmail } from '../../helpers/email';
+import { isEmail } from 'helpers/email';
 
 import Prismic from 'prismic-javascript';
-import { apiEndpoint as prismicApiEndpoint } from '../../helpers/prismic';
+import { apiEndpoint as prismicApiEndpoint } from 'helpers/prismic';
 
-import { delay } from '../../helpers/motion';
+import { delay } from 'helpers/motion';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
