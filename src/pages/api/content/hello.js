@@ -6,8 +6,7 @@ import Api from 'helpers/prismic';
 
 import { getTotalStars } from '../stars';
 
-
-export async function getHomepage(req) {
+export async function getHomepage(forceRefreshStars = false) {
   const [cmsData, totalGithubStars] = await Promise.all([
     // Fetch page content from CMS
     Api
@@ -18,7 +17,7 @@ export async function getHomepage(req) {
         text: textBlocks.map(({ text_content }) => PrismicDOM.RichText.asHtml(text_content)),
       })),
     // Simultaneously, fetch my total number of GitHub stars from the API
-    getTotalStars(),
+    getTotalStars(forceRefreshStars),
   ]);
 
   return {
@@ -30,6 +29,6 @@ export async function getHomepage(req) {
 }
 
 export default async (req, res) => {
-  const homepage = await getHomepage();
+  const homepage = await getHomepage(false);
   res.status(200).json(homepage);
 };

@@ -30,9 +30,9 @@ async function fetchStars() {
     .reduce((a, b) => a + b, 0);
 }
 
-export async function getTotalStars() {
+export async function getTotalStars(forceRefresh = false) {
   // Only actually re-fetch if it's been an hour since the last time (or if the lambda restarted)
-  if ((Date.now() - fetchedAt) > 1000 * 60 * 60) {
+  if (forceRefresh || (Date.now() - fetchedAt) > 1000 * 60 * 60) {
     totalStars = await fetchStars();
     fetchedAt = Date.now();
   }
