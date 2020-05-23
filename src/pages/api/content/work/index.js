@@ -12,7 +12,11 @@ import withClassName from 'helpers/addClassToMarkup';
  * which it will be returned from API routes.
  * @param {Object} obj - a single document fetched from Prismic
  */
-export const processProject = async ({ uid, data: project, tags }, includeContent = true) => ({
+export const processProject = async ({
+  uid,
+  data: { body, ...project },
+  tags,
+}, includeContent = true) => ({
   uid,
   ...project,
   name: PrismicDOM.RichText.asText(project.name),
@@ -35,7 +39,6 @@ export const processProject = async ({ uid, data: project, tags }, includeConten
 
   // If we're including the content of the page, in addition to just simple metadata, we need to
   // process all of the rich text, etc. from the "body" of the Project entry from Prismic.
-  body: undefined,
   ...includeContent && {
     content: {
       hero: {
@@ -45,7 +48,7 @@ export const processProject = async ({ uid, data: project, tags }, includeConten
         caption: PrismicDOM.RichText.asHtml(project.hero_image_caption) || null,
       },
 
-      blocks: project.body.map(({ slice_type: type, primary: item, items }) => {
+      blocks: body.map(({ slice_type: type, primary: item, items }) => {
         // Breaks between sections
         if (type === 'section_heading') {
           return {
