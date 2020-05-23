@@ -155,11 +155,14 @@ Object.assign(Contact, {
   DarkContent: ContactPageDarkContent,
   pageName: 'Contact',
   panelOrientation: 'right',
-
-  async getInitialProps(ctx) {
-    return { content: await getContactPage(ctx.req) };
-  },
 });
+
+export async function getStaticProps() {
+  return {
+    props: { content: await getContactPage() },
+    unstable_revalidate: 60,
+  };
+}
 
 
 export default Contact;
