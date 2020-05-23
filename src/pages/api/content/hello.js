@@ -6,16 +6,6 @@ import Api from 'helpers/prismic';
 
 import { getTotalStars } from '../stars';
 
-/** Fetch the total star count across all my GitHub repos in a way that works both client/server */
-function isomorphicGetStars() {
-  // If we can read process.env.GITHUB_TOKEN we can use it to make the request ourselves
-  if (typeof process !== 'undefined' && process?.env?.GITHUB_TOKEN) return getTotalStars();
-  // If we're client-side, we don't have the token but, we can request the API route
-  return fetch('/api/stars')
-    .then((r) => r.json())
-    .then((data) => data.totalStars);
-}
-
 
 export async function getHomepage(req) {
   const [cmsData, totalGithubStars] = await Promise.all([
@@ -28,7 +18,7 @@ export async function getHomepage(req) {
         text: textBlocks.map(({ text_content }) => PrismicDOM.RichText.asHtml(text_content)),
       })),
     // Simultaneously, fetch my total number of GitHub stars from the API
-    isomorphicGetStars(),
+    getTotalStars(),
   ]);
 
   return {
