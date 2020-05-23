@@ -15,28 +15,28 @@
   "license": "MIT",
   "homepage": "https://luk.ke",
   "dependencies": {
-    "@next/bundle-analyzer": "^9.3.6",
-    "@sendgrid/mail": "^7.1.0",
+    "@next/bundle-analyzer": "^9.4.2",
+    "@sendgrid/mail": "^7.1.1",
     "classnames": "^2.2.6",
     "domhandler": "^3.0.0",
-    "domutils": "^2.0.0",
+    "domutils": "^2.1.0",
     "dotenv": "^8.2.0",
-    "framer-motion": "^1.10.3",
+    "framer-motion": "^1.11.0",
     "framesync": "^4.0.4",
     "html-react-parser": "^0.10.3",
     "htmlparser2": "^4.1.0",
     "isomorphic-unfetch": "^3.0.0",
-    "lazysizes": "^5.2.0",
+    "lazysizes": "^5.2.1-rc2",
     "lodash": "^4.17.15",
     "mitt": "^1.2.0",
-    "next": "^9.3.6",
+    "next": "^9.4.2",
     "popmotion": "9.0.0-beta-8",
     "prismic-dom": "git+https://git@github.com/controversial/prismic-dom.git",
     "prismic-javascript": "^2.7.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-hook-form": "^5.6.0",
+    "react-hook-form": "^5.7.2",
     "resize-observer-polyfill": "^1.5.1"
   },
   "devDependencies": {
@@ -47,8 +47,8 @@
     "eslint-import-resolver-webpack": "^0.12.1",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-react-hooks": "^4.0.0",
-    "node-sass": "^4.14.0"
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.2",
+    "node-sass": "^4.14.1"
   }
 }
