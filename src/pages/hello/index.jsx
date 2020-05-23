@@ -84,11 +84,14 @@ Object.assign(Hello, {
   DarkContent: HomepageDarkContent,
   pageName: 'Hello',
   panelOrientation: 'right',
-
-  async getInitialProps(ctx) {
-    return { content: await getHomepage(ctx.req) };
-  },
 });
+
+export async function getStaticProps() {
+  return {
+    props: { content: await getHomepage() },
+    unstable_revalidate: 60, // revalidate in the background if it's been more than a minute
+  };
+}
 
 
 export default Hello;
