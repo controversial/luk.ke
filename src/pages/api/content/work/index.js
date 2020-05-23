@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import Prismic from 'prismic-javascript';
 import PrismicDOM from 'prismic-dom';
-import initApi from 'helpers/prismic';
+import Api from 'helpers/prismic';
 import withClassName from 'helpers/addClassToMarkup';
 
 
@@ -93,7 +93,7 @@ export const processProject = async ({ uid, data: project, tags }, includeConten
 
         return { type, content: Object.keys(item || {}).length ? item : items };
       }),
-    }
+    },
   },
 });
 
@@ -124,10 +124,9 @@ export function fetchAllProjects(api) {
 /**
  * Returns a sorted and processed list of all of the projects in Prismic, in an easy consumable
  * format.
- * @param {Object} req - A request object (from SSR) to which Prismic can attach
  */
-export async function getProjects(req) {
-  const api = await initApi(req);
+export async function getProjects() {
+  const api = await Api;
   const [projects, order] = await Promise.all([
     fetchAllProjects(api),
     getProjectsOrder(api),
@@ -149,6 +148,6 @@ export async function getProjects(req) {
 
 
 export default async (req, res) => {
-  const projects = await getProjects(req);
+  const projects = await getProjects();
   res.status(200).json(projects);
 };

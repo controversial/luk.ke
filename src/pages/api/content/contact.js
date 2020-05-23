@@ -1,12 +1,11 @@
 import Prismic from 'prismic-javascript';
 import PrismicDOM from 'prismic-dom';
-import initApi from 'helpers/prismic';
+import Api from 'helpers/prismic';
 
 
-export async function getContactPage(req) {
-  const api = await initApi(req);
-
-  const data = await api.query(Prismic.Predicates.at('document.type', 'contact'))
+export async function getContactPage() {
+  const data = await Api
+    .then((api) => api.query(Prismic.Predicates.at('document.type', 'contact')))
     .then(({ results }) => results[0].data);
 
   return {
@@ -17,6 +16,6 @@ export async function getContactPage(req) {
 }
 
 export default async (req, res) => {
-  const contactPage = await getContactPage(req);
+  const contactPage = await getContactPage();
   res.status(200).json(contactPage);
 };

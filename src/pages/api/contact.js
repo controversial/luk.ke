@@ -2,7 +2,7 @@ import sgMail from '@sendgrid/mail';
 import { isEmail } from 'helpers/email';
 
 import Prismic from 'prismic-javascript';
-import { apiEndpoint as prismicApiEndpoint } from 'helpers/prismic';
+import Api from 'helpers/prismic';
 
 import { delay } from 'helpers/motion';
 
@@ -15,8 +15,8 @@ if (process.env.DISABLE_EMAIL === 'true') {
 
 
 const targetEmail = new Promise((resolve) => {
-  const address = Prismic.getApi(prismicApiEndpoint)
-    .then((prism) => prism.query(Prismic.Predicates.at('document.type', 'contact')))
+  const address = Api
+    .then((api) => api.query(Prismic.Predicates.at('document.type', 'contact')))
     .then(({ results }) => results[0].data)
     .then((data) => data.contact_form_address)
     .catch(() => 'luke@deentaylor.com');

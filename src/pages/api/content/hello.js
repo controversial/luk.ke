@@ -2,7 +2,7 @@
 
 import Prismic from 'prismic-javascript';
 import PrismicDOM from 'prismic-dom';
-import initApi from 'helpers/prismic';
+import Api from 'helpers/prismic';
 
 import { getTotalStars } from '../stars';
 
@@ -18,11 +18,10 @@ function isomorphicGetStars() {
 
 
 export async function getHomepage(req) {
-  const api = await initApi(req);
-
   const [cmsData, totalGithubStars] = await Promise.all([
     // Fetch page content from CMS
-    api.query(Prismic.Predicates.at('document.type', 'homepage'))
+    Api
+      .then((api) => api.query(Prismic.Predicates.at('document.type', 'homepage')))
       .then(({ results }) => results[0].data)
       .then(({ main_title, text: textBlocks }) => ({
         title: PrismicDOM.RichText.asHtml(main_title),
@@ -41,6 +40,6 @@ export async function getHomepage(req) {
 }
 
 export default async (req, res) => {
-  const homepage = await getHomepage(req);
+  const homepage = await getHomepage();
   res.status(200).json(homepage);
 };

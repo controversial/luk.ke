@@ -1,5 +1,5 @@
 // import Prismic from 'prismic-javascript';
-import initApi from 'helpers/prismic';
+import Api from 'helpers/prismic';
 import { processProject } from './index';
 
 /**
@@ -8,8 +8,8 @@ import { processProject } from './index';
  * @param {Object} api - A Prismic API object retrieved from Prismic.getApi
  * @param {*} projectId - The UID of the project to retrieve
  */
-export async function getProject(req, projectId) {
-  const api = await initApi(req);
+export async function getProject(projectId) {
+  const api = await Api;
   const project = await api.getByUID('project', projectId);
   if (!project) throw new Error(`Couldn't find project ${projectId}`);
   else return processProject(project);
@@ -18,7 +18,7 @@ export async function getProject(req, projectId) {
 
 export default async (req, res) => {
   const { project: projectId } = req.query;
-  getProject(req, projectId)
+  getProject(projectId)
     .catch((e) => res.status(e.message.startsWith("Couldn't find") ? 404 : 500).json({ error: e.message || e }))
     .then((project) => res.status(200).json(project));
 };
