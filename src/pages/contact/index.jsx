@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-import fetch from 'isomorphic-unfetch';
 import { getContactPage } from '../api/content/contact';
 import parse from 'html-react-parser';
 

@@ -1,7 +1,5 @@
 /* eslint-disable camelcase */
 
-import fetch from 'isomorphic-unfetch';
-
 import Prismic from 'prismic-javascript';
 import PrismicDOM from 'prismic-dom';
 import initApi from '../../../helpers/prismic';

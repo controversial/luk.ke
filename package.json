@@ -25,7 +25,6 @@
     "framesync": "^4.0.4",
     "html-react-parser": "^0.10.3",
     "htmlparser2": "^4.1.0",
-    "isomorphic-unfetch": "^3.0.0",
     "lazysizes": "^5.2.1-rc2",
     "lodash": "^4.17.15",
     "mitt": "^1.2.0",

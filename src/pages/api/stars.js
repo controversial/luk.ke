@@ -1,5 +1,3 @@
-import fetch from 'isomorphic-unfetch';
-
 // This GraphQL query requests the star count of each of my 100 most-starred repositories.
 const query = `
 query {
