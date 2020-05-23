@@ -214,10 +214,14 @@ Object.assign(WorkIndex, {
   pageName: 'Work',
   panelOrientation: 'left',
   missingH1: true,
-
-  async getInitialProps(ctx) {
-    return { content: await getProjects(ctx.req) };
-  },
 });
+
+
+export async function getStaticProps() {
+  return {
+    props: { content: await getProjects() },
+    unstable_revalidate: 60,
+  };
+}
 
 export default WorkIndex;
