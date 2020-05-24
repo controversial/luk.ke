@@ -5,7 +5,6 @@ import { processProject } from './index';
 /**
  * Returns detailed information about a single project, including project metadata and longform case
  * study content, in an easy consumable format.
- * @param {Object} api - A Prismic API object retrieved from Prismic.getApi
  * @param {*} projectId - The UID of the project to retrieve
  */
 export async function getProject(projectId) {

@@ -104,11 +104,11 @@ export const processProject = async ({
 /**
  * Returns an ordered list of the IDs of all projects whose order has been defined on the
  * work_page_order page in Prismic.
- * @param {Object} api - A Prismic API object retrieved from Prismic.getApi
  */
-export function getProjectsOrder(api) {
+export function getProjectsOrder() {
   /* eslint-disable camelcase */
-  return api.query(Prismic.Predicates.at('document.type', 'work_page_order'))
+  return Api
+    .then((api) => api.query(Prismic.Predicates.at('document.type', 'work_page_order')))
     .then(({ results }) => results[0].data)
     .then(({ projects }) => projects
       .map(({ project }) => project.uid)
@@ -117,10 +117,10 @@ export function getProjectsOrder(api) {
 
 /**
  * Returns an unproceed and unordered list of all projects published in Prismic
- * @param {Object} api - A Prismic API object retrieved from Prismic.getApi
  */
-export function fetchAllProjects(api) {
-  return api.query(Prismic.Predicates.at('document.type', 'project'))
+export function fetchAllProjects() {
+  return Api
+    .then((api) => api.query(Prismic.Predicates.at('document.type', 'project')))
     .then(({ results: projects }) => projects);
 }
 
@@ -129,10 +129,9 @@ export function fetchAllProjects(api) {
  * format.
  */
 export async function getProjects() {
-  const api = await Api;
   const [projects, order] = await Promise.all([
-    fetchAllProjects(api),
-    getProjectsOrder(api),
+    fetchAllProjects(),
+    getProjectsOrder(),
   ]);
 
   // Returns sorting ranks for project UIDs, where lower ranks should come earlier in the sorted
