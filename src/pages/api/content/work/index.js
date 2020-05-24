@@ -7,6 +7,8 @@ import withClassName from 'helpers/addClassToMarkup';
 
 // Helper functions
 
+const omitUndefined = (obj) => JSON.parse(JSON.stringify(obj));
+
 /**
  * Processes a Project document from Prismic, turning the Prismic document form into the form in
  * which it will be returned from API routes.
@@ -16,7 +18,7 @@ export const processProject = async ({
   uid,
   data: { body, ...project },
   tags,
-}, includeContent = true) => ({
+}, includeContent = true) => omitUndefined({
   uid,
   ...project,
   name: PrismicDOM.RichText.asText(project.name),
