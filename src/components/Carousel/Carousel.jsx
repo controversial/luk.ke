@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-import { motion, useMotionValue, MotionValue, useAnimation } from 'framer-motion';
+import { motion, useMotionValue, useDragControls, DragControls, useAnimation } from 'framer-motion';
 
 import styles from './Carousel.module.sass';
 const cx = classNames.bind(styles);
@@ -12,15 +12,19 @@ function CarouselItem({
   deltaFromCenter,
   style,
   moveCarouselBy,
-  dragMotionValue,
+  dragControls,
   children,
 }) {
   return (
     <motion.div
       className={cx('item', { selected: deltaFromCenter === 0 })}
-      onClick={() => moveCarouselBy(deltaFromCenter)}
+      // onClick={() => moveCarouselBy(deltaFromCenter)}
+      style={{ ...style }}
       drag="x"
-      style={{ ...style, x: dragMotionValue }}
+      dragControls={dragControls}
+      dragListener={false}
+      dragPropagation
+      onMouseDown={(e) => dragControls.start(e)}
       dragConstraints={{ left: 0, right: 0 }}
       // Pretty easy to drag past the constraint
       dragElastic={0.8}
@@ -28,13 +32,13 @@ function CarouselItem({
       // animation to the new position).
       // TODO: do this conditionally (not when we're not moving). Possibly: implement custom logic
       // using a custom set of dragControls
-      dragTransition={{ bounceStiffness: 1000000, bounceDamping: 1000000 }}
-      onDragEnd={(e, { offset: { x: offset }, velocity: { x: velocity } }) => {
-        const dist = Math.abs(offset);
-        if (dist > style.width || dist > window.innerWidth / 2) { // TODO: better heuristic
-          moveCarouselBy(-Math.sign(offset), velocity);
-        }
-      }}
+      // dragTransition={{ bounceStiffness: 1000000, bounceDamping: 1000000 }}
+      // onDragEnd={(e, { offset: { x: offset }, velocity: { x: velocity } }) => {
+      //   const dist = Math.abs(offset);
+      //   if (dist > style.width || dist > window.innerWidth / 2) { // TODO: better heuristic
+      //     moveCarouselBy(-Math.sign(offset), velocity);
+      //   }
+      // }}
     >
       { children }
     </motion.div>
@@ -44,7 +48,7 @@ CarouselItem.propTypes = {
   deltaFromCenter: PropTypes.number.isRequired,
   style: PropTypes.shape({ width: Number }).isRequired,
   moveCarouselBy: PropTypes.func.isRequired,
-  dragMotionValue: PropTypes.instanceOf(MotionValue).isRequired,
+  dragControls: PropTypes.instanceOf(DragControls).isRequired,
   children: PropTypes.node.isRequired,
 };
 
@@ -82,6 +86,7 @@ function Carousel({
   const renderChildren = indices.map((i) => children2[i]);
 
   const dragX = useMotionValue(0);
+  const dragControls = useDragControls();
   const containerControls = useAnimation();
 
   // Function to move the current index of the carousel by a given number of elements
@@ -126,7 +131,7 @@ function Carousel({
               <CarouselItem
                 key={child.key}
                 deltaFromCenter={deltaFromCenter}
-                dragMotionValue={dragX}
+                dragControls={dragControls}
                 style={{ width: itemWidth }}
                 moveCarouselBy={moveBy}
               >
