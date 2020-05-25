@@ -119,7 +119,7 @@ function Carousel({
     <div className={classNames(className, cx('wrapper'))}>
       <motion.div
         className={cx('main')}
-        style={{ width: (itemWidth * indices.length) + (spacing * indices.length - 1) }}
+        style={{ width: (itemWidth * indices.length) + (spacing * (indices.length - 1)) }}
         animate={containerControls}
       >
         {
