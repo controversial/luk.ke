@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-import { motion, useMotionValue, useDragControls, DragControls, useAnimation } from 'framer-motion';
+import { motion, useDragControls, DragControls, useAnimation } from 'framer-motion';
 
 import styles from './Carousel.module.sass';
 const cx = classNames.bind(styles);
@@ -14,31 +14,33 @@ function CarouselItem({
   moveCarouselBy,
   dragControls,
   children,
+  isMaster,
 }) {
   return (
     <motion.div
       className={cx('item', { selected: deltaFromCenter === 0 })}
-      // onClick={() => moveCarouselBy(deltaFromCenter)}
-      style={{ ...style }}
+      style={style}
+
       drag="x"
+      // Implement shared drag controls among all carousel items
       dragControls={dragControls}
       dragListener={false}
       dragPropagation
       onMouseDown={(e) => dragControls.start(e)}
+      // Snap to center, but make dragging past center somewhat easy
       dragConstraints={{ left: 0, right: 0 }}
-      // Pretty easy to drag past the constraint
       dragElastic={0.8}
-      // Make the snap back to center on release instant (we undo this visually when we start the
-      // animation to the new position).
-      // TODO: do this conditionally (not when we're not moving). Possibly: implement custom logic
-      // using a custom set of dragControls
-      // dragTransition={{ bounceStiffness: 1000000, bounceDamping: 1000000 }}
-      // onDragEnd={(e, { offset: { x: offset }, velocity: { x: velocity } }) => {
-      //   const dist = Math.abs(offset);
-      //   if (dist > style.width || dist > window.innerWidth / 2) { // TODO: better heuristic
-      //     moveCarouselBy(-Math.sign(offset), velocity);
-      //   }
-      // }}
+
+      // Make the item instantly snap back to center on release (we invert this with a
+      // transform when we start the animation, so there is no visual jump).
+      dragTransition={{ bounceStiffness: 1000000, bounceDamping: 1000000 }}
+      onDragEnd={(e, info) => {
+        if (!isMaster) return; // only the 'master' CarouselItem controls the parent
+        const offset = info.point.x; // point is how far it actually dragged (accounts for elastic)
+        const velocity = info.velocity.x;
+
+        moveCarouselBy(1, { offset, velocity });
+      }}
     >
       { children }
     </motion.div>
@@ -49,6 +51,7 @@ CarouselItem.propTypes = {
   style: PropTypes.shape({ width: Number }).isRequired,
   moveCarouselBy: PropTypes.func.isRequired,
   dragControls: PropTypes.instanceOf(DragControls).isRequired,
+  isMaster: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired,
 };
 
@@ -76,6 +79,9 @@ function Carousel({
 
   // Initially, the first element is selected
   const [currentKey, setCurrentKey] = useState(children2[0].key);
+  // The master item is the item whose events orchestrates the Carousel. It changes at a slightly
+  // different time from the 'centered' element.
+  const [masterItemKey, setMasterItemKey] = useState(children2[0].key);
   // What index in the children array is the item that is currently centered?
   const centerIndex = children2.findIndex((c2) => c2.key === currentKey);
   // We render two elements on either side of the center element, no matter how big the array is.
@@ -85,33 +91,32 @@ function Carousel({
     .map((i) => i % children2.length); // wrap around
   const renderChildren = indices.map((i) => children2[i]);
 
-  const dragX = useMotionValue(0);
   const dragControls = useDragControls();
   const containerControls = useAnimation();
 
   // Function to move the current index of the carousel by a given number of elements
-  const moveBy = async (delta, dragVelocity) => {
+  const moveBy = async (delta, { offset, velocity }) => {
     if (delta === 0) return;
+    // Change centered element
     const newIndex = (centerIndex + delta + children2.length) % children2.length;
-    // Move translation from CarouselItems to Carousel
-    containerControls.set({ x: dragX.get() });
-    // Animate container to new position using inertial animation that snaps there
-    const newPosition = -1 * delta * (itemWidth + spacing);
+    setCurrentKey(children2[newIndex].key);
+    // Transform visually back to old position
+    const newIndexOffset = delta * (itemWidth + spacing);
+    containerControls.set({ x: (offset || 0) + newIndexOffset });
+    // Animate container back to having no transform with inertial animation
     await containerControls.start({
-      x: newPosition,
+      x: 0,
       transition: {
         type: 'inertia',
-        min: newPosition,
-        max: newPosition,
-        velocity: dragVelocity || 0,
+        min: 0,
+        max: 0,
+        velocity: velocity || 0,
         bounceStiffness: 200,
         bounceDamping: 40,
         timeConstant: 750,
-        restDelta: 1,
       },
     });
-    // Invisibly change centered element and remove transform
-    setCurrentKey(children2[newIndex].key);
+    setMasterItemKey(children2[newIndex].key);
     containerControls.set({ x: 0 });
   };
 
@@ -130,6 +135,7 @@ function Carousel({
             return (
               <CarouselItem
                 key={child.key}
+                isMaster={child.key === masterItemKey}
                 deltaFromCenter={deltaFromCenter}
                 dragControls={dragControls}
                 style={{ width: itemWidth }}
