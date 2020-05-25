@@ -5,7 +5,7 @@ import Router, { useRouter } from 'next/router';
 import mitt from 'mitt';
 import { StoreProvider } from '../store';
 
-import PanelsLayout from '../components/PanelsLayout/PanelsLayout.jsx';
+import PanelsLayout from 'components/PanelsLayout/PanelsLayout.jsx';
 
 import setSafariScrollFix from '../safari-scroll-fix';
 import '../console-message';

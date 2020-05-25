@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-import { getContactPage } from '../api/content/contact';
+import { getContactPage } from 'pages/api/content/contact';
 import parse from 'html-react-parser';
 
 import { useForm } from 'react-hook-form';

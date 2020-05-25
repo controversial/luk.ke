@@ -11,7 +11,7 @@ import { ParallaxScroll, ParallaxSection, ParallaxImage } from 'components/Paral
 import ArrowLink from 'components/ArrowLink';
 import TagsList from 'components/TagsList';
 
-import { getProjects } from '../api/content/work';
+import { getProjects } from 'pages/api/content/work';
 import { getResizedImage } from 'helpers/image';
 import parse, { domToReact } from 'html-react-parser';
 

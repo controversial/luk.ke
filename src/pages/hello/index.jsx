@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 
 import parse from 'html-react-parser';
 
-import { getHomepage } from '../api/content/hello';
+import { getHomepage } from 'pages/api/content/hello';
 
 import Head from 'next/head';
 import { useRouter } from 'next/router';
