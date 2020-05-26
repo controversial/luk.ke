@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
-import PropTypes, { nominalTypeHack } from 'prop-types';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-import { motion, useDragControls, DragControls, useAnimation } from 'framer-motion';
+import {
+  motion,
+  useMotionValue, useTransform, MotionValue,
+  useDragControls, DragControls,
+  useAnimation,
+} from 'framer-motion';
+import { useTransformMulti } from 'helpers/motion';
 
 import styles from './Carousel.module.sass';
 const cx = classNames.bind(styles);
@@ -11,16 +17,33 @@ const cx = classNames.bind(styles);
 function CarouselItem({
   deltaFromCenter,
   style,
+  isMaster,
   moveCarouselBy,
   dragControls,
   isDragging, setIsDragging,
+  layoutParams: { containerOffset, itemDistance },
   children,
-  isMaster,
 }) {
+  const dragMotionValue = useMotionValue(0);
+  // How many pixels from the center of the page is the center of this item?
+  const centerPoint = useTransformMulti(
+    // combine offset from container, offset from local drag, and offset created by item layout
+    [containerOffset, dragMotionValue],
+    (a, b) => (a + b) + (itemDistance * deltaFromCenter),
+  );
+  // Items not in the center position get 0.85 opacity.
+  // Opacity is smoothly linked to item position, starting when an item is halfway from the center
+  // position to the edge position.
+  const opacity = useTransform(
+    centerPoint,
+    [-itemDistance, (-itemDistance / 2), 0, (itemDistance / 2), itemDistance],
+    [0.85, 1, 1, 1, 0.85],
+  );
+
   return (
     <motion.div
       className={cx('item', { selected: deltaFromCenter === 0, isDragging })}
-      style={style}
+      style={{ ...style, x: dragMotionValue, opacity }}
 
       onClick={() => !isDragging && moveCarouselBy(deltaFromCenter)}
 
@@ -39,15 +62,18 @@ function CarouselItem({
       // Make the item instantly snap back to center on release (we invert this with a
       // transform when we start the animation, so there is no visual jump).
       dragTransition={{ bounceStiffness: 1000000, bounceDamping: 1000000 }}
+      // When the item is released, we trigger an inertial animation to the new position
       onDragEnd={(e, info) => {
         if (!isMaster) return; // only the 'master' CarouselItem controls the parent
         const offset = info.point.x; // point is how far it actually dragged (accounts for elastic)
         const velocity = info.velocity.x;
 
+        // If the drag release passes either of these tests, we animate to a new position
         const offsetTrigger = Math.abs(offset) > window.innerWidth / 3;
         const combinedTrigger = offset * velocity > 20000;
         if (offsetTrigger || combinedTrigger) {
           moveCarouselBy(-Math.sign(offset), { offset, velocity });
+        // Otherwise, we animate back to the old position
         } else {
           moveCarouselBy(0, { offset, velocity });
         }
@@ -59,12 +85,16 @@ function CarouselItem({
 }
 CarouselItem.propTypes = {
   deltaFromCenter: PropTypes.number.isRequired,
+  isMaster: PropTypes.bool.isRequired,
   style: PropTypes.shape({ width: Number }).isRequired,
   moveCarouselBy: PropTypes.func.isRequired,
   dragControls: PropTypes.instanceOf(DragControls).isRequired,
   isDragging: PropTypes.bool.isRequired,
   setIsDragging: PropTypes.func.isRequired,
-  isMaster: PropTypes.bool.isRequired,
+  layoutParams: PropTypes.exact({
+    containerOffset: PropTypes.instanceOf(MotionValue).isRequired,
+    itemDistance: PropTypes.number.isRequired,
+  }).isRequired,
   children: PropTypes.node.isRequired,
 };
 
@@ -134,6 +164,8 @@ function Carousel({
     containerControls.set({ x: 0 });
   };
 
+  const containerOffsetMotionValue = useMotionValue(0);
+
   return (
     <div className={classNames(className, cx('wrapper'))}>
       <motion.div
@@ -141,6 +173,7 @@ function Carousel({
         style={{
           width: (itemWidth * indices.length) + (spacing * (indices.length - 1)),
           willChange: isDragging ? 'transform' : 'auto',
+          x: containerOffsetMotionValue,
         }}
         animate={containerControls}
       >
@@ -157,6 +190,10 @@ function Carousel({
                 dragControls={dragControls}
                 isDragging={isDragging}
                 setIsDragging={setIsDragging}
+                layoutParams={{
+                  containerOffset: containerOffsetMotionValue,
+                  itemDistance: itemWidth + spacing,
+                }}
                 style={{ width: itemWidth }}
                 moveCarouselBy={moveBy}
               >
