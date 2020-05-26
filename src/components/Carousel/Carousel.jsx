@@ -43,7 +43,12 @@ function CarouselItem({
         if (!isMaster) return; // only the 'master' CarouselItem controls the parent
         const offset = info.point.x; // point is how far it actually dragged (accounts for elastic)
         const velocity = info.velocity.x;
-        moveCarouselBy(1, { offset, velocity });
+
+        const offsetTrigger = Math.abs(offset) > window.innerWidth / 3;
+        const combinedTrigger = offset * velocity > 20000;
+        if (offsetTrigger || combinedTrigger) {
+          moveCarouselBy(-Math.sign(offset), { offset, velocity });
+        }
       }}
     >
       { children }
