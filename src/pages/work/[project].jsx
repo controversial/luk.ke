@@ -112,10 +112,13 @@ function CaseStudy({ project }) {
                       </FramedFigure>
                     );
                   } else if (block.type === 'image_gallery') {
-                    const carouselSpacing = windowWidth * 0.04 + 60;
-                    // full width minus the two blocks of spacing we need to leave. .6 instead of .5
-                    // so that we show slightly less than half the items to the left / right sides
-                    const carouselItemWidth = (windowWidth - (carouselSpacing * 2)) * 0.6;
+                    const carouselSpacing = windowWidth * 0.1;
+                    const carouselItemWidth = windowWidth > 550
+                      // full width minus the two blocks of spacing we need to leave. .6 (over .5)
+                      // so that we show slightly less than half the items to the left / right sides
+                      ? (windowWidth - (carouselSpacing * 2)) * 0.6
+                      // on mobile show even less of the sides
+                      : (windowWidth - (carouselSpacing * 2)) * 0.9;
                     out = windowWidth === 0 ? <React.Fragment /> : (
                       <Carousel
                         className={cx('block', 'carousel', 'image-gallery')}
