@@ -29,7 +29,7 @@ function CarouselItem({
       dragControls={dragControls}
       dragListener={false}
       dragPropagation
-      onMouseDown={(e) => dragControls.start(e)}
+      onPointerDown={(e) => dragControls.start(e)}
       // Snap to center, but make dragging past center somewhat easy
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.8}
