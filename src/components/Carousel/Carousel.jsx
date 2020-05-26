@@ -73,8 +73,8 @@ function CarouselItem({
         const velocity = info.velocity.x;
 
         // If the drag release passes either of these tests, we animate to a new position
-        const offsetTrigger = Math.abs(offset) > window.innerWidth / 3;
-        const combinedTrigger = offset * velocity > 20000;
+        const offsetTrigger = Math.abs(offset) > (itemDistance * 0.4); // 40% of the way to new pos
+        const combinedTrigger = offset * velocity > 20000; // velocity + offset combine convincingly
         if (offsetTrigger || combinedTrigger) {
           moveCarouselBy(-Math.sign(offset), { offset, velocity });
         // Otherwise, we animate back to the old position
