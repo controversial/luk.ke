@@ -48,6 +48,8 @@ function CarouselItem({
         const combinedTrigger = offset * velocity > 20000;
         if (offsetTrigger || combinedTrigger) {
           moveCarouselBy(-Math.sign(offset), { offset, velocity });
+        } else {
+          moveCarouselBy(0, { offset, velocity });
         }
       }}
     >
@@ -108,7 +110,6 @@ function Carousel({
 
   // Function to move the current index of the carousel by a given number of elements
   const moveBy = async (delta, { offset, velocity } = {}) => {
-    if (delta === 0) return;
     // Change centered element
     const newIndex = (centerIndex + delta + children2.length) % children2.length;
     setCurrentKey(children2[newIndex].key);
