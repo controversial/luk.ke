@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { nominalTypeHack } from 'prop-types';
 import classNames from 'classnames/bind';
 
 import { motion, useDragControls, DragControls, useAnimation } from 'framer-motion';
@@ -132,7 +132,10 @@ function Carousel({
     <div className={classNames(className, cx('wrapper'))}>
       <motion.div
         className={cx('main')}
-        style={{ width: (itemWidth * indices.length) + (spacing * (indices.length - 1)) }}
+        style={{
+          width: (itemWidth * indices.length) + (spacing * (indices.length - 1)),
+          willChange: isDragging ? 'transform' : 'auto',
+        }}
         animate={containerControls}
       >
         {
