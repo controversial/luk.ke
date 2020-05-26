@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
@@ -40,6 +40,10 @@ function CarouselItem({
     [0.85, 1, 1, 1, 0.85],
   );
 
+  // Used to avoid stale values in callbacks
+  const isDraggingRef = useRef(isDragging);
+  isDraggingRef.current = isDragging;
+
   return (
     <motion.div
       className={cx('item', { selected: deltaFromCenter === 0, isDragging })}
@@ -57,7 +61,7 @@ function CarouselItem({
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.8}
       // Record dragging state
-      onDragStart={() => { if (isMaster) setIsDragging(true); }}
+      onDragStart={() => { if (isMaster) setIsDragging(isDragging + 1); }}
 
       // Make the item instantly snap back to center on release (we invert this with a
       // transform when we start the animation, so there is no visual jump).
@@ -77,6 +81,8 @@ function CarouselItem({
         } else {
           moveCarouselBy(0, { offset, velocity });
         }
+
+        setTimeout(() => setIsDragging(isDraggingRef.current - 1), 250);
       }}
     >
       { children }
@@ -89,7 +95,7 @@ CarouselItem.propTypes = {
   style: PropTypes.shape({ width: Number }).isRequired,
   moveCarouselBy: PropTypes.func.isRequired,
   dragControls: PropTypes.instanceOf(DragControls).isRequired,
-  isDragging: PropTypes.bool.isRequired,
+  isDragging: PropTypes.number.isRequired,
   setIsDragging: PropTypes.func.isRequired,
   layoutParams: PropTypes.exact({
     containerOffset: PropTypes.instanceOf(MotionValue).isRequired,
@@ -135,7 +141,11 @@ function Carousel({
   const renderChildren = indices.map((i) => children2[i]);
 
   const dragControls = useDragControls();
-  const [isDragging, setIsDragging] = useState(false);
+  // increments for each drag start, decrements after each drag end.
+  // A new drag can start before the previous one finishes animating, so tracking a number rather
+  // than a boolean ensures a stray async function won't mess up the dragging state for a subsequent
+  // drag.
+  const [isDragging, setIsDragging] = useState(0);
   const containerControls = useAnimation();
 
   // Function to move the current index of the carousel by a given number of elements
@@ -159,7 +169,6 @@ function Carousel({
         timeConstant: 750,
       },
     });
-    setIsDragging(false);
     setMasterItemKey(children2[newIndex].key);
     containerControls.set({ x: 0 });
   };
