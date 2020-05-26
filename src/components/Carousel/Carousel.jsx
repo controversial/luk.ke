@@ -13,13 +13,16 @@ function CarouselItem({
   style,
   moveCarouselBy,
   dragControls,
+  isDragging, setIsDragging,
   children,
   isMaster,
 }) {
   return (
     <motion.div
-      className={cx('item', { selected: deltaFromCenter === 0 })}
+      className={cx('item', { selected: deltaFromCenter === 0, isDragging })}
       style={style}
+
+      onClick={() => !isDragging && moveCarouselBy(deltaFromCenter)}
 
       drag="x"
       // Implement shared drag controls among all carousel items
@@ -30,6 +33,8 @@ function CarouselItem({
       // Snap to center, but make dragging past center somewhat easy
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.8}
+      // Record dragging state
+      onDragStart={() => { if (isMaster) setIsDragging(true); }}
 
       // Make the item instantly snap back to center on release (we invert this with a
       // transform when we start the animation, so there is no visual jump).
@@ -38,7 +43,6 @@ function CarouselItem({
         if (!isMaster) return; // only the 'master' CarouselItem controls the parent
         const offset = info.point.x; // point is how far it actually dragged (accounts for elastic)
         const velocity = info.velocity.x;
-
         moveCarouselBy(1, { offset, velocity });
       }}
     >
@@ -51,6 +55,8 @@ CarouselItem.propTypes = {
   style: PropTypes.shape({ width: Number }).isRequired,
   moveCarouselBy: PropTypes.func.isRequired,
   dragControls: PropTypes.instanceOf(DragControls).isRequired,
+  isDragging: PropTypes.bool.isRequired,
+  setIsDragging: PropTypes.func.isRequired,
   isMaster: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired,
 };
@@ -92,10 +98,11 @@ function Carousel({
   const renderChildren = indices.map((i) => children2[i]);
 
   const dragControls = useDragControls();
+  const [isDragging, setIsDragging] = useState(false);
   const containerControls = useAnimation();
 
   // Function to move the current index of the carousel by a given number of elements
-  const moveBy = async (delta, { offset, velocity }) => {
+  const moveBy = async (delta, { offset, velocity } = {}) => {
     if (delta === 0) return;
     // Change centered element
     const newIndex = (centerIndex + delta + children2.length) % children2.length;
@@ -116,6 +123,7 @@ function Carousel({
         timeConstant: 750,
       },
     });
+    setIsDragging(false);
     setMasterItemKey(children2[newIndex].key);
     containerControls.set({ x: 0 });
   };
@@ -138,6 +146,8 @@ function Carousel({
                 isMaster={child.key === masterItemKey}
                 deltaFromCenter={deltaFromCenter}
                 dragControls={dragControls}
+                isDragging={isDragging}
+                setIsDragging={setIsDragging}
                 style={{ width: itemWidth }}
                 moveCarouselBy={moveBy}
               >
