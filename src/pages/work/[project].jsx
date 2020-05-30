@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 
 import Head from 'next/head';
 
+import ArrowLink from 'components/ArrowLink';
 import TagsList from 'components/TagsList';
 import FramedFigure from 'components/FramedFigure';
 import Carousel from 'components/Carousel';
@@ -72,7 +73,14 @@ function CaseStudy({ project }) {
         <div className={cx('block', 'text')}>
           <TagsList max={5}>{ project.tags }</TagsList>
         </div>
+
         { parse(project.subhead, asTextBlock) }
+
+        <div className={cx('block', 'text', 'links')}>
+          { project.links.map((l) => (
+            <a href={l.url} key={l.url} target="_blank" rel="noopener noreferrer">{ l.label }</a>
+          ))}
+        </div>
 
         {/* Primary image (if it exists) */}
         {
@@ -169,6 +177,10 @@ CaseStudy.propTypes = {
     head: PropTypes.string.isRequired,
     subhead: PropTypes.string.isRequired,
     tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+    links: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+    })).isRequired,
     content: PropTypes.shape({
       hero: PropTypes.shape({
         src: PropTypes.string,
