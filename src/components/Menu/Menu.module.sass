@@ -37,10 +37,7 @@ nav.menu
         color: $white
 
       &.active a span
-        @supports(-webkit-background-clip: text)
-          background: linear-gradient(135deg, $gradient-1, $gradient-2)
-          -webkit-text-fill-color: transparent
-          -webkit-background-clip: text
+        @include gradient-text
 
 
   .signature

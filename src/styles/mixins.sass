@@ -4,3 +4,11 @@
 
   @if $letter-spacing != null
     letter-spacing: $letter-spacing
+
+@mixin gradient-text
+  color: mix($gradient-1, $gradient-2)
+
+  @supports(-webkit-background-clip: text)
+    background: linear-gradient(135deg, $gradient-1, $gradient-2)
+    -webkit-text-fill-color: transparent
+    -webkit-background-clip: text
