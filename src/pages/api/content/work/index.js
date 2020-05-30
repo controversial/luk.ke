@@ -28,7 +28,10 @@ export const processProject = async ({
   tags,
   start_date: project.start_date.split('-').slice(0, 2).map((n) => parseInt(n, 10)),
   end_date: project.end_date.split('-').slice(0, 2).map((n) => parseInt(n, 10)),
-  github_link: PrismicDOM.Link.url(project.github_link),
+  links: project.links.map(({ label, link }) => ({
+    label,
+    url: PrismicDOM.Link.url(link),
+  })),
   featured_images: project.featured_images
     .map(({ image: { url, alt, dimensions }, video, video_mode, zoom }) => ({
       src: url,
