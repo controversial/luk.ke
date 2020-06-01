@@ -4,33 +4,19 @@ import classNames from 'classnames/bind';
 
 import Head from 'next/head';
 
-import ArrowLink from 'components/ArrowLink';
 import TagsList from 'components/TagsList';
 import FramedFigure from 'components/FramedFigure';
-import Carousel from 'components/Carousel';
 
 import { getProject } from 'pages/api/content/work/[project]';
 import { fetchAllProjects } from 'pages/api/content/work';
-import { getResizedImage } from 'helpers/image';
-import parse, { domToReact } from 'html-react-parser';
+import parse from 'html-react-parser';
+import { renderBlock, parseAsTextBlock as asTextBlock } from './case-study-blocks';
 
 import styles from './project.module.sass';
 const cx = classNames.bind(styles);
 
 
 function CaseStudy({ project }) {
-  /* eslint-disable react/prop-types */
-  function addClassName({ name: tag, attribs, children, parent }, className) {
-    if (!attribs || parent) return undefined; // only apply to the root node
-    const existingClassName = attribs.class;
-    delete attribs.class;
-    return React.createElement(tag, {
-      ...attribs, className: cx(existingClassName || '', className).trim(),
-    }, domToReact(children));
-  }
-  /* eslint-enable */
-  const asTextBlock = { replace: (node) => addClassName(node, ['block', 'text']) };
-
   const heroImage = project?.content?.hero;
   const content = project?.content?.blocks;
 
@@ -100,67 +86,10 @@ function CaseStudy({ project }) {
           contentSections.map((section) => (
             <section key={section[0].id} id={section[0].id}>
               {
-                section.map((block, idx) => {
-                  let out;
-                  if (block.type === 'section_heading') out = parse(block.content, asTextBlock);
-                  else if (block.type === 'content') out = parse(block.content, asTextBlock);
-                  else if (block.type === 'image') {
-                    out = (
-                      <FramedFigure
-                        className={cx('block', 'image')}
-                        frameStyle={block.frame}
-                        caption={block.caption && parse(block.caption)}
-                      >
-                        <img
-                          src={getResizedImage(block.src, 200)}
-                          data-src={block.src}
-                          className="lazyload"
-                          alt={block.alt}
-                        />
-                      </FramedFigure>
-                    );
-                  } else if (block.type === 'image_gallery') {
-                    const carouselSpacing = windowWidth * 0.1;
-                    const carouselItemWidth = windowWidth > 550
-                      // full width minus the two blocks of spacing we need to leave. .6 (over .5)
-                      // so that we show slightly less than half the items to the left / right sides
-                      ? (windowWidth - (carouselSpacing * 2)) * 0.6
-                      // on mobile show even less of the sides
-                      : (windowWidth - (carouselSpacing * 2)) * 0.9;
-                    out = windowWidth === 0 ? <React.Fragment /> : (
-                      <Carousel
-                        className={cx('block', 'carousel', 'image-gallery')}
-                        spacing={Math.floor(carouselSpacing)}
-                        itemWidth={Math.floor(carouselItemWidth)}
-                      >
-                        { block.images.map(({ src, alt, caption }) => (
-                          <FramedFigure
-                            className={cx('carousel-item')}
-                            frameStyle={block.frame}
-                            caption={caption && parse(caption)}
-                            key={src}
-                          >
-                            <img
-                              src={getResizedImage(src, 200)}
-                              data-src={src}
-                              className="lazyload"
-                              alt={alt}
-                            />
-                          </FramedFigure>
-                        ))}
-                      </Carousel>
-                    );
-                  } else {
-                    out = <div className={cx('block', 'text', 'not-implemented')}>{`Not implemented: ${block.type}`}</div>;
-                  }
-
-                  // TODO: implement video, video_gallery, embed
-
-                  return React.Children.map(out, (el, idx2) => (
-                    // eslint-disable-next-line react/no-array-index-key
-                    React.cloneElement(el, { key: `${idx}-${idx2}` })
-                  ));
-                })
+                section
+                  .map((block) => renderBlock(block, windowWidth))
+                  // eslint-disable-next-line react/no-array-index-key
+                  .map((block, idx) => <React.Fragment key={idx}>{ block }</React.Fragment>)
               }
             </section>
           ))
