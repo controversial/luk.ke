@@ -84,6 +84,8 @@ export function renderBlock({ type, ...block }, windowWidth) {
     case 'image_gallery':
       return renderImageGalleryBlock(block, windowWidth);
     // TODO: implement video, video_gallery, embed
+    case 'empty':
+      return null;
     default:
       return (
         <div className={cx('block', 'text', 'not-implemented')}>

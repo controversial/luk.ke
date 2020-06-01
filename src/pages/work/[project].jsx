@@ -18,14 +18,14 @@ const cx = classNames.bind(styles);
 
 function CaseStudy({ project }) {
   const heroImage = project?.content?.hero;
-  const content = project?.content?.blocks;
+  const content = (project?.content?.blocks || []);
 
   // Split page content up into sections
 
   const contentSections = [];
   // If the first content block doesn't explicitly define the start of a section, we create a bucket
   // for that beginning content to go into.
-  if (content?.[0] && content[0].type !== 'section_heading') contentSections.push([]);
+  if (content[0]?.type !== 'section_heading') contentSections.push([{ type: 'empty', id: '__first' }]);
   content.forEach((block) => {
     // Whenever we reach a section heading, we start a new section
     if (block.type === 'section_heading') contentSections.push([]);
