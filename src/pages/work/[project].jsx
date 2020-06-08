@@ -84,7 +84,7 @@ function CaseStudy({ project }) {
         {/* Body content */}
         {
           contentSections.map((section) => (
-            <section key={section[0].id} id={section[0].id}>
+            <section key={section[0].id} id={section[0].id} data-bg-text={section[0].content}>
               {
                 section
                   .map((block) => renderBlock(block, windowWidth))
