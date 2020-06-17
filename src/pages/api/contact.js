@@ -19,7 +19,7 @@ const targetEmail = new Promise((resolve) => {
     .then((api) => api.query(Prismic.Predicates.at('document.type', 'contact')))
     .then(({ results }) => results[0].data)
     .then((data) => data.contact_form_address)
-    .catch(() => 'luke@deentaylor.com');
+    .catch(() => 'luketaylor@hey.com');
 
   resolve(address);
 });
