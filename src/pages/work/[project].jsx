@@ -10,7 +10,7 @@ import FramedFigure from 'components/FramedFigure';
 import { getProject } from 'pages/api/content/work/[project]';
 import { fetchAllProjects } from 'pages/api/content/work';
 import parse from 'html-react-parser';
-import { renderBlock, parseAsTextBlock as asTextBlock } from './case-study-blocks';
+import { renderBlock, parseAsTextBlock as asTextBlock } from 'helpers/pages/work/case-study-blocks';
 
 import styles from './project.module.sass';
 const cx = classNames.bind(styles);

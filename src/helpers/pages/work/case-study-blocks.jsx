@@ -7,7 +7,7 @@ import { getResizedImage } from 'helpers/image';
 import parse, { domToReact } from 'html-react-parser';
 
 import classNames from 'classnames/bind';
-import styles from './project.module.sass';
+import styles from 'pages/work/project.module.sass';
 const cx = classNames.bind(styles);
 
 
