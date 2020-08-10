@@ -160,7 +160,7 @@ Object.assign(Contact, {
 export async function getStaticProps() {
   return {
     props: { content: await getContactPage() },
-    unstable_revalidate: 60,
+    revalidate: 60,
   };
 }
 

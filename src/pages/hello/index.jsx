@@ -89,7 +89,7 @@ Object.assign(Hello, {
 export async function getStaticProps() {
   return {
     props: { content: await getHomepage(true) },
-    unstable_revalidate: 60, // revalidate in the background if it's been more than a minute
+    revalidate: 60, // fetch new CMS data in the background if it's been more than a minute
   };
 }
 

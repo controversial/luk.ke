@@ -220,7 +220,7 @@ Object.assign(WorkIndex, {
 export async function getStaticProps() {
   return {
     props: { content: await getProjects() },
-    unstable_revalidate: 60,
+    revalidate: 60,
   };
 }
 
