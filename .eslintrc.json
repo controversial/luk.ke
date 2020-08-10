@@ -42,7 +42,8 @@
     "jsx-a11y/anchor-is-valid": "off",
     "react/no-danger": "off",
     "react/jsx-fragments": "off",
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxBOF": 0, "maxEOF": 0 }]
   },
   "settings": {
     "import/resolver": {
