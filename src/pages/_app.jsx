@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Router, { useRouter } from 'next/router';
+import Head from 'next/head';
 
 import mitt from 'mitt';
 import { StoreProvider } from '../store';
@@ -57,6 +58,9 @@ function App({ Component, pageProps: basePageProps }) {
 
   return (
     <StoreProvider>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+      </Head>
       <div id="app">
         <PanelsLayout
           // Well-behaved page components should define LightContent and DarkContent as properties,
