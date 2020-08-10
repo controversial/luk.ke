@@ -10,6 +10,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
 if (process.env.DISABLE_EMAIL === 'true') {
+  // eslint-disable-next-line no-console
   console.warn('Note: contact form emails will be suppressed due to the presence of the DISABLE_EMAIL flag');
 }
 
