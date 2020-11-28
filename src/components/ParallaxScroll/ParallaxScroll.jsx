@@ -34,10 +34,11 @@ function ParallaxScroll({ children, freeze, onFocusChange }) {
   // Update dimensions on mount and whenever the size changes
   useEffect(() => {
     if (rootEl.current !== null) {
-      const { width: currWidth } = rootEl.current.getBoundingClientRect();
+      const el = rootEl.current;
+      const { width: currWidth } = el.getBoundingClientRect();
       setWidth(currWidth);
-      ro.observe(rootEl.current);
-      return () => ro.unobserve(rootEl.current);
+      ro.observe(el);
+      return () => ro.unobserve(el);
     }
     return () => {};
   }, [rootEl]);
