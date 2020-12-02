@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
+import Image from 'next/image';
 import { motion, useTransform, MotionValue } from 'framer-motion';
 
 import styles from './Parallax.module.sass';
@@ -84,11 +85,21 @@ function ParallaxImage({ img, layout, zoom, scrollProgress }) {
         {
           !video
             ? (
-              <motion.img
+              <motion.div
                 src={img.src}
                 alt={img.alt}
+                className={cx('image-wrapper')}
                 style={{ width, height, scale: zoom ? scale : 1 }}
-              />
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  width={imgWidth}
+                  height={imgHeight}
+                  layout="responsive"
+                  className={cx('inner-image')}
+                />
+              </motion.div>
             )
             : (
               <motion.video

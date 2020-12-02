@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Image from 'next/image';
 import FramedFigure from 'components/FramedFigure';
 import Carousel from 'components/Carousel';
 
@@ -29,9 +30,12 @@ const renderImageBlock = (block) => (
     frameStyle={block.frame}
     caption={block.caption && parse(block.caption)}
   >
-    <img
+    <Image
       src={block.src}
       alt={block.alt}
+      width={block.dimensions[0]}
+      height={block.dimensions[1]}
+      layout="responsive"
     />
   </FramedFigure>
 );
@@ -50,16 +54,19 @@ const renderImageGalleryBlock = (block, windowWidth) => {
       spacing={Math.floor(carouselSpacing)}
       itemWidth={Math.floor(carouselItemWidth)}
     >
-      { block.images.map(({ src, alt, caption }) => (
+      { block.images.map(({ src, alt, dimensions, caption }) => (
         <FramedFigure
           className={cx('carousel-item')}
           frameStyle={block.frame}
           caption={caption && parse(caption)}
           key={src}
         >
-          <img
+          <Image
             src={src}
             alt={alt}
+            width={dimensions[0]}
+            height={dimensions[1]}
+            layout="responsive"
           />
         </FramedFigure>
       ))}

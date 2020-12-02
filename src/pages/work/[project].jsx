@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import Head from 'next/head';
+import Image from 'next/image';
 
 import TagsList from 'components/TagsList';
 import FramedFigure from 'components/FramedFigure';
@@ -76,7 +77,13 @@ function CaseStudy({ project }) {
               frameStyle={heroImage.frame}
               caption={heroImage.caption && parse(heroImage.caption)}
             >
-              <img src={heroImage.src} alt={heroImage.alt} />
+              <Image
+                src={heroImage.src}
+                alt={heroImage.alt}
+                width={heroImage.dimensions[0]}
+                height={heroImage.dimensions[1]}
+                layout="responsive"
+              />
             </FramedFigure>
           )
         }
