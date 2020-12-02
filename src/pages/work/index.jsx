@@ -12,7 +12,6 @@ import ArrowLink from 'components/ArrowLink';
 import TagsList from 'components/TagsList';
 
 import { getProjects } from 'pages/api/content/work';
-import { getResizedImage } from 'helpers/image';
 import parse, { domToReact } from 'html-react-parser';
 
 import styles from './index.module.sass';
@@ -194,7 +193,7 @@ function WorkPageDarkContent({ content: projects, bus, freezeUpdates }) {
           { p.featured_images.map((img) => (
             <ParallaxImage
               key={img.src}
-              img={{ ...img, lazyPlaceholder: getResizedImage(img.src, 100) }}
+              img={{ ...img }}
               zoom={img.zoom}
             />
           ))}

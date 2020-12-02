@@ -3,7 +3,6 @@ import React from 'react';
 import FramedFigure from 'components/FramedFigure';
 import Carousel from 'components/Carousel';
 
-import { getResizedImage } from 'helpers/image';
 import parse, { domToReact } from 'html-react-parser';
 
 import classNames from 'classnames/bind';
@@ -31,9 +30,7 @@ const renderImageBlock = (block) => (
     caption={block.caption && parse(block.caption)}
   >
     <img
-      src={getResizedImage(block.src, 200)}
-      data-src={block.src}
-      className="lazyload"
+      src={block.src}
       alt={block.alt}
     />
   </FramedFigure>
@@ -61,9 +58,7 @@ const renderImageGalleryBlock = (block, windowWidth) => {
           key={src}
         >
           <img
-            src={getResizedImage(src, 200)}
-            data-src={src}
-            className="lazyload"
+            src={src}
             alt={alt}
           />
         </FramedFigure>

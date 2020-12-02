@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "eslint . --ext=js,jsx"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,6 @@
     "framesync": "^4.1.0",
     "html-react-parser": "^0.14.2",
     "htmlparser2": "^5.0.1",
-    "lazysizes": "^5.2.2",
     "lodash": "^4.17.20",
     "mitt": "^2.1.0",
     "next": "^10.0.3",
