@@ -8,6 +8,7 @@ import withClassName from 'helpers/addClassToMarkup';
 // Helper functions
 
 const omitUndefined = (obj) => JSON.parse(JSON.stringify(obj));
+const unpackDimensions = ({ width, height }) => [width, height];
 
 /**
  * Processes a Project document from Prismic, turning the Prismic document form into the form in
@@ -36,7 +37,7 @@ export const processProject = async ({
     .map(({ image: { url, alt, dimensions }, video, video_mode, zoom }) => ({
       src: url,
       alt,
-      dimensions: [dimensions.width, dimensions.height],
+      dimensions: unpackDimensions(dimensions),
       zoom,
       ...video.url && { video: { src: video.url, mode: video_mode } },
     })),
@@ -49,6 +50,7 @@ export const processProject = async ({
       hero: {
         src: project.hero_image.url,
         alt: project.hero_image.alt,
+        dimensions: unpackDimensions(project.hero_image.dimensions),
         frame: project.hero_image_frame,
         caption: PrismicDOM.RichText.asHtml(project.hero_image_caption) || null,
       },
@@ -72,6 +74,7 @@ export const processProject = async ({
             type,
             src: item.image.url,
             alt: item.image.alt,
+            dimensions: unpackDimensions(item.image.dimensions),
             frame: item.frame,
             caption: PrismicDOM.RichText.asHtml(item.caption) || null,
           };
@@ -83,6 +86,7 @@ export const processProject = async ({
             images: items.map(({ image, caption }) => ({
               src: image.url,
               alt: image.alt,
+              dimensions: unpackDimensions(image.dimensions),
               caption: PrismicDOM.RichText.asHtml(caption) || null,
             })),
           };
@@ -103,6 +107,10 @@ export const processProject = async ({
       }),
     },
   },
+
+  hero_image: undefined,
+  hero_image_caption: undefined,
+  hero_image_frame: undefined,
 });
 
 
