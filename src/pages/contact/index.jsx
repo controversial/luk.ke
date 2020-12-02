@@ -122,12 +122,7 @@ function ContactPageLightContent({
   );
 }
 ContactPageLightContent.propTypes = {
-  content: PropTypes.exact({
-    title: PropTypes.string.isRequired,
-    links: PropTypes.arrayOf(PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired,
-    })).isRequired,
+  content: PropTypes.shape({
     contact_form_success_message: PropTypes.string.isRequired,
   }).isRequired,
 };
@@ -147,7 +142,15 @@ function ContactPageDarkContent({ content: { title, links } }) {
     </div>
   );
 }
-ContactPageDarkContent.propTypes = ContactPageLightContent.propTypes;
+ContactPageDarkContent.propTypes = {
+  content: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    links: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+    })).isRequired,
+  }).isRequired,
+};
 
 
 Object.assign(Contact, {

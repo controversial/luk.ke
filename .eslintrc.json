@@ -43,6 +43,7 @@
     "react/no-danger": "off",
     "react/jsx-fragments": "off",
     "react/jsx-props-no-spreading": "off",
+    "react/jsx-props-no-multi-spaces": "off",
     "no-multiple-empty-lines": ["error", { "max": 2, "maxBOF": 0, "maxEOF": 0 }]
   },
   "settings": {
