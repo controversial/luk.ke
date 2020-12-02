@@ -62,6 +62,7 @@ function ParallaxSection({
           // Pass scrollMotionValue down
           return React.cloneElement(child2, {
             scrollProgress,
+            sectionIndex: index,
             layout: {
               ...layout[i],
               from: transformLayout(layout[i]?.from),

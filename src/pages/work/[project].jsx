@@ -83,6 +83,7 @@ function CaseStudy({ project }) {
                 width={heroImage.dimensions[0]}
                 height={heroImage.dimensions[1]}
                 layout="responsive"
+                priority
               />
             </FramedFigure>
           )

@@ -9,7 +9,7 @@ import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
 
 
-function ParallaxImage({ img, layout, zoom, scrollProgress }) {
+function ParallaxImage({ img, layout, zoom, scrollProgress, sectionIndex }) {
   if (!Object.keys(layout).length) return <React.Fragment />;
 
   const { video } = img;
@@ -98,6 +98,7 @@ function ParallaxImage({ img, layout, zoom, scrollProgress }) {
                   height={imgHeight}
                   layout="responsive"
                   className={cx('inner-image')}
+                  priority={sectionIndex === 0}
                 />
               </motion.div>
             )
@@ -154,11 +155,13 @@ ParallaxImage.propTypes = {
     }),
   }).isRequired,
   zoom: PropTypes.bool,
+  sectionIndex: PropTypes.number,
 };
 ParallaxImage.defaultProps = {
   scrollProgress: new MotionValue(0),
   layout: {},
   zoom: true,
+  sectionIndex: -1,
 };
 
 export default ParallaxImage;
