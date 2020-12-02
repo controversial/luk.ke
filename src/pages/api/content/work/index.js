@@ -8,7 +8,7 @@ import withClassName from 'helpers/addClassToMarkup';
 // Helper functions
 
 const omitUndefined = (obj) => JSON.parse(JSON.stringify(obj));
-const unpackDimensions = ({ width, height }) => [width, height];
+const unpackDimensions = ({ width, height } = {}) => [width, height];
 const imageFilename = (url) => {
   let u;
   try { u = new URL(url); } catch (e) { /* Ignore URL parsing errors */ }
@@ -55,7 +55,7 @@ export const processProject = async ({
   // process all of the rich text, etc. from the "body" of the Project entry from Prismic.
   ...includeContent && {
     content: {
-      hero: {
+      hero: (project.hero_image?.url || undefined) && {
         src: imageFilename(project.hero_image.url),
         alt: project.hero_image.alt,
         dimensions: unpackDimensions(project.hero_image.dimensions),
