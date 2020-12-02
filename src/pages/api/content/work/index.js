@@ -10,8 +10,9 @@ import withClassName from 'helpers/addClassToMarkup';
 const omitUndefined = (obj) => JSON.parse(JSON.stringify(obj));
 const unpackDimensions = ({ width, height }) => [width, height];
 const imageFilename = (url) => {
-  const u = new URL(url);
-  if (u.host === 'images.prismic.io' && u.pathname.startsWith('/luke')) {
+  let u;
+  try { u = new URL(url); } catch (e) { /* Ignore URL parsing errors */ }
+  if (u?.host === 'images.prismic.io' && u.pathname.startsWith('/luke')) {
     return u.pathname.split('/').slice(-1)[0];
   }
   return url;
