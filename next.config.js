@@ -9,4 +9,8 @@ module.exports = withBundleAnalyzer({
   sassOptions: {
     includePaths: [path.join(__dirname, 'src')],
   },
+  images: {
+    loader: 'imgix',
+    path: 'https://images.prismic.io/luke/',
+  },
 });
