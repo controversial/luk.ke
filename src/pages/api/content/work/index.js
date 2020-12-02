@@ -9,6 +9,13 @@ import withClassName from 'helpers/addClassToMarkup';
 
 const omitUndefined = (obj) => JSON.parse(JSON.stringify(obj));
 const unpackDimensions = ({ width, height }) => [width, height];
+const imageFilename = (url) => {
+  const u = new URL(url);
+  if (u.host === 'images.prismic.io' && u.pathname.startsWith('/luke')) {
+    return u.pathname.split('/').slice(-1)[0];
+  }
+  return url;
+};
 
 /**
  * Processes a Project document from Prismic, turning the Prismic document form into the form in
@@ -35,7 +42,7 @@ export const processProject = async ({
   })),
   featured_images: project.featured_images
     .map(({ image: { url, alt, dimensions }, video, video_mode, zoom }) => ({
-      src: url,
+      src: imageFilename(url),
       alt,
       dimensions: unpackDimensions(dimensions),
       zoom,
@@ -48,7 +55,7 @@ export const processProject = async ({
   ...includeContent && {
     content: {
       hero: {
-        src: project.hero_image.url,
+        src: imageFilename(project.hero_image.url),
         alt: project.hero_image.alt,
         dimensions: unpackDimensions(project.hero_image.dimensions),
         frame: project.hero_image_frame,
@@ -72,7 +79,7 @@ export const processProject = async ({
         if (type === 'image') {
           return {
             type,
-            src: item.image.url,
+            src: imageFilename(item.image.url),
             alt: item.image.alt,
             dimensions: unpackDimensions(item.image.dimensions),
             frame: item.frame,
@@ -84,7 +91,7 @@ export const processProject = async ({
             type,
             frame: item.frame,
             images: items.map(({ image, caption }) => ({
-              src: image.url,
+              src: imageFilename(image.url),
               alt: image.alt,
               dimensions: unpackDimensions(image.dimensions),
               caption: PrismicDOM.RichText.asHtml(caption) || null,
