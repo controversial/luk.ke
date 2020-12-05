@@ -31,7 +31,7 @@ const renderImageBlock = (block) => (
     caption={block.caption && parse(block.caption)}
   >
     <Image
-      src={block.src}
+      src={block.filename || block.src}
       alt={block.alt}
       width={block.dimensions[0]}
       height={block.dimensions[1]}
@@ -54,7 +54,7 @@ const renderImageGalleryBlock = (block, windowWidth) => {
       spacing={Math.floor(carouselSpacing)}
       itemWidth={Math.floor(carouselItemWidth)}
     >
-      { block.images.map(({ src, alt, dimensions, caption }) => (
+      { block.images.map(({ src, filename, alt, dimensions, caption }) => (
         <FramedFigure
           className={cx('carousel-item')}
           frameStyle={block.frame}
@@ -62,7 +62,7 @@ const renderImageGalleryBlock = (block, windowWidth) => {
           key={src}
         >
           <Image
-            src={src}
+            src={filename || src}
             alt={alt}
             width={dimensions[0]}
             height={dimensions[1]}

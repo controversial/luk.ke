@@ -78,7 +78,7 @@ function CaseStudy({ project }) {
               caption={heroImage.caption && parse(heroImage.caption)}
             >
               <Image
-                src={heroImage.src}
+                src={heroImage.filename || heroImage.src}
                 alt={heroImage.alt}
                 width={heroImage.dimensions[0]}
                 height={heroImage.dimensions[1]}

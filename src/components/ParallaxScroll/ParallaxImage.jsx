@@ -92,7 +92,7 @@ function ParallaxImage({ img, layout, zoom, scrollProgress, sectionIndex }) {
                 style={{ width, height, scale: zoom ? scale : 1 }}
               >
                 <Image
-                  src={img.src}
+                  src={img.filename || img.src}
                   alt={img.alt}
                   width={imgWidth}
                   height={imgHeight}
@@ -149,6 +149,7 @@ ParallaxImage.propTypes = {
     alt: PropTypes.string,
     dimensions: PropTypes.arrayOf(PropTypes.number).isRequired,
     src: PropTypes.string.isRequired,
+    filename: PropTypes.string,
     video: PropTypes.shape({
       src: PropTypes.string.isRequired,
       mode: PropTypes.oneOf(['loop', 'progress']),
