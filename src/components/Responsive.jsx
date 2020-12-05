@@ -23,7 +23,7 @@ import Head from 'next/head';
 const queries = {
   portrait: '(orientation: portrait)',
   landscape: '(orientation: landscape)',
-  gt1000: '(min-width: 1000px)',
+  squarish: '(min-aspect-ratio: 3/4) and (max-aspect-ratio: 4/3)',
 };
 
 

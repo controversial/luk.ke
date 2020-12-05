@@ -16,7 +16,7 @@
   grid-template-rows: [top] minmax(100vh, min-content) [bottom] // at least window height; grow to fit content
   grid-template-columns: [menu-left] $menu-width [viewport-left] repeat(4, 1fr [fifth]) 1fr [viewport-right] $menu-width [menu-right]
 
-  @media (max-aspect-ratio: 3/2)
+  @media (max-aspect-ratio: 4/3)
     // fifths become fourths; fifth 2 and fifth 3 are both in the center of the window
     grid-template-columns: [menu-left] $menu-width [viewport-left] 1fr [fifth] 1fr [fifth] 0 [fifth] 1fr [fifth] 1fr [viewport-right] $menu-width [menu-right]
 
