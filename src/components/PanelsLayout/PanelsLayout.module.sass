@@ -28,7 +28,15 @@
     background: $white
     color: $black
 
+  &.panel-on-left .panel.light
+    grid-column: viewport-left / fifth 2
+
+  &.panel-on-right .panel.light
+    grid-column: fifth 3 / viewport-right
+
   &.panel-full .panel.light
+    grid-column: viewport-left / viewport-right
+    // it can scroll
     position: relative
     height: auto
     min-height: 100vh
@@ -41,6 +49,12 @@
     grid-row: top / bottom
 
     color: $white
+
+  &.panel-on-left .panel.dark
+    grid-column: fifth 2 / viewport-right
+
+  &.panel-on-right .panel.dark
+    grid-column: viewport-left / fifth 3
 
 
   .panel .content

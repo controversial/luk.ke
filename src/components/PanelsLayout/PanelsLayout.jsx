@@ -184,11 +184,6 @@ function PanelsLayout({
             && { duration: 0.5, ease: [0.5, 0.1, 0.25, 1] }}
           onAnimationComplete={lightPanelAnimCallback}
           className={cx('panel', 'light')}
-          style={{ gridColumn: {
-            left: 'viewport-left / fifth 2',
-            right: 'fifth 3 / viewport-right',
-            full: 'viewport-left / viewport-right',
-          }[orientation] }}
           animate={lightPanelControls}
         >
           <div className={cx('nav-cover')} />
@@ -202,10 +197,6 @@ function PanelsLayout({
           : (
             <motion.div
               className={cx('panel', 'dark')}
-              style={{ gridColumn: {
-                left: 'fifth 2 / viewport-right',
-                right: 'viewport-left / fifth 3',
-              }[orientation] }}
             >
               <motion.div className={cx('content')} style={contentStyles}>
                 { React.cloneElement(darkContent, { freezeUpdates }) }
