@@ -13,7 +13,7 @@
  * We apply the css_display approach on the first render, then we switch to the
  * conditional_rendering approach once the app has mounted client-side.
  */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import Head from 'next/head';
@@ -23,6 +23,7 @@ import Head from 'next/head';
 const queries = {
   portrait: '(orientation: portrait)',
   landscape: '(orientation: landscape)',
+  gt1000: '(min-width: 1000px)',
 };
 
 
@@ -37,23 +38,34 @@ const css = Object.entries(queries).map(([name, query]) => `
   }
 `);
 
+// Inside a MediaQuery, a component can use the useMatchedMedia hook to get a list of the query
+// names of all of its MediaQuery ancestors.
+// This represents a list of the queries that must have matched for the component to display, so the
+// component can reliably do conditional rendering based on the items in this list.
+const MediaQueryContext = React.createContext([]);
+export const useMatchedMedia = () => useContext(MediaQueryContext);
 
 /* MediaQuery accepts and validates a 'query' prop. The parent Responsive component conditionally
  * renders each child MediaQuery based on its query. */
 export function MediaQuery({ children, query: queryName, approach }) {
   if (approach === 'undefined') throw new Error('MediaQuery must have a Responsive as its parent.');
+  // Avoid duplicates: don't add this media query if it already appeared higher
+  const queriesAbove = [...useMatchedMedia()];
+  const queriesHere = [...queriesAbove, ...queriesAbove.includes(queryName) ? [] : [queryName]];
 
   return (
-    <div
-      {...{
-        // under the 'css_display' mode, the element needs a classname
-        css_display: { className: `Responsive_${queryName}` },
-        // under the 'conditional_rendering' mode, the element needs to disappear
-        conditional_rendering: { style: { display: 'contents' } },
-      }[approach]}
-    >
-      {children}
-    </div>
+    <MediaQueryContext.Provider value={queriesHere}>
+      <div
+        {...{
+          // under the 'css_display' mode, the element needs a classname
+          css_display: { className: `Responsive_${queryName}` },
+          // under the 'conditional_rendering' mode, the element needs to disappear
+          conditional_rendering: { style: { display: 'contents' } },
+        }[approach]}
+      >
+        {children}
+      </div>
+    </MediaQueryContext.Provider>
   );
 }
 MediaQuery.propTypes = {
