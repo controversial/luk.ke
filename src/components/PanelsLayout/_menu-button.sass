@@ -10,6 +10,7 @@
   z-index: 3
   height: $nav-height
   padding: 0 60px
+  font-size: 20px
 
   display: flex
   align-items: center
@@ -31,7 +32,7 @@
 
     color: var(--color)
     font-family: $font-manrope
-    font-size: 20px
+    font-size: inherit
     @include font-weight(560)
 
     margin-top: 10px
@@ -42,7 +43,7 @@
     align-items: center
 
     .label
-      font-size: 20px
+      font-size: inherit
       margin: .2em .9em 0
 
   &.panel-on-right button
@@ -56,3 +57,15 @@
 
     button
       @include font-weight(600)
+
+  &.mobile
+    height: $mobile-nav-height
+    width: 100%
+    padding: 0 28px
+    font-size: 16px
+
+    &:not(.light)
+      background: $black
+
+    button
+      margin-top: 0
