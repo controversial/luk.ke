@@ -23,12 +23,13 @@ import Head from 'next/head';
 const queries = {
   portrait: '(orientation: portrait)',
   landscape: '(orientation: landscape)',
-  squarish: '(min-aspect-ratio: 3/4) and (max-aspect-ratio: 4/3)',
+  // squarish: '(min-aspect-ratio: 3/4) and (max-aspect-ratio: 4/3)',
 };
 
 
 // The stylesheet to power the initial css-based approach
-const css = Object.entries(queries).map(([name, query]) => `
+const css = Object.entries(queries)
+  .map(([name, query]) => `
   ${/* Everything is hidden automatically */ ''}
   .Responsive_${name} { display: none; }
 
@@ -36,7 +37,8 @@ const css = Object.entries(queries).map(([name, query]) => `
   @media ${query} {
     .Responsive_${name} { display: contents; }
   }
-`);
+`).join('\n').replace(/\s+/g, ''); /* CAUTION: this minification only works if and only if we avoid
+                                    *          whitespace-sensitive properties like box-shadow */
 
 // Inside a MediaQuery, a component can use the useMatchedMedia hook to get a list of the query
 // names of all of its MediaQuery ancestors.
