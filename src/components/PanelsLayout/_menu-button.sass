@@ -1,0 +1,58 @@
+@import 'styles/colors.sass'
+@import 'styles/fonts.sass'
+@import 'styles/dimensions.sass'
+@import 'styles/mixins.sass'
+
+.menu-button
+  position: fixed
+  top: 0
+  left: 0
+  z-index: 3
+  height: $nav-height
+  padding: 0 60px
+
+  display: flex
+  align-items: center
+  overflow: hidden
+
+  --color: #{$white}
+
+  &.panel-on-right
+    left: auto
+    right: 0
+
+  button
+    // resets
+    background: none
+    border: none
+    border-radius: 0
+    padding: 0
+    outline: none
+
+    color: var(--color)
+    font-family: $font-manrope
+    font-size: 20px
+    @include font-weight(560)
+
+    margin-top: 10px
+    cursor: pointer
+
+    display: flex
+    flex-direction: row
+    align-items: center
+
+    .label
+      font-size: 20px
+      margin: .2em .9em 0
+
+  &.panel-on-right button
+    flex-direction: row-reverse
+
+
+  &.light
+    z-index: 4
+    background: $white
+    --color: #{$black}
+
+    button
+      @include font-weight(600)

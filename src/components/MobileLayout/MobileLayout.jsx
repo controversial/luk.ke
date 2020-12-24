@@ -1,5 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useStore } from 'store';
+
+import { motion } from 'framer-motion';
+import MenuIcon from 'components/MenuIcon';
 
 import styles from './MobileLayout.module.sass';
 import classNames from 'classnames/bind';
@@ -19,12 +23,32 @@ function MobileLayout({
   prevPage: passedPrevPage,
   provideH1: passedProvideH1,
 }) {
+  const { state: { menuOpen }, dispatch } = useStore();
+  const variant = menuOpen ? 'menu-open' : 'menu-closed';
+
+  // Eventually, these have to be stored in state in order to keep old values during transitions
+  const content = passedContent;
+  const currPageName = passedCurrPageName;
+  const nextPage = passedNextPage;
+  const prevPage = passedPrevPage;
+  const provideH1 = passedProvideH1;
+
   return (
-    <div
+    <motion.div
       className={cx('mobile-layout')}
+      animate={variant}
     >
-      Mobile layout
-    </div>
+      <div className={cx('menu-button', 'mobile')}>
+        <motion.button type="button" onClick={() => dispatch('setMenuOpen', !menuOpen)}>
+          <MenuIcon />
+          {
+            provideH1
+              ? <h1 className={cx('label')}>{ currPageName || 'Menu' }</h1>
+              : <div className={cx('label')}>{ currPageName || 'Menu' }</div>
+          }
+        </motion.button>
+      </div>
+    </motion.div>
   );
 }
 
