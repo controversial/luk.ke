@@ -8,6 +8,7 @@ import { getHomepage } from 'pages/api/content/hello';
 
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useMatchedMedia } from 'components/Responsive';
 
 import AgeCounter from 'components/AgeCounter';
 import OverscrollTrigger from 'components/OverscrollTrigger';
@@ -48,9 +49,10 @@ function HomepageLightContent() {
 
 function HomepageDarkContent({ content, setWillNavigate }) {
   const router = useRouter();
+  const isMobile = useMatchedMedia().includes('portrait');
 
   return (
-    <div className={cx('content-wrapper')}>
+    <div className={cx('content-wrapper', { mobile: isMobile })}>
       { parse(content.title) }
       {
         content.text.map((p) => (
@@ -60,10 +62,12 @@ function HomepageDarkContent({ content, setWillNavigate }) {
         ))
       }
 
-      <OverscrollTrigger
-        callback={() => { router.push('/work'); }}
-        preCallback={(willNav) => setWillNavigate(willNav)}
-      />
+      {!isMobile && (
+        <OverscrollTrigger
+          callback={() => { router.push('/work'); }}
+          preCallback={(willNav) => setWillNavigate(willNav)}
+        />
+      )}
     </div>
   );
 }

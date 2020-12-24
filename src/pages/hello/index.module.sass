@@ -15,12 +15,23 @@
 
 
 .content-wrapper
-  padding: (75px + $nav-height) 100px 110px
+  padding: (75px + $nav-height) 100px 4em
   max-width: 730px
   font-size: 28px
   @include font-weight(400)
   line-height: 1.33em
   color: transparentize($white, .5)
+
+  &.mobile
+    padding-top: 75px + $mobile-nav-height
+    max-width: none
+
+    @media (max-width: 720px)
+      padding: (20px + $mobile-nav-height) 28px 4em
+      font-size: 19px
+
+      h1
+        font-size: 48px
 
   .age,
   \:global(.stat)
