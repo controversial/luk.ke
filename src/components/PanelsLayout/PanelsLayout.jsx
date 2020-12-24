@@ -9,8 +9,8 @@ import { useRouter } from 'next/router';
 import { motion, useMotionValue, useTransform, useAnimation } from 'framer-motion';
 import { useTransformMulti, easings } from 'helpers/motion';
 
-import Menu from '../Menu/Menu.jsx';
-import MenuIcon from '../MenuIcon/MenuIcon.jsx';
+import Menu from 'components/Menu';
+import MenuIcon from 'components/MenuIcon';
 
 import getOrientationClass from 'helpers/getOrientationClass';
 

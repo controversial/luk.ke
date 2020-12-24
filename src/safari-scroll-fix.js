@@ -2,7 +2,7 @@
 // well as unpredictable behavior for components like OverscrollTrigger. This function uses
 // javascript to emulate "overscroll-behavior: none" on Safari.
 
-import { isScrolledToBottom } from './components/OverscrollTrigger/OverscrollTrigger.jsx';
+import { isScrolledToBottom } from 'components/OverscrollTrigger/OverscrollTrigger.jsx';
 function isScrolledToTop() { return document.body.scrollTop <= 1; }
 
 let safariOverscrollListenerAdded = false;

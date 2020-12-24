@@ -9,7 +9,7 @@ import { getHomepage } from 'pages/api/content/hello';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import AgeCounter from 'components/AgeCounter/AgeCounter.jsx';
+import AgeCounter from 'components/AgeCounter';
 import OverscrollTrigger from 'components/OverscrollTrigger';
 
 import styles from './index.module.sass';

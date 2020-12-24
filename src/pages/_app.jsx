@@ -7,8 +7,8 @@ import mitt from 'mitt';
 import { StoreProvider } from '../store';
 
 import { Responsive, MediaQuery } from 'components/Responsive';
-import PanelsLayout from 'components/PanelsLayout/PanelsLayout.jsx';
-import MobileLayout from 'components/MobileLayout/MobileLayout.jsx';
+import PanelsLayout from 'components/PanelsLayout';
+import MobileLayout from 'components/MobileLayout';
 
 import setSafariScrollFix from '../safari-scroll-fix';
 import '../console-message';
