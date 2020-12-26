@@ -57,16 +57,33 @@ function HomepageDarkContent({ content, setWillNavigate }) {
   const router = useRouter();
   const isMobile = useMatchedMedia().includes('portrait');
 
+  const textBlocks = content.text.map((p) => (
+    <React.Fragment key={p}>
+      { parse(p, { replace: replaceAge }) }
+    </React.Fragment>
+  ));
+
   return (
     <div className={cx('content-wrapper', { mobile: isMobile })}>
-      { parse(content.title) }
-      {
-        content.text.map((p) => (
-          <React.Fragment key={p}>
-            { parse(p, { replace: replaceAge }) }
-          </React.Fragment>
-        ))
-      }
+      {/* The heading and first block of text go in the "first content" wrapper div */}
+      <div className={cx('first-content')}>
+        <div className={cx('text')}>
+          { parse(content.title) }
+          { textBlocks[0] }
+        </div>
+
+        {/* On mobile, we put them side by side with my picture */}
+        {isMobile && (
+          <div className={cx('mobile-headshot')}>
+            <div>
+              <Headshot image={content.hero_image} objectFit="cover" />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* The rest of the content blocks go below */}
+      {textBlocks.slice(1)}
 
       {!isMobile && (
         <OverscrollTrigger
@@ -82,6 +99,7 @@ HomepageDarkContent.propTypes = {
   content: PropTypes.shape({
     title: PropTypes.string.isRequired,
     text: PropTypes.arrayOf(PropTypes.string).isRequired,
+    hero_image: PropTypes.shape({}).isRequired,
   }).isRequired,
   setWillNavigate: PropTypes.func.isRequired,
 };
