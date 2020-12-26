@@ -2,7 +2,7 @@
 
 import Prismic from 'prismic-javascript';
 import PrismicDOM from 'prismic-dom';
-import Api from 'helpers/prismic';
+import Api, { cleanImage } from 'helpers/prismic';
 
 import { getTotalStars } from '../stars';
 
@@ -12,9 +12,11 @@ export async function getHomepage(forceRefreshStars = false) {
     Api
       .then((api) => api.query(Prismic.Predicates.at('document.type', 'homepage')))
       .then(({ results }) => results[0].data)
-      .then(({ main_title, text: textBlocks }) => ({
+      .then(({ main_title, text: textBlocks, hero_image }) => ({
         title: PrismicDOM.RichText.asHtml(main_title),
-        text: textBlocks.map(({ text_content }) => PrismicDOM.RichText.asHtml(text_content)),
+        text: textBlocks
+          .map(({ text_content }) => PrismicDOM.RichText.asHtml(text_content)),
+        hero_image: cleanImage(hero_image),
       })),
     // Simultaneously, fetch my total number of GitHub stars from the API
     getTotalStars(forceRefreshStars),
@@ -23,6 +25,8 @@ export async function getHomepage(forceRefreshStars = false) {
   return {
     ...cmsData,
     text: cmsData.text
+      // Special replacements for interactive elements. These have to come here at the end because
+      // they depend on data fetched concurrently with CMS content
       .map((t) => t.replace(/{{age}}/g, '<span class="age"></span>'))
       .map((t) => t.replace(/{{stars_count}}/g, `<span class="stat">${totalGithubStars}</span>`)),
   };
