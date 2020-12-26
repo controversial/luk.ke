@@ -14,6 +14,17 @@
   width: calc(#{$width})
   left: calc((100% - #{$width}) / 2)
 
+  img
+    -webkit-touch-callout: none
+    user-select: none
+
+  .fading-overlay
+    transition: opacity .55s
+
+    @include hover
+      transition: opacity .3s
+      opacity: 0
+
 
 .content-wrapper
   padding: (75px + $nav-height) 100px 4em
@@ -73,7 +84,7 @@
   ul
     list-style-type: square
 
-  :last-child
+  & > :last-child
     margin-bottom: 0
 
   \:global

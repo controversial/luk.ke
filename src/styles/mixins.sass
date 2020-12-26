@@ -15,3 +15,15 @@
     @include gradient
     -webkit-text-fill-color: transparent
     -webkit-background-clip: text
+
+// Do :hover in a way that makes sense on both touch devices and pointer devices
+
+@mixin hover
+  // Apply the effect while a click/touch is held down
+  &:not(:disabled):active
+    @content
+
+  // Apply the effect on hover for devices that can hover - but not for touch devices
+  @media (hover: hover) and (pointer: fine)
+    &:not(:disabled):hover
+      @content
