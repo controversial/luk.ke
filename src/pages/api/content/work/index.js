@@ -1,25 +1,13 @@
 /* eslint-disable camelcase */
 import Prismic from 'prismic-javascript';
 import PrismicDOM from 'prismic-dom';
-import Api from 'helpers/prismic';
+import Api, { cleanImage } from 'helpers/prismic';
 import withClassName from 'helpers/addClassToMarkup';
 
 
 // Helper functions
 
 const omitUndefined = (obj) => JSON.parse(JSON.stringify(obj));
-const unpackDimensions = ({ width, height } = {}) => [width, height];
-const imageSrc = (url) => {
-  let u;
-  try { u = new URL(url); } catch (e) { /* Ignore URL parsing errors */ }
-  if (u?.host === 'images.prismic.io' && u.pathname.startsWith('/luke')) {
-    return {
-      src: url,
-      filename: u.pathname.split('/').slice(-1)[0],
-    };
-  }
-  return { src: url };
-};
 
 /**
  * Processes a Project document from Prismic, turning the Prismic document form into the form in
@@ -45,10 +33,8 @@ export const processProject = async ({
     url: PrismicDOM.Link.url(link),
   })),
   featured_images: project.featured_images
-    .map(({ image: { url, alt, dimensions }, video, video_mode, zoom }) => ({
-      ...imageSrc(url),
-      alt,
-      dimensions: unpackDimensions(dimensions),
+    .map(({ image, video, video_mode, zoom }) => ({
+      ...cleanImage(image),
       zoom,
       ...video.url && { video: { src: video.url, mode: video_mode } },
     })),
@@ -59,9 +45,7 @@ export const processProject = async ({
   ...includeContent && {
     content: {
       hero: (project.hero_image?.url || undefined) && {
-        ...imageSrc(project.hero_image.url),
-        alt: project.hero_image.alt,
-        dimensions: unpackDimensions(project.hero_image.dimensions),
+        ...cleanImage(project.hero_image),
         frame: project.hero_image_frame,
         caption: PrismicDOM.RichText.asHtml(project.hero_image_caption) || null,
       },
@@ -83,9 +67,7 @@ export const processProject = async ({
         if (type === 'image') {
           return {
             type,
-            ...imageSrc(item.image.url),
-            alt: item.image.alt,
-            dimensions: unpackDimensions(item.image.dimensions),
+            ...cleanImage(item.image),
             frame: item.frame,
             caption: PrismicDOM.RichText.asHtml(item.caption) || null,
           };
@@ -95,9 +77,7 @@ export const processProject = async ({
             type,
             frame: item.frame,
             images: items.map(({ image, caption }) => ({
-              ...imageSrc(image.url),
-              alt: image.alt,
-              dimensions: unpackDimensions(image.dimensions),
+              ...cleanImage(image),
               caption: PrismicDOM.RichText.asHtml(caption) || null,
             })),
           };
