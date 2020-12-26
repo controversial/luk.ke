@@ -1,0 +1,13 @@
+@import 'styles/mixins'
+
+.base
+  img
+    -webkit-touch-callout: none
+    user-select: none
+
+  .fading-overlay
+    transition: opacity .55s
+
+    @include hover
+      transition: opacity .3s
+      opacity: 0

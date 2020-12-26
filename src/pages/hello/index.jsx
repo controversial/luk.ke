@@ -7,10 +7,10 @@ import parse from 'html-react-parser';
 import { getHomepage } from 'pages/api/content/hello';
 
 import Head from 'next/head';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useMatchedMedia } from 'components/Responsive';
 
+import Headshot from 'components/Headshot';
 import AgeCounter from 'components/AgeCounter';
 import OverscrollTrigger from 'components/OverscrollTrigger';
 
@@ -36,51 +36,18 @@ function Hello() {
   );
 }
 
-// Content to go in the light section
+// Content to go in the light section (on desktop only)
 
-function HomepageLightContent({ content: { hero_image } }) { // eslint-disable-line camelcase
-  // Display the "unfiltered" image if it exists and its aspect ratio matches that of the main
-  // hero image
-  const d = hero_image.dimensions;
-  const d2 = hero_image.unfiltered_dimensions;
-  const displayUnfilteredImage = !!hero_image.unfiltered_src && d[0] / d[1] === d2[0] / d2[1];
-
+function HomepageLightContent({ content: { hero_image: heroImage } }) {
   return (
     <div className={cx('image-wrapper')}>
-      {displayUnfilteredImage && (
-        <Image
-          src={hero_image.unfiltered_filename || hero_image.unfiltered_src}
-          alt={hero_image.unfiltered_alt}
-          layout="fill"
-          objectFit="contain"
-          priority
-        />
-      )}
-      <Image
-        src={hero_image.filename || hero_image.src}
-        alt={hero_image.alt}
-        layout="fill"
-        objectFit="contain"
-        priority
-        // If we have an "unfiltered" version of the image, this one should fade on hover.
-        className={cx({ 'fading-overlay': displayUnfilteredImage })}
-      />
+      <Headshot image={heroImage} />
     </div>
   );
 }
 HomepageLightContent.propTypes = {
   content: PropTypes.shape({
-    hero_image: PropTypes.shape({
-      src: PropTypes.string.isRequired,
-      filename: PropTypes.string,
-      alt: PropTypes.string.isRequired,
-      dimensions: PropTypes.arrayOf(PropTypes.number).isRequired,
-      // Sometimes an "unfiltered" version of the image is also provided
-      unfiltered_src: PropTypes.string,
-      unfiltered_filename: PropTypes.string,
-      unfiltered_alt: PropTypes.string,
-      unfiltered_dimensions: PropTypes.arrayOf(PropTypes.number),
-    }).isRequired,
+    hero_image: PropTypes.shape({ /* Defined more in Headshot PropTypes */ }).isRequired,
   }).isRequired,
 };
 
