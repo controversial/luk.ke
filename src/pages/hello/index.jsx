@@ -7,6 +7,7 @@ import parse from 'html-react-parser';
 import { getHomepage } from 'pages/api/content/hello';
 
 import Head from 'next/head';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useMatchedMedia } from 'components/Responsive';
 
@@ -37,13 +38,28 @@ function Hello() {
 
 // Content to go in the light section
 
-function HomepageLightContent() {
+function HomepageLightContent({ content: { hero_image: heroImage } }) {
   return (
-    <div>
-      <div className={cx('gradient')} />
+    <div className={cx('image-wrapper')}>
+      <Image
+        src={heroImage.filename || heroImage.src}
+        alt={heroImage.alt}
+        layout="fill"
+        objectFit="contain"
+        priority
+        className={cx('image')}
+      />
     </div>
   );
 }
+HomepageLightContent.propTypes = {
+  content: PropTypes.shape({
+    hero_image: PropTypes.shape({
+      src: PropTypes.string.isRequired,
+      alt: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
 
 // Content to go in the dark section
 
@@ -73,7 +89,7 @@ function HomepageDarkContent({ content, setWillNavigate }) {
 }
 
 HomepageDarkContent.propTypes = {
-  content: PropTypes.exact({
+  content: PropTypes.shape({
     title: PropTypes.string.isRequired,
     text: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,

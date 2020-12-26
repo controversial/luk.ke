@@ -3,15 +3,16 @@
 @import 'styles/dimensions'
 
 
-.gradient
+.image-wrapper
   position: absolute
-  top: calc(50% + (#{$nav-height} / 2))
-  left: 50%
-  width: 72%
-  height: calc((100% - #{$nav-height}) * .78)
-  background: linear-gradient(135deg, $gradient-1, $gradient-2)
-  transform: translate(-50%, -55%)
-  opacity: .75
+
+  $height: '(82% - 15px)'
+  height: calc(#{$height})
+  top: calc((100% - #{$height}) / 2)
+
+  $width: '(82% - 15px)'
+  width: calc(#{$width})
+  left: calc((100% - #{$width}) / 2)
 
 
 .content-wrapper
