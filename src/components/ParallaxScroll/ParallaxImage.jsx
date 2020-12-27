@@ -99,6 +99,7 @@ function ParallaxImage({ img, layout, zoom, scrollProgress, sectionIndex }) {
                   layout="responsive"
                   className={cx('inner-image')}
                   priority={sectionIndex === 0}
+                  sizes={`${Math.ceil(width * Math.min(Math.max(from.zoom, to.zoom, 1), 2))}px`}
                 />
               </motion.div>
             )
