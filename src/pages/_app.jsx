@@ -98,15 +98,17 @@ function App({ Component, pageProps: basePageProps }) {
               // For mobile layout, we prefer the dark content (on a dark background) and use the
               // light content (which is required for all pages) as a background. In practice, the
               // light content pops up on pages whose PanelLayout layout is 'full'
-              content={
-                (Component.DarkContent && React.createElement(Component.DarkContent, pprops))
-                || React.createElement(Component.LightContent || Component, pprops)
-              }
+              content={React.createElement(
+                Component.DarkContent || Component.LightContent || Component,
+                pprops,
+              )}
               // We know we're using the light content if there is no dark content
               isLight={!Component.DarkContent}
               currPageName={pageName}
               provideH1={componentIsMissingH1}
             />
+            {/* Make sure main Component gets a chance to render */}
+            { (Component.DarkContent || Component.LightContent) ? <Component {...pprops} /> : '' }
           </MediaQuery>
         </Responsive>
       </div>
