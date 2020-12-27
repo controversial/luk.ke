@@ -102,6 +102,8 @@ function App({ Component, pageProps: basePageProps }) {
                 (Component.DarkContent && React.createElement(Component.DarkContent, pprops))
                 || React.createElement(Component.LightContent || Component, pprops)
               }
+              // We know we're using the light content if there is no dark content
+              isLight={!Component.DarkContent}
               currPageName={pageName}
               provideH1={componentIsMissingH1}
             />

@@ -18,6 +18,7 @@ const cx = classNames.bind(styles);
  */
 function MobileLayout({
   content: passedContent,
+  isLight: passedIsLight,
   currPageName: passedCurrPageName,
   // nextPage: passedNextPage,
   // prevPage: passedPrevPage,
@@ -28,6 +29,7 @@ function MobileLayout({
 
   // Eventually, these have to be stored in state in order to keep old values during transitions
   const content = passedContent;
+  const isLight = passedIsLight;
   const currPageName = passedCurrPageName;
   // const nextPage = passedNextPage;
   // const prevPage = passedPrevPage;
@@ -35,10 +37,10 @@ function MobileLayout({
 
   return (
     <motion.div
-      className={cx('mobile-layout')}
+      className={cx('mobile-layout', { light: isLight })}
       animate={variant}
     >
-      <div className={cx('menu-button', 'mobile')}>
+      <div className={cx('menu-button', 'mobile', { light: isLight })}>
         <motion.button type="button" onClick={() => dispatch('setMenuOpen', !menuOpen)}>
           <MenuIcon />
           {
@@ -56,6 +58,7 @@ function MobileLayout({
 
 MobileLayout.propTypes = {
   content: PropTypes.element.isRequired,
+  isLight: PropTypes.bool.isRequired,
   currPageName: PropTypes.string,
   // nextPage: PropTypes.exact({
   //   name: PropTypes.string.isRequired,
