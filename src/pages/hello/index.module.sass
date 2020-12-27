@@ -3,6 +3,9 @@
 @import 'styles/dimensions'
 
 
+// Desktop - LightContent container for headshot image
+
+
 .image-wrapper
   position: absolute
 
@@ -15,38 +18,58 @@
   left: calc((100% - #{$width}) / 2)
 
 
+// Responsive typography and padding
+
+
 // Generate a set of responsive rules based on how much of the viewport's width the dark section
    occupies. Pass a value like 0.6 to indicate that the dark section is 60vw wide. nh is nav height.
+   The values this uses are appropriate for smaller window sizes, in general.
 @mixin responsive-content-scale($dark-section-width-ratio, $nh)
-  padding: (20px + $nh) calc(5px + #{5.5vw * $dark-section-width-ratio}) 4em
   font-size: 19px
-  font-size: min(max(calc(2.5px + #{4.2vw * $dark-section-width-ratio}), 12px), 24px)
+  font-size: max(12px, min(calc(2.5px + #{4.2vw * $dark-section-width-ratio}), 24px))
+  padding: (20px + $nh) calc(5px + #{5.5vw * $dark-section-width-ratio}) 4em
 
   h1
     font-size: 48px
-    font-size: min(max(calc(13px + #{8.8vw * $dark-section-width-ratio}), 30px), 60px)
+    font-size: max(30px, min(calc(13px + #{8.8vw * $dark-section-width-ratio}), 60px))
+
+// Default font-size styles
+.content-wrapper
+  font-size: 26px
+  font-size: min(calc(12px + 1vw), 26px)
+
+  h1
+    font-size: 68px
+    font-size: min(calc(25px + 3vw), 68px)
+
+// Desktop (landscape, two-column) layout styles
+.content-wrapper:not(.mobile)
+  padding: (65px + $nav-height) 80px 4em
+  padding: min(#{$nav-height} + 20px + 3vw, #{65px + $nav-height}) min(calc(40px + 3vw), 100px) 4em
+  // On small screens, override default font-size styles and reduce padding
+  @media (max-width: 1000px)
+    @include responsive-content-scale(0.6, $nav-height)
+
+// Mobile (portrait, single-column) layout styles
+.content-wrapper.mobile
+  padding: (75px + $mobile-nav-height) 80px 4em
+  padding: (75px + $mobile-nav-height) min(calc(40px + 5vw), 100px) 4em
+  // On small screens, override default font-size styles and reduce padding
+  @media (max-width: 720px)
+      @include responsive-content-scale(1.0, $mobile-nav-height)
+
+
+// The rest of it
 
 
 .content-wrapper
   max-width: 730px
-  font-size: 28px
   @include font-weight(400)
   line-height: 1.33em
   color: transparentize($white, .5)
 
-  &:not(.mobile)
-    padding: (75px + $nav-height) 100px 4em
-
-    @media (max-width: 1200px)//  and (min-aspect-ratio: 40001/30000) // Approximate inverse of max-aspect-ratio: 4/3
-      @include responsive-content-scale(0.6, $nav-height)
-
   &.mobile
-    padding: (75px + $mobile-nav-height) 100px 4em
     max-width: none
-
-    @media (max-width: 720px)
-      @include responsive-content-scale(1.0, $mobile-nav-height)
-
 
   .age,
   :global(.stat)
@@ -59,9 +82,8 @@
 
   h1
     margin-top: 0
-    font-size: 68px
     line-height: 1.2em
-    margin-bottom: 20px
+    margin-bottom: .4em
     @include font-weight(730)
     color: $white
 
