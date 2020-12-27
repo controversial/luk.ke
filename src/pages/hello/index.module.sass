@@ -28,12 +28,14 @@
     max-width: none
 
     @media (max-width: 720px)
-      padding: (20px + $mobile-nav-height) 28px 4em
+      padding: (20px + $mobile-nav-height) calc(5px + 5.5vw) 4em
       font-size: 19px
+      font-size: max(min(calc(2.5px + 4.2vw), 24px), 12px)
 
       h1
         font-size: 48px
-        line-height: 58px
+        font-size: max(min(calc(13px + 8.8vw), 60px), 30px)
+        line-height: 1.2
 
   .age,
   :global(.stat)
@@ -63,13 +65,14 @@
     margin-bottom: 1em
 
     .text
-      flex: 1 1 0
+      flex: 1 0 50%
+      width: 50%
 
       \:last-child
         margin-bottom: 0
 
     .mobile-headshot
-      flex: 1 1 0
+      flex: 1 1 50%
       padding-top: 8px
       padding-left: 10px
 
@@ -100,11 +103,6 @@
   & > :last-child
     margin-bottom: 0
 
-  \:global
-    .no-appearance,
-    .no-appearance > *
-      display: inline-block
-      text-decoration: none
-
+  :global
     .no-wrap
       white-space: nowrap
