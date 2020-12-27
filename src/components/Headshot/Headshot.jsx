@@ -23,6 +23,15 @@ export default function Headshot({ image, sizes, objectFit }) {
       onTouchEnd={() => { document.body.style.webkitUserSelect = 'text'; }}
       onTouchCancel={() => { document.body.style.webkitUserSelect = 'text'; }}
     >
+      <Image
+        src={image.filename || image.src}
+        alt={image.alt}
+        layout="fill"
+        sizes={sizes}
+        objectFit={objectFit}
+        objectPosition={objectPosition}
+        priority
+      />
       {displayUnfilteredImage && (
         <Image
           src={image.unfiltered_filename || image.unfiltered_src}
@@ -32,19 +41,9 @@ export default function Headshot({ image, sizes, objectFit }) {
           objectFit={objectFit}
           objectPosition={objectPosition}
           priority
+          className={cx('unfiltered-overlay')}
         />
       )}
-      <Image
-        src={image.filename || image.src}
-        alt={image.alt}
-        layout="fill"
-        sizes={sizes}
-        objectFit={objectFit}
-        objectPosition={objectPosition}
-        priority
-        // If we have an "unfiltered" version of the image, this one should fade on hover.
-        className={cx({ 'fading-overlay': displayUnfilteredImage })}
-      />
     </div>
   );
 }
