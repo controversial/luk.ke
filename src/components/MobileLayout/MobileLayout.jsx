@@ -19,8 +19,8 @@ const cx = classNames.bind(styles);
 function MobileLayout({
   content: passedContent,
   currPageName: passedCurrPageName,
-  nextPage: passedNextPage,
-  prevPage: passedPrevPage,
+  // nextPage: passedNextPage,
+  // prevPage: passedPrevPage,
   provideH1: passedProvideH1,
 }) {
   const { state: { menuOpen }, dispatch } = useStore();
@@ -29,8 +29,8 @@ function MobileLayout({
   // Eventually, these have to be stored in state in order to keep old values during transitions
   const content = passedContent;
   const currPageName = passedCurrPageName;
-  const nextPage = passedNextPage;
-  const prevPage = passedPrevPage;
+  // const nextPage = passedNextPage;
+  // const prevPage = passedPrevPage;
   const provideH1 = passedProvideH1;
 
   return (
@@ -48,6 +48,8 @@ function MobileLayout({
           }
         </motion.button>
       </div>
+
+      {content}
     </motion.div>
   );
 }
@@ -55,14 +57,14 @@ function MobileLayout({
 MobileLayout.propTypes = {
   content: PropTypes.element.isRequired,
   currPageName: PropTypes.string,
-  nextPage: PropTypes.exact({
-    name: PropTypes.string.isRequired,
-    path: PropTypes.string.isRequired,
-  }).isRequired,
-  prevPage: PropTypes.exact({
-    name: PropTypes.string.isRequired,
-    path: PropTypes.string.isRequired,
-  }).isRequired,
+  // nextPage: PropTypes.exact({
+  //   name: PropTypes.string.isRequired,
+  //   path: PropTypes.string.isRequired,
+  // }).isRequired,
+  // prevPage: PropTypes.exact({
+  //   name: PropTypes.string.isRequired,
+  //   path: PropTypes.string.isRequired,
+  // }).isRequired,
   provideH1: PropTypes.bool,
 };
 MobileLayout.defaultProps = {

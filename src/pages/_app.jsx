@@ -94,7 +94,17 @@ function App({ Component, pageProps: basePageProps }) {
             { Component.LightContent ? <Component {...pprops} /> : '' }
           </MediaQuery>
           <MediaQuery query="portrait">
-            <MobileLayout currPageName={pageName} provideH1={componentIsMissingH1} />
+            <MobileLayout
+              // For mobile layout, we prefer the dark content (on a dark background) and use the
+              // light content (which is required for all pages) as a background. In practice, the
+              // light content pops up on pages whose PanelLayout layout is 'full'
+              content={
+                (Component.DarkContent && React.createElement(Component.DarkContent, pprops))
+                || React.createElement(Component.LightContent || Component, pprops)
+              }
+              currPageName={pageName}
+              provideH1={componentIsMissingH1}
+            />
           </MediaQuery>
         </Responsive>
       </div>
