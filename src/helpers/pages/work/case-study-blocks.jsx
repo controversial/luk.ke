@@ -67,6 +67,7 @@ const renderImageGalleryBlock = (block, windowWidth) => {
             width={dimensions[0]}
             height={dimensions[1]}
             layout="responsive"
+            sizes={`${Math.ceil(carouselItemWidth)}px`}
           />
         </FramedFigure>
       ))}
