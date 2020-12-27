@@ -15,7 +15,12 @@ export default function Headshot({ image, objectFit }) {
   const displayUnfilteredImage = !!image.unfiltered_src && d[0] / d[1] === d2[0] / d2[1];
 
   return (
-    <div className={cx('base')}>
+    <div
+      className={cx('base')}
+      onTouchStart={() => { document.body.style.webkitUserSelect = 'none'; }}
+      onTouchEnd={() => { document.body.style.webkitUserSelect = 'text'; }}
+      onTouchCancel={() => { document.body.style.webkitUserSelect = 'text'; }}
+    >
       {displayUnfilteredImage && (
         <Image
           src={image.unfiltered_filename || image.unfiltered_src}
