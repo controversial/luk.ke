@@ -5,8 +5,7 @@ import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-import { AnimatePresence, motion } from 'framer-motion';
-import { useBodyScroll } from 'helpers/motion';
+import { AnimatePresence, motion, useViewportScroll } from 'framer-motion';
 import { ParallaxScroll, ParallaxSection, ParallaxImage } from 'components/ParallaxScroll';
 import ArrowLink from 'components/ArrowLink';
 import TagsList from 'components/TagsList';
@@ -91,8 +90,8 @@ function WorkPageLightContent({ content: projects, bus }) {
 
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeout = useRef(null);
-  const scroll = useBodyScroll();
-  useEffect(() => scroll.onChange(() => {
+  const { scrollY } = useViewportScroll();
+  useEffect(() => scrollY.onChange(() => {
     clearTimeout(scrollTimeout.current);
     setIsScrolling(true);
     scrollTimeout.current = setTimeout(() => setIsScrolling(false), 500);

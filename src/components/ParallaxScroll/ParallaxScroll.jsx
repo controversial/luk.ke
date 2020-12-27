@@ -4,8 +4,8 @@ import classNames from 'classnames/bind';
 
 import ResizeObserver from 'resize-observer-polyfill';
 
-import { motion, useTransform } from 'framer-motion';
-import { useLerp, useVelocity, useBodyScroll } from 'helpers/motion';
+import { motion, useTransform, useViewportScroll } from 'framer-motion';
+import { useLerp, useVelocity } from 'helpers/motion';
 
 import ParallaxSection from './ParallaxSection.jsx';
 
@@ -14,7 +14,7 @@ const cx = classNames.bind(styles);
 
 
 function ParallaxScroll({ children, freeze, onFocusChange }) {
-  const scrollY = useBodyScroll();
+  const { scrollY } = useViewportScroll();
   const lerpedScrollY = useLerp(scrollY, { alpha: 0.15 });
   const lerpedVelocity = useLerp(useVelocity(lerpedScrollY), { alpha: 0.25 });
   const skewY = useTransform(lerpedVelocity, [-1500, 1500], [-3, 3]);

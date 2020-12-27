@@ -54,22 +54,6 @@ export function useVelocity(parent) {
 }
 
 
-// Like framer-motion's built-in useViewportScroll but looks at scroll values from the body instead
-// of from the root element
-let hasListener = false;
-const bodyScroll = new MotionValue((typeof document !== 'undefined' && document?.body?.scrollTop) || 0);
-
-export function useBodyScroll() {
-  if (!hasListener && typeof document !== 'undefined') {
-    document.body.addEventListener('scroll', () => {
-      bodyScroll.set(document.body.scrollTop);
-    }, { passive: true });
-    hasListener = true;
-  }
-  return bodyScroll;
-}
-
-
 // LERP FUNCTIONALITY
 
 

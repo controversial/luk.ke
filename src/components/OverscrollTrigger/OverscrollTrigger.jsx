@@ -13,23 +13,25 @@ const cx = classNames.bind(styles);
 
 // Returns true if the window is scrolled within 'threshold' px of its bottom
 export function isScrolledToBottom(threshold = 0) {
-  const scrollBottom = document.body.offsetHeight + document.body.scrollTop + 1;
-  const maxScroll = document.body.scrollHeight;
+  const { scrollingElement: se } = document;
+  const scrollBottom = se.offsetHeight + se.scrollTop + 1;
+  const maxScroll = se.scrollHeight;
   return (scrollBottom + threshold) >= maxScroll;
 }
 
 function scrollDown() {
-  const pageDown = document.body.scrollTop + document.body.offsetHeight; // one "window height" down
-  const bottom = document.body.scrollHeight - document.body.offsetHeight; // bottom of page
+  const { scrollingElement: se } = document;
+  const pageDown = se.scrollTop + se.offsetHeight; // one "window height" down
+  const bottom = se.scrollHeight - se.offsetHeight; // bottom of page
   return new Promise((resolve) => {
     spring({
-      from: document.body.scrollTop,
+      from: se.scrollTop,
       to: Math.min(pageDown, bottom),
       mass: 1,
       stiffness: 400,
       damping: 90,
     }).start({
-      update: (value) => { document.body.scrollTo(document.body.scrollLeft, value); },
+      update: (value) => { se.scrollTo(0, value); },
       complete: resolve,
     });
   });
@@ -96,8 +98,8 @@ function OverscrollTrigger({ callback, preCallback }) {
         debouncedCallback();
       }
     }
-    document.body.addEventListener('wheel', onScroll);
-    return () => document.body.removeEventListener('wheel', onScroll);
+    document.scrollingElement.addEventListener('wheel', onScroll);
+    return () => document.scrollingElement.removeEventListener('wheel', onScroll);
   }, []);
 
 

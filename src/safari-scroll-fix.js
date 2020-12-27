@@ -3,7 +3,7 @@
 // javascript to emulate "overscroll-behavior: none" on Safari.
 
 import { isScrolledToBottom } from 'components/OverscrollTrigger/OverscrollTrigger.jsx';
-function isScrolledToTop() { return document.body.scrollTop <= 1; }
+function isScrolledToTop() { return document.scrollingElement.scrollTop <= 1; }
 
 let safariOverscrollListenerAdded = false;
 
@@ -19,7 +19,7 @@ export default function setSafariScrollFix() {
     typeof window !== 'undefined' && typeof document !== 'undefined'
     && window.safari && !safariOverscrollListenerAdded
   ) {
-    document.body.addEventListener('wheel', preventOverscroll);
+    document.scrollingElement.addEventListener('wheel', preventOverscroll);
     safariOverscrollListenerAdded = false;
   }
 }
