@@ -14,6 +14,8 @@ export default function Headshot({ image, objectFit }) {
   const { dimensions: d, unfiltered_dimensions: d2 } = image;
   const displayUnfilteredImage = !!image.unfiltered_src && d[0] / d[1] === d2[0] / d2[1];
 
+  const objectPosition = objectFit === 'cover' ? 'center 8%' : 'center center';
+
   return (
     <div
       className={cx('base')}
@@ -27,6 +29,7 @@ export default function Headshot({ image, objectFit }) {
           alt={image.unfiltered_alt}
           layout="fill"
           objectFit={objectFit}
+          objectPosition={objectPosition}
           priority
         />
       )}
@@ -35,6 +38,7 @@ export default function Headshot({ image, objectFit }) {
         alt={image.alt}
         layout="fill"
         objectFit={objectFit}
+        objectPosition={objectPosition}
         priority
         // If we have an "unfiltered" version of the image, this one should fade on hover.
         className={cx({ 'fading-overlay': displayUnfilteredImage })}
