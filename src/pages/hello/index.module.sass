@@ -27,7 +27,10 @@
 @mixin responsive-content-scale($dark-section-width-ratio, $nh)
   font-size: 19px
   font-size: max(12px, min(calc(2.5px + #{4.2vw * $dark-section-width-ratio}), 24px))
-  padding: (20px + $nh) calc(5px + #{5.5vw * $dark-section-width-ratio}) 4em
+  padding-top: 20px + $nh
+  padding-bottom: 4em
+  padding-left: calc(5px + #{5.5vw * $dark-section-width-ratio} + env(safe-area-inset-left))
+  padding-right: calc(5px + #{5.5vw * $dark-section-width-ratio} + env(safe-area-inset-right))
 
   h1
     font-size: 48px
@@ -46,6 +49,7 @@
 .content-wrapper:not(.mobile)
   padding: (65px + $nav-height) 80px 4em
   padding: min(#{$nav-height} + 20px + 3vw, #{65px + $nav-height}) min(calc(40px + 3vw), 100px) 4em
+  padding-left: min(calc(40px + 3vw + env(safe-area-inset-left)), calc(100px + env(safe-area-inset-left)))
   // On small screens, override default font-size styles and reduce padding
   @media (max-width: 1000px)
     @include responsive-content-scale(0.6, $nav-height)
