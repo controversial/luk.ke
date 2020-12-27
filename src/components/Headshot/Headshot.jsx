@@ -8,7 +8,7 @@ import styles from './Headshot.module.sass';
 const cx = classNames.bind(styles);
 
 
-export default function Headshot({ image, objectFit }) {
+export default function Headshot({ image, sizes, objectFit }) {
   // Display the "unfiltered" image if it exists and its aspect ratio matches that of the main
   // hero image
   const { dimensions: d, unfiltered_dimensions: d2 } = image;
@@ -28,6 +28,7 @@ export default function Headshot({ image, objectFit }) {
           src={image.unfiltered_filename || image.unfiltered_src}
           alt={image.unfiltered_alt}
           layout="fill"
+          sizes={sizes}
           objectFit={objectFit}
           objectPosition={objectPosition}
           priority
@@ -37,6 +38,7 @@ export default function Headshot({ image, objectFit }) {
         src={image.filename || image.src}
         alt={image.alt}
         layout="fill"
+        sizes={sizes}
         objectFit={objectFit}
         objectPosition={objectPosition}
         priority
@@ -59,8 +61,10 @@ Headshot.propTypes = {
     unfiltered_alt: PropTypes.string,
     unfiltered_dimensions: PropTypes.arrayOf(PropTypes.number),
   }).isRequired,
+  sizes: PropTypes.string,
   objectFit: PropTypes.oneOf(['contain', 'cover']),
 };
 Headshot.defaultProps = {
+  sizes: '50vw',
   objectFit: 'contain',
 };
