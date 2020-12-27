@@ -36,12 +36,12 @@
         line-height: 58px
 
   .age,
-  \:global(.stat)
+  :global(.stat)
     font-variant-numeric: tabular-nums
     color: transparentize($white, .3)
     @include font-weight(550, -.06em)
 
-  \:global(.overscroll-trigger)
+  :global(.overscroll-trigger)
     margin-top: 3.5em
 
   h1
@@ -52,7 +52,7 @@
     @include font-weight(730)
     color: $white
 
-    \:global(.gradient)
+    :global(.gradient)
       @include gradient-text
 
   // &:not(.mobile) h1 :global(.gradient)
