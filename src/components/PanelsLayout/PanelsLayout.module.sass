@@ -26,6 +26,7 @@
     z-index: 6
     top: 0
     height: 100vh
+    height: -webkit-fill-available
     grid-column: viewport-left / span 2 // this is overridden in JSX
     grid-row: top / bottom
 
@@ -45,6 +46,15 @@
     height: auto
     min-height: 100vh
 
+    .content
+      position: relative
+      width: 100%
+      min-height: 100%
+
+    .nav-cover + .content
+      top: 0
+      min-height: calc(100% - 80px)
+
 
   .panel.dark
     position: relative
@@ -60,11 +70,17 @@
   &.panel-on-right .panel.dark
     grid-column: viewport-left / fifth 3
 
-
-  .panel .content
+  .panel.dark .content
+    position: relative
     width: 100%
     min-height: 100%
-    position: relative
+
+  .panel.light .content
+    position: absolute
+    top: 0
+    right: 0
+    bottom: 0
+    left: 0
 
   .nav-cover
     position: sticky
@@ -74,11 +90,11 @@
     height: $nav-height
     z-index: 100
 
-    & + .content
-      min-height: calc(100% - #{$nav-height})
-
-  .light .nav-cover
+  .panel.light .nav-cover
     background: $white
+
+  .panel.light .nav-cover + .content
+    top: 80px
 
 
   :global
