@@ -26,7 +26,8 @@
     z-index: 6
     top: 0
     height: 100vh
-    height: -webkit-fill-available
+    @supports (-webkit-hyphens: none) // Safari ONLY: this breaks in chrome
+      height: -webkit-fill-available
     grid-column: viewport-left / span 2 // this is overridden in JSX
     grid-row: top / bottom
 
