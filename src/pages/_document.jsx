@@ -14,10 +14,11 @@ class CustomDocument extends Document {
 
         <body>
           <Main />
+
           {/* Simple analytics tracker */}
           {/* The sa.luk.ke domain is supposed to look innocuous to fool adblockers */}
           <script data-skip-dnt="true" async defer src="https://sa.luk.ke/latest.js" />
-          <noscript><img src="https://sa.luk.ke/noscript.gif?ignore-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript>
+
           <NextScript />
         </body>
       </Html>
