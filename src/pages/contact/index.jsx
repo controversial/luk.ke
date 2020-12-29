@@ -131,7 +131,7 @@ ContactPageLightContent.propTypes = {
 function ContactPageDarkContent({ content: { title, links } }) {
   return (
     <div className={cx('contact-page', 'dark-content')}>
-      <h1>{ title }</h1>
+      <h1>{ parse(title) }</h1>
       <ul>
         { links.map(({ label, url }) => (
           <li key={url}>
