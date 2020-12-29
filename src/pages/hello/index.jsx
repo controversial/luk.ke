@@ -7,6 +7,7 @@ import parse from 'html-react-parser';
 import { getHomepage } from 'pages/api/content/hello';
 
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMatchedMedia } from 'components/Responsive';
 
@@ -40,14 +41,16 @@ function Hello() {
 
 function HomepageLightContent({ content: { hero_image: heroImage } }) {
   return (
-    <div className={cx('image-wrapper')}>
-      <Headshot
-        image={heroImage}
-        // When the PanelsLayout splits 50/50, width is at _most_ a little less than 82% of 50vw
-        // Otherwise, we width is at _most_ a little less than 82% of 40vw
-        sizes="(max-aspect-ratio: 4/3) 41vw, 32vw"
-      />
-    </div>
+    <Link href="/contact">
+      <a className={cx('image-wrapper')}>
+        <Headshot
+          image={heroImage}
+          // When the PanelsLayout splits 50/50, width is at _most_ a little less than 82% of 50vw
+          // Otherwise, we width is at _most_ a little less than 82% of 40vw
+          sizes="(max-aspect-ratio: 4/3) 41vw, 32vw"
+        />
+      </a>
+    </Link>
   );
 }
 HomepageLightContent.propTypes = {
