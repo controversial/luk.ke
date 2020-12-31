@@ -76,6 +76,7 @@ function CaseStudy({ project }) {
               className={cx('block', 'image', 'primary-image')}
               frameStyle={heroImage.frame}
               caption={heroImage.caption && parse(heroImage.caption)}
+              href={heroImage.url}
             >
               <Image
                 src={heroImage.filename || heroImage.src}

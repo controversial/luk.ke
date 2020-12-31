@@ -47,6 +47,7 @@ export const processProject = async ({
       hero: (project.hero_image?.url || undefined) && {
         ...cleanImage(project.hero_image),
         frame: project.hero_image_frame,
+        url: project.hero_image_link?.link_type === 'Web' ? project.hero_image_link.url : null,
         caption: PrismicDOM.RichText.asHtml(project.hero_image_caption) || null,
       },
 
@@ -102,6 +103,7 @@ export const processProject = async ({
   hero_image: undefined,
   hero_image_caption: undefined,
   hero_image_frame: undefined,
+  hero_image_link: undefined,
 });
 
 
