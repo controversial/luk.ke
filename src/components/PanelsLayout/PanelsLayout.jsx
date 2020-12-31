@@ -149,10 +149,13 @@ function PanelsLayout({
 
 
   return (
-    // Using display: contents makes this behave like a Fragment but we can add Framer Motion props
-    // to it, which propagate to children.
     <motion.div
-      style={{ display: 'contents' }}
+      // Weird chrome bug creates choppy scroll snap experience when the (larger than 100vw)
+      // PanelsLayout div is inside a container that doesn't explicitly have overflow-x: hidden.
+      // We *can't* add an overflow value to the multi-column layouts, since this would destroy
+      // position: sticky on the light panel, but when we're in "full" layout (which is the only
+      // time the carousel is used) we can take this extra step to make sure scroll snap is smooth
+      style={displayContent && orientation === 'full' && { overflowX: 'hidden' }}
       animate={variant}
       initial={false}
     >
@@ -208,7 +211,7 @@ function PanelsLayout({
             events to close the menu */}
         <div
           className={cx('menu-close-target')}
-          style={{ pointerEvents: (menuOpen && !freezeUpdates) ? 'auto' : 'none' }}
+          style={{ display: (menuOpen && !freezeUpdates) ? 'block' : 'none' }}
           onClick={() => dispatch('setMenuOpen', false)}
           role="none"
         />
