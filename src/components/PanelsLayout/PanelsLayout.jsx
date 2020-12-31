@@ -12,12 +12,19 @@ import { useTransformMulti, easings } from 'helpers/motion';
 import Menu from 'components/Menu';
 import MenuIcon from 'components/MenuIcon';
 
-import getOrientationClass from 'helpers/getOrientationClass';
-
 import styles from './PanelsLayout.module.sass';
 const cx = classNames.bind(styles);
 
 const { ease } = easings;
+
+function getOrientationClass(orientation) {
+  return ({
+    left: 'panel-on-left',
+    right: 'panel-on-right',
+    full: 'panel-full',
+  })[orientation];
+}
+
 
 /**
  * This component provides a layout with four full-height sections: a light colored panel with
