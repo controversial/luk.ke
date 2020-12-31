@@ -53,8 +53,8 @@
       min-height: 100%
 
     .nav-cover + .content
-      top: 0
-      min-height: calc(100% - 80px)
+      top: 0 // position is relative
+      min-height: calc(100% - #{$nav-height})
 
 
   .panel.dark
@@ -95,7 +95,7 @@
     background: $white
 
   .panel.light .nav-cover + .content
-    top: 80px
+    top: $nav-height
 
 
   :global

@@ -150,12 +150,7 @@ function PanelsLayout({
 
   return (
     <motion.div
-      // Weird chrome bug creates choppy scroll snap experience when the (larger than 100vw)
-      // PanelsLayout div is inside a container that doesn't explicitly have overflow-x: hidden.
-      // We *can't* add an overflow value to the multi-column layouts, since this would destroy
-      // position: sticky on the light panel, but when we're in "full" layout (which is the only
-      // time the carousel is used) we can take this extra step to make sure scroll snap is smooth
-      style={displayContent && orientation === 'full' && { overflowX: 'hidden' }}
+      style={{ display: 'contents' }}
       animate={variant}
       initial={false}
     >
