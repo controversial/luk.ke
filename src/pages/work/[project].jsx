@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
@@ -10,6 +10,7 @@ import FramedFigure from 'components/FramedFigure';
 
 import { getProject } from 'pages/api/content/work/[project]';
 import { fetchAllProjects } from 'pages/api/content/work';
+import { useWindowWidth } from 'helpers/hooks';
 import parse from 'html-react-parser';
 import { renderBlock, parseAsTextBlock as asTextBlock } from 'helpers/pages/work/case-study-blocks';
 
@@ -35,14 +36,7 @@ function CaseStudy({ project }) {
     lastSection.push(block);
   });
 
-  const [windowWidth, setWindowWidth] = useState(0);
-  useEffect(() => {
-    const update = () => setWindowWidth(window.innerWidth);
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, []);
-
+  const windowWidth = useWindowWidth();
 
   return (
     <React.Fragment>
