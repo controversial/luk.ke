@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { useWindowWidth } from 'helpers/hooks';
@@ -25,9 +25,11 @@ export default function Carousel({ children, spacing, itemWidth, className }) {
     itemRefs.current = React.Children.map(children, () => React.createRef());
   }
   // Keep track of the X coordinate of the center of each card within the scroll container
-  const [cardCenters, setCardCenters] = useState([]);
+  const cardCenters = useRef([]);
   useEffect(() => {
-    setCardCenters(itemRefs.current.map(({ current: el }) => el.offsetLeft + (el.offsetWidth / 2)));
+    cardCenters.current = itemRefs.current.map(
+      ({ current: el }) => el.offsetLeft + (el.offsetWidth / 2),
+    );
   }, [itemRefs.current, spacing, itemWidth, windowWidth]);
   // Set card opacity based on distance from center
   const baseRef = useRef(null);
@@ -40,8 +42,8 @@ export default function Carousel({ children, spacing, itemWidth, className }) {
       const { scrollLeft } = baseRef.current;
       const scrollXCenter = scrollLeft + (windowWidth / 2);
       React.Children.forEach(children, (_, i) => {
-        const distanceFromCenter = Math.abs(scrollXCenter - cardCenters[i]);
-        const distanceBetweenCards = cardCenters[1] - cardCenters[0];
+        const distanceFromCenter = Math.abs(scrollXCenter - cardCenters.current[i]);
+        const distanceBetweenCards = cardCenters.current[1] - cardCenters.current[0];
         cardOpacities.current[i].set(1 - (distanceFromCenter / distanceBetweenCards) * 0.15);
       });
     };
