@@ -93,7 +93,11 @@ function HomepageDarkContent({ content, setWillNavigate }) {
       {/* The rest of the content blocks go below */}
       {textBlocks.slice(1)}
 
-      {!isMobile && (
+      {isMobile ? (
+        <div className={cx('swipe-instructions')}>
+          Swipe left and right to see more
+        </div>
+      ) : (
         <OverscrollTrigger
           callback={() => { router.push('/work'); }}
           preCallback={(willNav) => setWillNavigate(willNav)}

@@ -1,4 +1,5 @@
 @import 'styles/colors'
+@import 'styles/fonts'
 @import 'styles/mixins'
 @import 'styles/dimensions'
 
@@ -143,3 +144,17 @@
   :global
     .no-wrap
       white-space: nowrap
+
+.swipe-instructions
+  font-family: $font-manrope
+  @include font-weight(700)
+  font-size: 16px
+  letter-spacing: -0.00125em
+  color: $white
+  @include gradient-text
+
+  text-align: center
+  padding-bottom: 5em
+
+  @media not all and (hover: none)
+    display: none
