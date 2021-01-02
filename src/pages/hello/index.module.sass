@@ -29,9 +29,8 @@
   font-size: 19px
   font-size: max(12px, min(calc(2.5px + #{4.2vw * $dark-section-width-ratio}), 24px))
   padding-top: 20px + $nh
-  padding-bottom: 4em
   padding-left: calc(5px + #{5.5vw * $dark-section-width-ratio} + env(safe-area-inset-left))
-  padding-right: calc(5px + #{5.5vw * $dark-section-width-ratio} + env(safe-area-inset-right))
+  padding-right: calc(5px + #{5.5vw * $dark-section-width-ratio})
 
   h1
     font-size: 48px
@@ -51,17 +50,19 @@
   padding: (65px + $nav-height) 80px 4em
   padding: min(#{$nav-height} + 20px + 3vw, #{65px + $nav-height}) min(calc(40px + 3vw), 100px) 4em
   padding-left: min(calc(40px + 3vw + env(safe-area-inset-left)), calc(100px + env(safe-area-inset-left)))
+  // Right padding shouldn't be affected by notch since the dark panel doesn't go up to the right
+  // edge.
   // On small screens, override default font-size styles and reduce padding
   @media (max-width: 1000px)
     @include responsive-content-scale(0.6, $nav-height)
 
 // Mobile (portrait, single-column) layout styles
 .content-wrapper.mobile
-  padding: (75px + $mobile-nav-height) 80px 4em
-  padding: (75px + $mobile-nav-height) min(calc(40px + 5vw), 100px) 4em
+  padding: (75px + $mobile-nav-height) 80px $mobile-nav-height
+  padding: (75px + $mobile-nav-height) min(calc(40px + 5vw), 100px) $mobile-nav-height
   // On small screens, override default font-size styles and reduce padding
   @media (max-width: 720px)
-      @include responsive-content-scale(1.0, $mobile-nav-height)
+    @include responsive-content-scale(1.0, $mobile-nav-height)
 
 
 // The rest of it
@@ -138,9 +139,6 @@
   ul
     list-style-type: square
 
-  & > :last-child
-    margin-bottom: 0
-
   :global
     .no-wrap
       white-space: nowrap
@@ -148,13 +146,14 @@
 .swipe-instructions
   font-family: $font-manrope
   @include font-weight(700)
-  font-size: 16px
+  font-size: #{(16em / 18)}
   letter-spacing: -0.00125em
   color: $white
   @include gradient-text
+  user-select: none
 
   text-align: center
-  padding-bottom: 5em
+  margin: 5em 0
 
   @media not all and (hover: none)
     display: none
