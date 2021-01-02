@@ -8,16 +8,17 @@ import styles from './ArrowLink.module.sass';
 const cx = classNames.bind(styles);
 
 
-export default function ArrowLink({ children, className, ...props }) {
+export default function ArrowLink({ children, left, className: passedClassName, ...props }) {
   const { href } = props;
   const isAbsoluteUrl = (() => {
     try { return !!new URL(href); } catch (e) { return false; }
   })();
 
+  const className = classNames(cx('arrow-link', { left }), passedClassName);
   // Absolute (external) URLs can't be wrapped in a Link
   if (isAbsoluteUrl) {
     return (
-      <a className={classNames(cx('arrow-link'), className)} {...props}>
+      <a className={className} {...props}>
         { children }
         <ArrowDownIcon className={cx('arrow')} />
       </a>
@@ -28,7 +29,7 @@ export default function ArrowLink({ children, className, ...props }) {
   if (href) {
     return (
       <Link {...props}>
-        <a className={classNames(cx('arrow-link'), className)}>
+        <a className={className}>
           { children }
           <ArrowDownIcon className={cx('arrow')} />
         </a>
@@ -38,7 +39,7 @@ export default function ArrowLink({ children, className, ...props }) {
 
   // If there's no href at all, just use a button
   return (
-    <button type="button" className={classNames(cx('arrow-link'), className)} {...props}>
+    <button type="button" className={className} {...props}>
       { children }
       <ArrowDownIcon className={cx('arrow')} />
     </button>
@@ -47,10 +48,12 @@ export default function ArrowLink({ children, className, ...props }) {
 
 ArrowLink.propTypes = {
   children: PropTypes.node.isRequired,
+  left: PropTypes.bool,
   className: PropTypes.string,
   href: PropTypes.string,
 };
 ArrowLink.defaultProps = {
+  left: false,
   className: '',
   href: undefined,
 };
