@@ -3,6 +3,9 @@
     "GITHUB_TOKEN": "@portfolio_github_token",
     "SENDGRID_API_KEY": "@portfolio_sendgrid_api_key"
   },
+  "redirects": [
+    { "source": "/wikipedia/:path*", "destination": "https://wikipedia.luk.ke/:path" }
+  ],
   "github": {
     "silent": true
   }
