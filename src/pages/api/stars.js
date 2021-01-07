@@ -39,7 +39,7 @@ export async function getTotalStars(forceRefresh = false) {
   return totalStars;
 }
 
-export default async (req, res) => {
+export default async function routeHandler(req, res) {
   // Get the total number of stars
   const total = await getTotalStars();
   // As an extra step beyond the 1-hour cache we set up in memory, we provide cache instructions to
@@ -48,4 +48,4 @@ export default async (req, res) => {
   res.setHeader('Cache-Control', 'max-age=0, s-maxage=3600, stale-while-revalidate');
   // send it
   res.status(200).json({ totalStars: total });
-};
+}

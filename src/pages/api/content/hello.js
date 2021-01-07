@@ -38,7 +38,7 @@ export async function getHomepage(forceRefreshStars = false) {
   };
 }
 
-export default async (req, res) => {
+export default async function routeHandler(req, res) {
   const homepage = await getHomepage(false);
   res.status(200).json(homepage);
-};
+}

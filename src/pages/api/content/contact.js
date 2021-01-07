@@ -15,7 +15,7 @@ export async function getContactPage() {
   };
 }
 
-export default async (req, res) => {
+export default async function routeHandler(req, res) {
   const contactPage = await getContactPage();
   res.status(200).json(contactPage);
-};
+}

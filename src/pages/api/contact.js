@@ -37,7 +37,7 @@ const message = async ({ name, email, message: body }) => ({
 });
 
 
-export default async (req, res) => {
+export default async function routeHandler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST please' });
 
   if (!req.body.name) return res.status(400).json({ error: "'name' is required" });
@@ -54,4 +54,4 @@ export default async (req, res) => {
   }
 
   return res.json({ message: 'Sent successfully' });
-};
+}

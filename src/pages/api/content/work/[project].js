@@ -15,9 +15,9 @@ export async function getProject(projectId) {
 }
 
 
-export default async (req, res) => {
+export default async function routeHandler(req, res) {
   const { project: projectId } = req.query;
   getProject(projectId)
     .catch((e) => res.status(e.message.startsWith("Couldn't find") ? 404 : 500).json({ error: e.message || e }))
     .then((project) => res.status(200).json(project));
-};
+}

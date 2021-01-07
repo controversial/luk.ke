@@ -155,7 +155,7 @@ export async function getProjects() {
 }
 
 
-export default async (req, res) => {
+export default async function routeHandler(req, res) {
   const projects = await getProjects();
   res.status(200).json(projects);
-};
+}
