@@ -1,4 +1,4 @@
-const Prismic = require('prismic-javascript');
+import Prismic from 'prismic-javascript';
 
 export const apiEndpoint = process?.env?.PRISMIC_ENDPOINT || 'https://luke.prismic.io/api/v2';
 
