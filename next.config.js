@@ -13,4 +13,11 @@ module.exports = withBundleAnalyzer({
     loader: 'imgix',
     path: 'https://images.prismic.io/luke/',
   },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: require.resolve('./src/components/MobileLayout/sequences.js'),
+      use: { loader: 'val-loader' },
+    });
+    return config;
+  },
 });
