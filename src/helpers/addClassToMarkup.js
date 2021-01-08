@@ -1,8 +1,8 @@
-import { Parser } from 'htmlparser2';
-import { DomHandler } from 'domhandler';
-import { getOuterHTML } from 'domutils';
+const { Parser } = require('htmlparser2');
+const { DomHandler } = require('domhandler');
+const { getOuterHTML } = require('domutils'); // TODO: replace with dom-serializer
 
-export default function addClass(className, html) {
+module.exports = function addClass(className, html) {
   return new Promise((resolve) => {
     // Handler function is called once DOM is parsed
     const handler = new DomHandler((error, dom) => {

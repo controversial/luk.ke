@@ -1,8 +1,7 @@
-import Prismic from 'prismic-javascript';
+const Prismic = require('prismic-javascript');
+const apiEndpoint = process?.env?.PRISMIC_ENDPOINT || 'https://luke.prismic.io/api/v2';
+const Api = Prismic.api(apiEndpoint);
 
-export const apiEndpoint = process?.env?.PRISMIC_ENDPOINT || 'https://luke.prismic.io/api/v2';
-
-export default Prismic.api(apiEndpoint);
 
 /* Extract filename if image comes from imgix - Next.js can do smart optimizations with this. */
 
@@ -19,8 +18,14 @@ function imageSrc(url) {
   return { src: url };
 }
 
-export const cleanImage = ({ url, dimensions, alt } = {}) => (url || dimensions || alt || null) && {
+const cleanImage = ({ url, dimensions, alt } = {}) => (url || dimensions || alt || null) && {
   ...imageSrc(url),
   alt,
   dimensions: unpackDimensions(dimensions),
+};
+
+module.exports = {
+  Api,
+  apiEndpoint,
+  cleanImage,
 };

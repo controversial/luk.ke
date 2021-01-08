@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
-import Prismic from 'prismic-javascript';
-import PrismicDOM from 'prismic-dom';
-import Api, { cleanImage } from 'helpers/prismic';
-import withClassName from 'helpers/addClassToMarkup';
+const Prismic = require('prismic-javascript');
+const PrismicDOM = require('prismic-dom');
+const { Api, cleanImage } = require('../../../../helpers/prismic');
+const withClassName = require('../../../../helpers/addClassToMarkup');
 
 
 // Helper functions
@@ -14,7 +14,7 @@ const omitUndefined = (obj) => JSON.parse(JSON.stringify(obj));
  * which it will be returned from API routes.
  * @param {Object} obj - a single document fetched from Prismic
  */
-export const processProject = async ({
+const processProject = async ({
   uid,
   data: { body, ...project },
   tags,
@@ -111,7 +111,7 @@ export const processProject = async ({
  * Returns an ordered list of the IDs of all projects whose order has been defined on the
  * work_page_order page in Prismic.
  */
-export function getProjectsOrder() {
+function getProjectsOrder() {
   /* eslint-disable camelcase */
   return Api
     .then((api) => api.query(Prismic.Predicates.at('document.type', 'work_page_order')))
@@ -124,7 +124,7 @@ export function getProjectsOrder() {
 /**
  * Returns an unproceed and unordered list of all projects published in Prismic
  */
-export function fetchAllProjects() {
+function fetchAllProjects() {
   return Api
     .then((api) => api.query(Prismic.Predicates.at('document.type', 'project')))
     .then(({ results: projects }) => projects);
@@ -134,7 +134,7 @@ export function fetchAllProjects() {
  * Returns a sorted and processed list of all of the projects in Prismic, in an easy consumable
  * format.
  */
-export async function getProjects() {
+async function getProjects() {
   const [projects, order] = await Promise.all([
     fetchAllProjects(),
     getProjectsOrder(),
@@ -154,8 +154,14 @@ export async function getProjects() {
   return Promise.all(projects.map((p) => processProject(p, false)));
 }
 
-
-export default async function routeHandler(req, res) {
+async function routeHandler(req, res) {
   const projects = await getProjects();
   res.status(200).json(projects);
 }
+
+module.exports = Object.assign(routeHandler, {
+  processProject,
+  getProjectsOrder,
+  fetchAllProjects,
+  getProjects,
+});
