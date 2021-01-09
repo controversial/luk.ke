@@ -60,8 +60,9 @@ function OverscrollTrigger({ callback, preCallback }) {
   const pathLengthSpring = useSpring(pathLength, { stiffness: 400, damping: 90 });
 
   const arrowControls = useAnimation();
-  useEffect(() => arrowControls.set('visible'), []);
+  useEffect(() => arrowControls.set('visible'), [arrowControls]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedCallback = useCallback(
     debounce(callback, 1000, { leading: true, trailing: false }),
     [callback],
@@ -100,7 +101,12 @@ function OverscrollTrigger({ callback, preCallback }) {
     }
     document.scrollingElement.addEventListener('wheel', onScroll);
     return () => document.scrollingElement.removeEventListener('wheel', onScroll);
-  }, []);
+  }, [
+    // Motion values (effect hook runs when their identity changes, not when their value changes)
+    arrowIsHidden, overscroll, pathLengthSpring, progress,
+    // Other dependencies (many are static or almost static)
+    arrowControls, debouncedCallback, preCallback,
+  ]);
 
 
   return (
