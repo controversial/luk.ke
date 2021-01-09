@@ -36,7 +36,7 @@ function PanelsLayout({
   lightContent: passedLightContent,
   darkContent: passedDarkContent,
   orientation: passedOrientation,
-  currPageName: passedCurrPageName,
+  pageName: passedPageName,
   provideH1: passedProvideH1,
   willNavigate,
 }) {
@@ -48,7 +48,7 @@ function PanelsLayout({
   const lightContent = useFreezable(passedLightContent, freezeUpdates);
   const darkContent = useFreezable(passedDarkContent, freezeUpdates);
   const orientation = useFreezable(passedOrientation, freezeUpdates);
-  const currPageName = useFreezable(passedCurrPageName, freezeUpdates);
+  const pageName = useFreezable(passedPageName, freezeUpdates);
   const provideH1 = useFreezable(passedProvideH1, freezeUpdates);
 
   // Whether or not the menu is open is recorded in the global application store
@@ -142,7 +142,7 @@ function PanelsLayout({
   useEffect(() => {
     router.events.on('routeChangeStart', onNavigate);
     return () => { router.events.off('routeChangeStart', onNavigate); };
-  }, [orientation, menuOpen]);
+  }, [orientation, menuOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
   // On Safari, prevent scroll while the menu is open to fix a bug
@@ -265,8 +265,8 @@ function PanelsLayout({
               // button! In cases where the h1 would otherwise be missing, we can just turn the menu
               // button label into a h1.
               provideH1
-                ? <h1 className={cx('label')}>{ currPageName || 'Menu' }</h1>
-                : <div className={cx('label')}>{ currPageName || 'Menu' }</div>
+                ? <h1 className={cx('label')}>{ pageName || 'Menu' }</h1>
+                : <div className={cx('label')}>{ pageName || 'Menu' }</div>
             }
           </motion.button>
         </motion.div>
@@ -292,13 +292,13 @@ PanelsLayout.propTypes = {
   lightContent: PropTypes.element.isRequired,
   darkContent: PropTypes.element,
   orientation: PropTypes.oneOf(['left', 'right', 'full']).isRequired,
-  currPageName: PropTypes.string,
+  pageName: PropTypes.string,
   provideH1: PropTypes.bool,
   willNavigate: PropTypes.bool,
 };
 PanelsLayout.defaultProps = {
   darkContent: null,
-  currPageName: null,
+  pageName: null,
   provideH1: false,
   willNavigate: false,
 };

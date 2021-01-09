@@ -50,7 +50,7 @@ function MobileLayout({
   Component,
   pageProps,
   isLight,
-  currPageName,
+  pageName,
   provideH1,
 }) {
   const router = useRouter();
@@ -92,8 +92,8 @@ function MobileLayout({
           <MenuIcon />
           {
             provideH1
-              ? <h1 className={cx('label')}>{ currPageName || 'Menu' }</h1>
-              : <div className={cx('label')}>{ currPageName || 'Menu' }</div>
+              ? <h1 className={cx('label')}>{ pageName || 'Menu' }</h1>
+              : <div className={cx('label')}>{ pageName || 'Menu' }</div>
           }
         </motion.button>
       </div>
@@ -107,11 +107,11 @@ MobileLayout.propTypes = {
   Component: PropTypes.elementType.isRequired,
   pageProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   isLight: PropTypes.bool.isRequired,
-  currPageName: PropTypes.string,
+  pageName: PropTypes.string,
   provideH1: PropTypes.bool,
 };
 MobileLayout.defaultProps = {
-  currPageName: null,
+  pageName: null,
   provideH1: false,
 };
 

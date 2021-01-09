@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Router, { useRouter } from 'next/router';
 import Head from 'next/head';
@@ -20,15 +20,12 @@ function App({ Component, pageProps: basePageProps }) {
   // Unpack the configuration options that attach to the Component function
   const {
     panelOrientation: pagePanelOrientation,
-    pageName: initialPageName,
+    pageName,
     missingH1: componentIsMissingH1,
   } = Component;
 
   // Enable fix for Safari overscroll behavior
   useEffect(setSafariScrollFix, []);
-
-  // The pageName starts out with the value attached to the Component, but it can be changed!
-  const [pageName, setPageName] = useState(initialPageName);
 
   // This event emitter is passed to both LightContent and DarkContent and can be used to pass data
   // between the two when necessary
@@ -39,21 +36,13 @@ function App({ Component, pageProps: basePageProps }) {
 
   // When we get to a new page, update the page name stored in state
   const router = useRouter();
-  const isFirstUpdate = useRef(true);
-  useEffect(() => {
-    if (isFirstUpdate.current) isFirstUpdate.current = false;
-    else {
-      const newComponent = router.components[router.pathname]?.Component;
-      if (newComponent) setPageName(newComponent.pageName);
-    }
-  }, [router.route]);
   useEffect(() => {
     const reset = () => setWillNavigate(false);
     router.events.on('routeChangeComplete', reset);
     return () => router.events.off('routeChangeComplete', reset);
-  }, []);
+  }, [router.events]);
 
-  const pprops = { ...basePageProps, setPageName, bus, setWillNavigate };
+  const pprops = { ...basePageProps, bus, setWillNavigate };
 
   return (
     <StoreProvider>
@@ -78,7 +67,7 @@ function App({ Component, pageProps: basePageProps }) {
               orientation={(Component.LightContent && Component.DarkContent)
                 ? pagePanelOrientation
                 : 'full'}
-              currPageName={pageName}
+              pageName={pageName}
               // PanelsLayout should provide an h1 element if the page component says it's missing
               // that
               provideH1={componentIsMissingH1}
@@ -103,7 +92,7 @@ function App({ Component, pageProps: basePageProps }) {
               pageProps={pprops}
               // We know we're using the light content if there is no dark content
               isLight={!Component.DarkContent}
-              currPageName={pageName}
+              pageName={pageName}
               provideH1={componentIsMissingH1}
             />
             {/* Make sure main Component has a place to render */}
