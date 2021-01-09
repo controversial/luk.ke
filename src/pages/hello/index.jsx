@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
@@ -63,7 +63,14 @@ HomepageLightContent.propTypes = {
 
 function HomepageDarkContent({ content, setWillNavigate }) {
   const router = useRouter();
+  const routerRef = useRef();
+  routerRef.current = router;
+  // Callback functions for OverscrollTrigger
+  const osCallback = useCallback(() => { routerRef.current.push('/work'); }, []);
+  const osPreCallback = useCallback((willNav) => setWillNavigate(willNav), [setWillNavigate]);
+
   const isMobile = useMatchedMedia().includes('portrait');
+
 
   const textBlocks = content.text.map((p) => (
     <React.Fragment key={p}>
@@ -98,10 +105,7 @@ function HomepageDarkContent({ content, setWillNavigate }) {
           Swipe left and right to see more
         </div>
       ) : (
-        <OverscrollTrigger
-          callback={() => { router.push('/work'); }}
-          preCallback={(willNav) => setWillNavigate(willNav)}
-        />
+        <OverscrollTrigger callback={osCallback} preCallback={osPreCallback} />
       )}
     </div>
   );
