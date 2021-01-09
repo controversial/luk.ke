@@ -16,8 +16,8 @@ function ParallaxImage({ img, layout, zoom, scrollProgress, sectionIndex }) {
   const { from } = layout;
   const to = { ...from, ...layout.to };
 
-  const y = useTransform(scrollProgress, [0, 1], [from.top || 0, to.top || 0]);
-  const scale = useTransform(scrollProgress, [0, 1], [from.zoom || 1, to.zoom || 1]);
+  const y = useTransform(scrollProgress, [0, 1], [from.top ?? 0, to.top ?? 0]);
+  const scale = useTransform(scrollProgress, [0, 1], [from.zoom ?? 1, to.zoom ?? 1]);
 
   // Add event listener to attach videos with mode 'progress' to scroll position
 
@@ -35,7 +35,7 @@ function ParallaxImage({ img, layout, zoom, scrollProgress, sectionIndex }) {
           const exit = 0 - bounds.height;
           let elementProgress = (bounds.top - enter) / (exit - enter);
           elementProgress = Math.min(Math.max(elementProgress, 0), 1);
-          const videoTime = elementProgress * videoEl.current.duration || 0;
+          const videoTime = elementProgress * videoEl.current.duration ?? 0;
           videoEl.current.currentTime = videoTime;
         }
       });
@@ -46,8 +46,8 @@ function ParallaxImage({ img, layout, zoom, scrollProgress, sectionIndex }) {
 
   // fit image into size box specified in layout.size
 
-  const fitWidth = from.size?.[0] || from.size;
-  const fitHeight = from.size?.[1] || from.size;
+  const fitWidth = from.size?.[0] ?? from.size;
+  const fitHeight = from.size?.[1] ?? from.size;
   const { dimensions: [imgWidth, imgHeight] } = img;
 
   let width; let height;
@@ -68,8 +68,8 @@ function ParallaxImage({ img, layout, zoom, scrollProgress, sectionIndex }) {
         y,
         left: from.left,
         right: from.left ? undefined : from.right, // don't apply right if we applied left
-        width: from.size?.[0] || from.size,
-        height: from.size?.[1] || from.size,
+        width: from.size?.[0] ?? from.size,
+        height: from.size?.[1] ?? from.size,
         zIndex: from.zIndex,
         // if we're up against the left or right edge, make sure the fitted image is still against
         // that side
