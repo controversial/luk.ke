@@ -17,23 +17,15 @@ const cx = classNames.bind(styles);
  * which can open a menu.
  */
 function MobileLayout({
-  content: passedContent,
-  isLight: passedIsLight,
-  currPageName: passedCurrPageName,
-  // nextPage: passedNextPage,
-  // prevPage: passedPrevPage,
-  provideH1: passedProvideH1,
+  Component,
+  pageProps,
+  isLight,
+  currPageName,
+  provideH1,
 }) {
   const { state: { menuOpen }, dispatch } = useStore();
   const variant = menuOpen ? 'menu-open' : 'menu-closed';
 
-  // Eventually, these have to be stored in state in order to keep old values during transitions
-  const content = passedContent;
-  const isLight = passedIsLight;
-  const currPageName = passedCurrPageName;
-  // const nextPage = passedNextPage;
-  // const prevPage = passedPrevPage;
-  const provideH1 = passedProvideH1;
 
   return (
     <motion.div
@@ -51,23 +43,16 @@ function MobileLayout({
         </motion.button>
       </div>
 
-      {content}
+      <Component {...pageProps} />
     </motion.div>
   );
 }
 
 MobileLayout.propTypes = {
-  content: PropTypes.element.isRequired,
+  Component: PropTypes.elementType.isRequired,
+  pageProps: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   isLight: PropTypes.bool.isRequired,
   currPageName: PropTypes.string,
-  // nextPage: PropTypes.exact({
-  //   name: PropTypes.string.isRequired,
-  //   path: PropTypes.string.isRequired,
-  // }).isRequired,
-  // prevPage: PropTypes.exact({
-  //   name: PropTypes.string.isRequired,
-  //   path: PropTypes.string.isRequired,
-  // }).isRequired,
   provideH1: PropTypes.bool,
 };
 MobileLayout.defaultProps = {
