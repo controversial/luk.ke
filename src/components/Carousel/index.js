@@ -1,1 +1,1 @@
-export { default } from './Carousel2.jsx';
+export { default } from './Carousel.jsx';

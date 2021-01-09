@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useWindowWidth } from 'helpers/hooks';
 import { motion, MotionValue } from 'framer-motion';
 
-import styles from './Carousel2.module.sass';
+import styles from './Carousel.module.sass';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
@@ -30,7 +30,7 @@ export default function Carousel({ children, spacing, itemWidth, className }) {
     cardCenters.current = itemRefs.current.map(
       ({ current: el }) => el.offsetLeft + (el.offsetWidth / 2),
     );
-  }, [itemRefs.current, spacing, itemWidth, windowWidth]);
+  }, [spacing, itemWidth, windowWidth]);
   // Set card opacity based on distance from center
   const baseRef = useRef(null);
   const cardOpacities = useRef([]);
@@ -51,7 +51,7 @@ export default function Carousel({ children, spacing, itemWidth, className }) {
     const base = baseRef.current;
     base.addEventListener('scroll', updateOpacity);
     return () => base.removeEventListener('scroll', updateOpacity);
-  }, [baseRef.current, windowWidth]);
+  }, [children, windowWidth]);
 
   return (
     <div
