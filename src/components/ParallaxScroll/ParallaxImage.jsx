@@ -10,8 +10,6 @@ const cx = classNames.bind(styles);
 
 
 function ParallaxImage({ img, layout, zoom, scrollProgress, sectionIndex }) {
-  if (!Object.keys(layout).length) return <React.Fragment />;
-
   const { video } = img;
 
   if (!layout.from) layout.from = layout;
@@ -44,7 +42,7 @@ function ParallaxImage({ img, layout, zoom, scrollProgress, sectionIndex }) {
     }
 
     return undefined;
-  }, [videoEl, scrollProgress, video?.src, video?.mode]);
+  }, [videoEl, scrollProgress, video?.src, video?.mode]); // eslint-disable-line react-hooks/exhaustive-deps, max-len
 
   // fit image into size box specified in layout.size
 

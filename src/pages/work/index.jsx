@@ -86,7 +86,7 @@ function WorkPageLightContent({ content: projects, bus }) {
     };
     bus.on('changeProject', onChangeProject);
     return () => bus.off('changeProject', onChangeProject);
-  }, [currProjectIndex]);
+  }, [currProjectIndex, bus]);
 
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeout = useRef(null);
@@ -95,7 +95,7 @@ function WorkPageLightContent({ content: projects, bus }) {
     clearTimeout(scrollTimeout.current);
     setIsScrolling(true);
     scrollTimeout.current = setTimeout(() => setIsScrolling(false), 500);
-  }), [isScrolling]);
+  }), [isScrolling, scrollY]);
 
   // Replace function for html-react-parser that turns tags into h2 elements
   const replaceWithH2 = ({ type, attribs, children }) => {
@@ -166,19 +166,17 @@ function WorkPageDarkContent({ content: projects, bus, freezeUpdates }) {
 
   // When the hash changes we should change the displayed project.
   const router = useRouter();
-  if (typeof window !== 'undefined') { // this isn't relevant server-side
-    useEffect(() => {
-      const updateFromHash = () => updateProject(getIndexFromHash(projects));
-      // bind event listeners
-      router.events.on('hashChangeComplete', updateFromHash);
-      window.addEventListener('hashchange', updateFromHash);
-      // return cleanup function
-      return () => {
-        router.events.off('hashChangeComplete', updateFromHash);
-        window.removeEventListener('hashchange', updateFromHash);
-      };
-    });
-  }
+  useEffect(() => {
+    const updateFromHash = () => updateProject(getIndexFromHash(projects));
+    // bind event listeners
+    router.events.on('hashChangeComplete', updateFromHash);
+    window.addEventListener('hashchange', updateFromHash);
+    // return cleanup function
+    return () => {
+      router.events.off('hashChangeComplete', updateFromHash);
+      window.removeEventListener('hashchange', updateFromHash);
+    };
+  });
 
   return (
     <ParallaxScroll

@@ -12,7 +12,7 @@ export default function AgeCounter({ places, ...props }) {
     }, (places > 7) ? 16 : 250);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [places]);
 
   return (
     <span {...props}>{ getAge(time).toFixed(places) }</span>

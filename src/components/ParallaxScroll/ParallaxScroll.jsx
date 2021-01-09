@@ -28,15 +28,15 @@ function ParallaxScroll({ children, freeze, onFocusChange }) {
 
   // Track the dimensions of the ParallaxScroll
   const [width, setWidth] = useState(0);
-  const ro = new ResizeObserver(([{ contentRect }]) => {
-    setWidth(contentRect.width);
-  });
   // Update dimensions on mount and whenever the size changes
   useEffect(() => {
     if (rootEl.current !== null) {
       const el = rootEl.current;
       const { width: currWidth } = el.getBoundingClientRect();
       setWidth(currWidth);
+      const ro = new ResizeObserver(([{ contentRect }]) => {
+        setWidth(contentRect.width);
+      });
       ro.observe(el);
       return () => ro.unobserve(el);
     }
@@ -49,7 +49,7 @@ function ParallaxScroll({ children, freeze, onFocusChange }) {
   // Track which section has the greatest proportion of its area onscreen
   const [focusedIndex, setFocusedIndex] = useState(0);
   // On first render, report the index of the section that's focused
-  useEffect(() => { onFocusChange(focusedIndex); }, []);
+  useEffect(() => { onFocusChange(focusedIndex); }, []); // eslint-disable-line react-hooks/exhaustive-deps, max-len
   // Set up an event listener to report the index of the focused section every time it changes
   useEffect(() => lerpedScrollY.onChange((y) => {
     const childrenArray = React.Children.toArray(children);
@@ -68,7 +68,7 @@ function ParallaxScroll({ children, freeze, onFocusChange }) {
       setFocusedIndex(idx);
       onFocusChange(idx);
     }
-  }), [focusedIndex, sectionHeight]);
+  }), [children, focusedIndex, onFocusChange, sectionHeight, lerpedScrollY]);
 
 
   return (

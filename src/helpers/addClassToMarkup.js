@@ -19,4 +19,4 @@ module.exports = function addClass(className, html) {
     parser.write(html);
     parser.end();
   });
-}
+};

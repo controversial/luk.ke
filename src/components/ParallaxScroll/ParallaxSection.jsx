@@ -18,8 +18,6 @@ function ParallaxSection({
   index, //                   - How many sections are before this one?
   scrollMotionValue, //       - What's the current scroll position?
 }) {
-  if (!width || !height) return <React.Fragment />;
-
   const top = height * index;
   // When the scrollMotionValue gets here, the section is at the bottom edge of the viewport
   const entryScrollPos = top - (typeof window !== 'undefined' ? window.innerHeight : 0);

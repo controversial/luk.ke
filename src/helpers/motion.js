@@ -1,4 +1,4 @@
-import { useEffect, useRef, useMemo } from 'react';
+import { useEffect, useRef, useCallback, useMemo } from 'react';
 import { useMotionValue, MotionValue } from 'framer-motion';
 import sync, { cancelSync } from 'framesync';
 
@@ -15,11 +15,11 @@ export function delay(ms) {
 
 // Adapted from https://github.com/framer/motion/blob/99862c082144ceb0451516bdb7777c28b0b3f02f/src/value/use-relative.ts
 export function useTransformMulti(parentMotionValues, transformFunc) {
-  function computeValue() {
+  const computeValue = useCallback((() => {
     const parentValues = parentMotionValues.map((mv) => mv.get());
     const computedValue = transformFunc(...parentValues);
     return computedValue;
-  }
+  }), [parentMotionValues, transformFunc]);
 
   // Create new motion value and initialize it with initial transformed value
   const transformedValue = useMotionValue(computeValue());
@@ -33,7 +33,7 @@ export function useTransformMulti(parentMotionValues, transformFunc) {
     const removeFuncs = parentMotionValues.map((mv) => mv.onChange(updateValue));
     // The cleanup function returned from useEffect calls each onChange remover in sequence
     return () => removeFuncs.forEach((removeFunc) => removeFunc());
-  }, [parentMotionValues, transformFunc]);
+  }, [parentMotionValues, computeValue, transformedValue]);
 
   return transformedValue;
 }
@@ -48,7 +48,7 @@ export function useVelocity(parent) {
     update();
     const removeListener = parent.onChange(update);
     return () => removeListener();
-  }, [parent]);
+  }, [parent, velocity]);
 
   return velocity;
 }
@@ -112,7 +112,7 @@ export function useLerp(source, config = {}) {
       }).start(setFunc); // the animation should call the setFunc with the new value as it goes
     });
   // we only need to redefine what the effect function is when the config changes
-  }, Object.values(config));
+  }, Object.values(config)); // eslint-disable-line react-hooks/exhaustive-deps
 
   // If the source value is a MotionValue, we need to trigger our internal motionValue to update
   // whenever the source value updates.
@@ -121,7 +121,7 @@ export function useLerp(source, config = {}) {
       return source.onChange((v) => lerpedValue.set(parseFloat(v)));
     }
     return undefined;
-  }, [source]);
+  }, [source, lerpedValue]);
 
   return lerpedValue;
 }
