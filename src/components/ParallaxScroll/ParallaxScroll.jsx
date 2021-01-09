@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-import ResizeObserver from 'resize-observer-polyfill';
-
 import { motion, useTransform, useViewportScroll } from 'framer-motion';
 import { useLerp, useVelocity } from 'helpers/motion';
 
