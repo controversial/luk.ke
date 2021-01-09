@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { useWindowWidth } from 'helpers/hooks';
+import { useElementWidth } from 'helpers/hooks';
 import { motion, MotionValue } from 'framer-motion';
 
 import styles from './Carousel.module.sass';
@@ -18,7 +18,8 @@ export default function Carousel({ children, spacing, itemWidth, className }) {
 
   const isLastChild = (idx) => idx === React.Children.count(children) - 1;
 
-  const windowWidth = useWindowWidth();
+  const baseRef = useRef(null);
+  const carouselWidth = useElementWidth(baseRef);
   // One ref for each item
   const itemRefs = useRef([]);
   if (itemRefs.current.length !== React.Children.count(children)) {
@@ -30,9 +31,8 @@ export default function Carousel({ children, spacing, itemWidth, className }) {
     cardCenters.current = itemRefs.current.map(
       ({ current: el }) => el.offsetLeft + (el.offsetWidth / 2),
     );
-  }, [spacing, itemWidth, windowWidth]);
+  }, [spacing, itemWidth, carouselWidth]);
   // Set card opacity based on distance from center
-  const baseRef = useRef(null);
   const cardOpacities = useRef([]);
   if (cardOpacities.current.length !== React.Children.count(children)) {
     cardOpacities.current = React.Children.map(children, () => new MotionValue(1));
@@ -40,18 +40,21 @@ export default function Carousel({ children, spacing, itemWidth, className }) {
   useEffect(() => {
     const updateOpacity = () => {
       const { scrollLeft } = baseRef.current;
-      const scrollXCenter = scrollLeft + (windowWidth / 2);
+      const scrollXCenter = scrollLeft + (carouselWidth / 2);
       React.Children.forEach(children, (_, i) => {
         const distanceFromCenter = Math.abs(scrollXCenter - cardCenters.current[i]);
         const distanceBetweenCards = cardCenters.current[1] - cardCenters.current[0];
-        cardOpacities.current[i].set(1 - (distanceFromCenter / distanceBetweenCards) * 0.15);
+        const opacity = distanceBetweenCards === 0
+          ? 1
+          : (1 - (distanceFromCenter / distanceBetweenCards) * 0.15);
+        cardOpacities.current[i].set(opacity);
       });
     };
     updateOpacity();
     const base = baseRef.current;
     base.addEventListener('scroll', updateOpacity);
     return () => base.removeEventListener('scroll', updateOpacity);
-  }, [children, windowWidth]);
+  }, [children, carouselWidth]);
 
   return (
     <div
