@@ -58,7 +58,7 @@ function MobileLayout({
   // This references the two attributes of the currently rendered page: the Component and the
   // corresponding pageProps.
   const pageAttributesRef = useRef();
-  pageAttributesRef.current = { Component, pageProps };
+  pageAttributesRef.current = { Component, pageProps, pageName, isLight, provideH1 };
   // This copy of the routeSequences additionally holds cached pageAttributes for each page.
   // The initial state has only the first page 'augmented' with pageAttributes. Other pages are
   // augmented as they are loaded (see the effect hook below)
