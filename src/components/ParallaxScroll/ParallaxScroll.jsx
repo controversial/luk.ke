@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames/bind';
+import { useElementWidth } from 'helpers/hooks.js';
 
 import { motion, useTransform, useViewportScroll } from 'framer-motion';
 import { useLerp, useVelocity } from 'helpers/motion';
 
 import ParallaxSection from './ParallaxSection.jsx';
 
+import classNames from 'classnames/bind';
 import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
 
@@ -22,24 +23,9 @@ function ParallaxScroll({ children, freeze, onFocusChange }) {
   const freezeEffect = () => {};
   scrollY.attach(freeze ? freezeEffect : noEffect);
 
-  const rootEl = useRef(null);
-
   // Track the dimensions of the ParallaxScroll
-  const [width, setWidth] = useState(0);
-  // Update dimensions on mount and whenever the size changes
-  useEffect(() => {
-    if (rootEl.current !== null) {
-      const el = rootEl.current;
-      const { width: currWidth } = el.getBoundingClientRect();
-      setWidth(currWidth);
-      const ro = new ResizeObserver(([{ contentRect }]) => {
-        setWidth(contentRect.width);
-      });
-      ro.observe(el);
-      return () => ro.unobserve(el);
-    }
-    return () => {};
-  }, [rootEl]);
+  const rootEl = useRef(null);
+  const width = useElementWidth(rootEl);
 
   const sectionHeight = width * 1.5;
   const lastSectionHeight = width * 1.25;
