@@ -1,5 +1,5 @@
 const Prismic = require('prismic-javascript');
-const apiEndpoint = process?.env?.PRISMIC_ENDPOINT || 'https://luke.prismic.io/api/v2';
+const apiEndpoint = (typeof process !== 'undefined' && process.env.PRISMIC_ENDPOINT) || 'https://luke.prismic.io/api/v2';
 const Api = Prismic.api(apiEndpoint);
 
 
@@ -7,9 +7,9 @@ const Api = Prismic.api(apiEndpoint);
 
 const unpackDimensions = ({ width, height } = {}) => [width, height];
 function imageSrc(url) {
-  let u;
+  let u = {};
   try { u = new URL(url); } catch (e) { /* Ignore URL parsing errors */ }
-  if (u?.host === 'images.prismic.io' && u.pathname.startsWith('/luke')) {
+  if (u.host === 'images.prismic.io' && u.pathname.startsWith('/luke')) {
     return {
       src: url,
       filename: u.pathname.split('/').slice(-1)[0],

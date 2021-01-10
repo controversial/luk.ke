@@ -7,7 +7,7 @@ module.exports = function addClass(className, html) {
     // Handler function is called once DOM is parsed
     const handler = new DomHandler((error, dom) => {
       // If we can't get anything meaningful out of the input string, return the input string as-is
-      if (error || !dom?.length) resolve(html);
+      if (error || !dom || !dom.length) resolve(html);
       // Otherwise, add the className and return the HTML representation of the result
       else {
         dom[0].attribs.class = `${dom[0].attribs.class || ''} ${className}`.trim();
