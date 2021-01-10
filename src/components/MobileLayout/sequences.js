@@ -6,7 +6,7 @@
 // This includes a lot of hacks for compatibility with Node 12
 // All the babel stuff should be replaced by a normal require once Node 14+ ships on Vercel
 
-const nextBabelLoader = require('next/dist/build/webpack/loaders/next-babel-loader');
+const nextBabelLoader = require('next/dist/build/webpack/loaders/next-babel-loader').default;
 const fs = require('fs').promises;
 const path = require('path');
 
