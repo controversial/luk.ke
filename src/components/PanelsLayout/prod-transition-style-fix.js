@@ -5,7 +5,7 @@
 import Router from 'next/router';
 import { delay } from 'helpers/motion';
 
-Router.events.on('beforeHistoryChange', () => {
+Router.events.on('routeChangeStart', () => {
   // Add a copy of each style node to the head
   const styleNodes = [
     ...document.querySelectorAll('link[rel=stylesheet]'),
