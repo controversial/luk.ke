@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 
 import { motion, useMotionValue, useTransform, useAnimation } from 'framer-motion';
 import { useTransformMulti, easings } from 'helpers/motion';
+import './prod-transition-style-fix';
 
 import Menu from 'components/Menu';
 import MenuIcon from 'components/MenuIcon';
