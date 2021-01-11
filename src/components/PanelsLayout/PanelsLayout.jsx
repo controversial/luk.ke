@@ -114,6 +114,7 @@ function PanelsLayout({
     // Fade out all content
     setWillFade(true);
     await opacityControls.start({ opacity: 0, transition: { duration: 0.35, ease: 'easeInOut' } });
+    document.scrollingElement.scrollTo(0, 0);
     setDisplayContent(false);
     // Wait for the new route to load
     await routeChanged; // TODO: handle errors
@@ -154,6 +155,21 @@ function PanelsLayout({
     window.addEventListener('wheel', preventScrollOnSafari);
     return () => window.removeEventListener('wheel', preventScrollOnSafari);
   }, [menuOpen]);
+
+  // On all browsers, turn off automatic scroll jumping with back/forward button
+  const routerRef = useRef(router);
+  routerRef.current = router;
+  useEffect(() => {
+    window.history.scrollRestoration = 'manual';
+    routerRef.current.beforePopState((state) => {
+      state.options.scroll = false;
+      return true;
+    });
+    return () => {
+      window.history.scrollRestoration = 'auto';
+      routerRef.current.beforePopState();
+    };
+  }, []);
 
 
   return (

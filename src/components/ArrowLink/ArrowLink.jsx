@@ -28,7 +28,7 @@ export default function ArrowLink({ children, left, className: passedClassName, 
   // Internal URLs need to be wrapped in a Link
   if (href) {
     return (
-      <Link {...props}>
+      <Link {...props} scroll={false}>
         <a className={className}>
           { children }
           <ArrowDownIcon className={cx('arrow')} />

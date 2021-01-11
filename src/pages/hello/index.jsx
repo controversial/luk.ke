@@ -41,7 +41,7 @@ function Hello() {
 
 function HomepageLightContent({ content: { hero_image: heroImage } }) {
   return (
-    <Link href="/contact">
+    <Link href="/contact" scroll={false}>
       <a className={cx('image-wrapper')}>
         <Headshot
           image={heroImage}
@@ -66,7 +66,7 @@ function HomepageDarkContent({ content, setWillNavigate }) {
   const routerRef = useRef();
   routerRef.current = router;
   // Callback functions for OverscrollTrigger
-  const osCallback = useCallback(() => { routerRef.current.push('/work'); }, []);
+  const osCallback = useCallback(() => { routerRef.current.push('/work', '/work', { scroll: false }); }, []);
   const osPreCallback = useCallback((willNav) => setWillNavigate(willNav), [setWillNavigate]);
 
   const isMobile = useMatchedMedia().includes('portrait');

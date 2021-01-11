@@ -33,7 +33,7 @@ function Menu({ orientation, freezeUpdates }) {
               className={cx({ active: routes.includes(currentRoute) })}
               style={{ pointerEvents: freezeUpdates ? 'none' : 'auto' }}
             >
-              <Link href={routes[0]}>
+              <Link href={routes[0]} scroll={false}>
                 {/* eslint-disable jsx-a11y/interactive-supports-focus */}
                 {/* eslint-disable jsx-a11y/click-events-have-key-events */}
                 <a role="link">
