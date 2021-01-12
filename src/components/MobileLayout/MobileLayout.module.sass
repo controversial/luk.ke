@@ -1,4 +1,5 @@
 @import 'styles/colors'
+@import 'styles/mixins'
 
 .wrapper
   color: $white
@@ -18,9 +19,25 @@
 
   .mobile-page
     width: 100%
-    height: fit-content
+    min-height: 100vh
+    @supports (-webkit-hyphens: none) // Safari only: this breaks in chrome
+      min-height: -webkit-fill-available
     flex: 0 0 100%
     scroll-snap-align: start
+    position: relative
 
+    .placeholder
+      color: $white
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+      width: 100%
+      text-align: center
+
+      // text-transform: uppercase
+      font-size: calc(18px + 6vw)
+      @include font-weight(730)
+      // @include gradient-text
+      // letter-spacing: .025em
 
 @import '../PanelsLayout/menu-button'
