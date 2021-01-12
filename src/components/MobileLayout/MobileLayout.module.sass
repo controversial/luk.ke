@@ -1,11 +1,26 @@
 @import 'styles/colors'
 
-.mobile-layout
+.wrapper
   color: $white
   background: $black
+  display: flex
+  overflow-x: scroll
+  overflow-y: hidden
+  scroll-snap-type: x mandatory
+  align-items: flex-start
+  min-height: 100vh
+  @supports (-webkit-hyphens: none) // Safari only: this breaks in chrome
+    min-height: -webkit-fill-available
 
   &.light
     background: $white
     color: $black
+
+  .mobile-page
+    width: 100%
+    height: fit-content
+    flex: 0 0 100%
+    scroll-snap-align: start
+
 
 @import '../PanelsLayout/menu-button'

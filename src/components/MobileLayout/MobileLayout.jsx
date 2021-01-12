@@ -4,6 +4,7 @@ import { useStore } from 'store';
 
 import { useRouter } from 'next/router';
 import baseRouteSequences from './sequences.js'; // This is provided as a static import by val-loader
+import pick from 'lodash/pick';
 
 import { motion } from 'framer-motion';
 import MenuIcon from 'components/MenuIcon';
@@ -46,19 +47,13 @@ function augmentRoute(oldRouteSequences, path, pageAttributes) {
  *
  * MobileLayout caches pages as they are loaded to fill that
  */
-function MobileLayout({
-  Component,
-  pageProps,
-  isLight,
-  pageName,
-  provideH1,
-}) {
+function MobileLayout(propsForCurrentPage) {
   const router = useRouter();
 
   // This references the two attributes of the currently rendered page: the Component and the
   // corresponding pageProps.
   const pageAttributesRef = useRef();
-  pageAttributesRef.current = { Component, pageProps, pageName, isLight, provideH1 };
+  pageAttributesRef.current = pick(propsForCurrentPage, ['Component', 'pageProps', 'pageName', 'isLight', 'provideH1']);
   // This copy of the routeSequences additionally holds cached pageAttributes for each page.
   // The initial state has only the first page 'augmented' with pageAttributes. Other pages are
   // augmented as they are loaded (see the effect hook below)
@@ -70,35 +65,64 @@ function MobileLayout({
   useEffect(() => {
     // Cache { Component, pageProps } for the current page
     const cachePageAttributes = (path) => {
-      const [seqIdx, routeIdx] = getRouteCoordinates(path);
-      if (seqIdx > -1 && routeIdx > -1) {
-        console.log(`Saving component ${pageAttributesRef.current.Component.name} for route ${path} (${seqIdx}, ${routeIdx})`);
-        setRouteSequences((ps) => augmentRoute(ps, path, pageAttributesRef.current));
-      }
+      setRouteSequences((ps) => augmentRoute(ps, path, pageAttributesRef.current));
     };
     router.events.on('routeChangeComplete', cachePageAttributes);
     return () => router.events.off('routeChangeComplete', cachePageAttributes);
   }, [setRouteSequences, router.events]);
 
+  const currentSequence = routeSequences[getRouteCoordinates(router.asPath)[0]];
+
   const { state: { menuOpen }, dispatch } = useStore();
 
   return (
     <motion.div
-      className={cx('mobile-layout', { light: isLight })}
+      className={cx('wrapper')}
       animate={menuOpen ? 'menu-open' : 'menu-closed'}
     >
-      <div className={cx('menu-button', 'mobile', { light: isLight })}>
+      {/* Menu bar at the top */}
+      <div className={cx('menu-button', 'mobile', { light: propsForCurrentPage.isLight })}>
         <motion.button type="button" onClick={() => dispatch('setMenuOpen', !menuOpen)}>
           <MenuIcon />
           {
-            provideH1
-              ? <h1 className={cx('label')}>{ pageName || 'Menu' }</h1>
-              : <div className={cx('label')}>{ pageName || 'Menu' }</div>
+            propsForCurrentPage.provideH1
+              ? <h1 className={cx('label')}>{ propsForCurrentPage.pageName || 'Menu' }</h1>
+              : <div className={cx('label')}>{ propsForCurrentPage.pageName || 'Menu' }</div>
           }
         </motion.button>
       </div>
-
-      <Component {...pageProps} />
+      {/* Page content */}
+      {
+        currentSequence
+          // The page is part of a sequence
+          ? currentSequence.map(({
+            title, // The 'title' is the pre-determined page from sequences.js
+            Component, pageProps, // We render loaded pages with these
+            isLight = false, // The default 'placeholder' is dark
+            href: pageHref, as: pageAs,
+          }) => (
+            <div
+              className={cx('mobile-page', { light: isLight })}
+              key={`${pageAs}-${pageHref}`}
+            >
+              {/* Main page content */}
+              {Component
+                // We have the component for this page; render the whole page
+                ? <Component {...pageProps} />
+                // If we don’t have the component for this page, render a placeholder there instead
+                : <div className={cx('placeholder')}>{title}</div>}
+            </div>
+          ))
+          // If the page is not part of a sequence, we just render the current page and assume we
+          // have all the info.
+          : (
+            <div
+              className={cx('mobile-page', { light: propsForCurrentPage.isLight })}
+            >
+              <propsForCurrentPage.Component {...propsForCurrentPage.pageProps} />
+            </div>
+          )
+      }
     </motion.div>
   );
 }
