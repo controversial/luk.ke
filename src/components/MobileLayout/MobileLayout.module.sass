@@ -13,10 +13,6 @@
   @supports (-webkit-hyphens: none) // Safari only: this breaks in chrome
     min-height: -webkit-fill-available
 
-  &.light
-    background: $white
-    color: $black
-
   .mobile-page
     width: 100%
     min-height: 100vh
@@ -25,6 +21,10 @@
     flex: 0 0 100%
     scroll-snap-align: start
     position: relative
+
+    &.light
+      background: $white
+      color: $black
 
     .placeholder
       color: $white
