@@ -73,6 +73,33 @@ function MobileLayout(propsForCurrentPage) {
 
   const currentSequence = routeSequences[getRouteCoordinates(router.asPath)[0]];
 
+  /* Manage page rendering and transitions */
+
+  // One ref for each item
+  const pageRefs = useRef([]);
+  if (currentSequence && pageRefs.current.length !== currentSequence.length) {
+    pageRefs.current = currentSequence.map(() => React.createRef());
+  }
+
+  useEffect(() => {
+    const transitionPage = (url, smooth = true) => {
+      if (currentSequence) {
+        const idx = currentSequence.findIndex(({ href, as }) => as === url || href === url);
+        const el = pageRefs.current[idx]?.current;
+        if (el) {
+          el.scrollIntoView({
+            behavior: smooth ? 'smooth' : 'auto',
+            block: 'start',
+            inline: 'start',
+          });
+        }
+      }
+      window.scrollTo(window.pageXOffset, 0);
+    };
+    transitionPage(router.asPath, false); // jump every time the currentSequence changes
+    router.events.on('routeChangeComplete', transitionPage);
+    return () => router.events.off('routeChangeComplete', transitionPage);
+  }, [currentSequence]); // eslint-disable-line react-hooks/exhaustive-deps
   const { state: { menuOpen }, dispatch } = useStore();
 
   return (
@@ -100,10 +127,11 @@ function MobileLayout(propsForCurrentPage) {
             Component, pageProps, // We render loaded pages with these
             isLight = false, // The default 'placeholder' is dark
             href: pageHref, as: pageAs,
-          }) => (
+          }, i) => (
             <div
               className={cx('mobile-page', { light: isLight })}
               key={`${pageAs}-${pageHref}`}
+              ref={pageRefs.current[i]}
             >
               {/* Main page content */}
               {Component
