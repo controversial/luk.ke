@@ -50,17 +50,23 @@ module.exports = async function getMobileRouteSequences() {
 
   const sequences = [
     // Default sequence of “main” pages
-    [
-      { title: 'Hello', href: '/' },
-      { title: 'Work', href: '/work' },
-      { title: 'Contact', href: '/contact' },
-    ],
+    {
+      id: 'primary',
+      pages: [
+        { title: 'Hello', href: '/' },
+        { title: 'Work', href: '/work' },
+        { title: 'Contact', href: '/contact' },
+      ],
+    },
     // Alternate sequence: case study pages
-    (await getProjects()).map(({ name, uid }) => ({
-      title: name,
-      href: '/work/[project]',
-      as: `/work/${uid}`,
-    })),
+    {
+      id: 'case-studies',
+      pages: (await getProjects()).map(({ name, uid }) => ({
+        title: name,
+        href: '/work/[project]',
+        as: `/work/${uid}`,
+      })),
+    },
   ];
 
   return {

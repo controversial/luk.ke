@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useStore } from 'store';
 
 import { useRouter } from 'next/router';
-import baseRouteSequences from './sequences.js'; // This is provided as a static import by val-loader
+import baseSequences from './sequences.js'; // This is provided as a static import by val-loader
 import pick from 'lodash/pick';
 
 import { motion } from 'framer-motion';
@@ -15,29 +15,32 @@ const cx = classNames.bind(styles);
 
 
 // Find a route definition inside a specific sequence that matches the route we’re on. Calculate
-// the indices within routeSequences of both the matching sequence and the matching route within
+// the indices within 'baseSequences' of both the matching sequence and the matching route within
 // that sequence.
 function getRouteCoordinates(path) {
-  const sequenceMatches = baseRouteSequences.map((seq) => (
-    seq.filter(({ href, as }) => (path === (as || href)))
+  const sequenceMatches = baseSequences.map(({ pages }) => (
+    pages.filter(({ href, as }) => (path === (as || href)))
   ));
   const currentSequenceIndex = sequenceMatches.findIndex(({ length }) => length > 0);
-  const currentSequence = baseRouteSequences[currentSequenceIndex];
+  const currentSequence = baseSequences[currentSequenceIndex];
   const matchedRoute = sequenceMatches[currentSequenceIndex]?.[0];
-  const routeIndexInSequence = currentSequence?.indexOf?.(matchedRoute) ?? -1;
-  // currentSequenceIndex, routeIndexInSequence describe coordinates in routeSequences (or -1)
+  const routeIndexInSequence = currentSequence?.pages?.indexOf?.(matchedRoute) ?? -1;
+  // currentSequenceIndex, routeIndexInSequence describe coordinates in baseSequences (or -1)
   return [currentSequenceIndex, routeIndexInSequence];
 }
 
 // Given the path to a page and the “page attributes” for that page ({ Component, pageProps, etc. })
-// return a copy of oldRouteSequences that has the relevant route updated with the given attrs
-function augmentRoute(oldRouteSequences, path, pageAttributes) {
+// return a copy of oldSequences that has the relevant route updated with the given attrs
+function augmentRoute(oldSequences, path, pageAttributes) {
   const [seqIdx, routeIdx] = getRouteCoordinates(path);
-  return oldRouteSequences.map((rs, i) => rs.map((r, j) => ({
-    ...r,
-    // If the coordinates match the destination coordinates, augment with pageAttributes
-    ...(i === seqIdx && j === routeIdx) ? pageAttributes : {},
-  })));
+  return oldSequences.map(({ id, pages }, i) => ({
+    id,
+    pages: pages.map((r, j) => ({
+      ...r,
+      // If the coordinates match the destination coordinates, augment with pageAttributes
+      ...(i === seqIdx && j === routeIdx) ? pageAttributes : {},
+    })),
+  }));
 }
 
 /**
@@ -54,13 +57,12 @@ function MobileLayout(propsForCurrentPage) {
   // corresponding pageProps.
   const pageAttributesRef = useRef();
   pageAttributesRef.current = pick(propsForCurrentPage, ['Component', 'pageProps', 'pageName', 'isLight', 'provideH1']);
-  // This copy of the routeSequences additionally holds cached pageAttributes for each page.
+  // This copy of the baseSequences additionally holds cached pageAttributes for each page.
   // The initial state has only the first page 'augmented' with pageAttributes. Other pages are
   // augmented as they are loaded (see the effect hook below)
   const [routeSequences, setRouteSequences] = useState(
-    augmentRoute(baseRouteSequences, router.asPath, pageAttributesRef.current),
+    augmentRoute(baseSequences, router.asPath, pageAttributesRef.current),
   );
-  if (typeof window !== 'undefined') window.routeSequences = routeSequences;
   // Capture pageAttributes for each page we load
   useEffect(() => {
     // Cache { Component, pageProps } for the current page
@@ -71,21 +73,22 @@ function MobileLayout(propsForCurrentPage) {
     return () => router.events.off('routeChangeComplete', cachePageAttributes);
   }, [setRouteSequences, router.events]);
 
-  const currentSequence = routeSequences[getRouteCoordinates(router.asPath)[0]];
+  const [currentSequenceIndex, currentPageIndex] = getRouteCoordinates(router.asPath);
+  const { id: currentSequenceId, pages: seqPages } = routeSequences[currentSequenceIndex];
 
   /* Manage page rendering and transitions */
 
   // One ref for each item
   const pageRefs = useRef([]);
-  if (currentSequence && pageRefs.current.length !== currentSequence.length) {
-    pageRefs.current = currentSequence.map(() => React.createRef());
+  if (seqPages && pageRefs.current.length !== seqPages.length) {
+    pageRefs.current = seqPages.map(() => React.createRef());
   }
 
   useEffect(() => {
     const transitionPage = (url, smooth = true) => {
-      if (currentSequence) {
-        const idx = currentSequence.findIndex(({ href, as }) => as === url || href === url);
-        const el = pageRefs.current[idx]?.current;
+      const [newSeqIdx, newSeqPageIdx] = getRouteCoordinates(url);
+      if (newSeqIdx !== -1 && newSeqPageIdx !== -1) {
+        const el = pageRefs.current[newSeqPageIdx]?.current;
         if (el) {
           el.scrollIntoView({
             behavior: smooth ? 'smooth' : 'auto',
@@ -97,9 +100,11 @@ function MobileLayout(propsForCurrentPage) {
       window.scrollTo(window.pageXOffset, 0);
     };
     transitionPage(router.asPath, false); // jump every time the currentSequence changes
-    router.events.on('routeChangeComplete', transitionPage);
-    return () => router.events.off('routeChangeComplete', transitionPage);
-  }, [currentSequence]); // eslint-disable-line react-hooks/exhaustive-deps
+    const smoothTransition = (url) => transitionPage(url, true);
+    router.events.on('routeChangeComplete', smoothTransition);
+    return () => router.events.off('routeChangeComplete', smoothTransition);
+  }, [currentSequenceId]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const { state: { menuOpen }, dispatch } = useStore();
 
   return (
@@ -120,9 +125,9 @@ function MobileLayout(propsForCurrentPage) {
       </div>
       {/* Page content */}
       {
-        currentSequence
+        seqPages
           // The page is part of a sequence
-          ? currentSequence.map(({
+          ? seqPages.map(({
             title, // The 'title' is the pre-determined page from sequences.js
             Component, pageProps, // We render loaded pages with these
             isLight = false, // The default 'placeholder' is dark
