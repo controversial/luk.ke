@@ -7,6 +7,8 @@ import baseSequences from './sequences.js'; // This is provided as a static impo
 import pick from 'lodash/pick';
 
 import { motion } from 'framer-motion';
+import { animate } from 'popmotion';
+
 import MenuIcon from 'components/MenuIcon';
 
 import styles from './MobileLayout.module.sass';
@@ -78,26 +80,40 @@ function MobileLayout(propsForCurrentPage) {
 
   /* Manage page rendering and transitions */
 
+  const horizontalScrollContainer = useRef(null);
   // One ref for each item
   const pageRefs = useRef([]);
   if (seqPages && pageRefs.current.length !== seqPages.length) {
     pageRefs.current = seqPages.map(() => React.createRef());
   }
 
+  const [scrollSnap, setScrollSnap] = useState(true);
+
   useEffect(() => {
     const transitionPage = (url, smooth = true) => {
       const [newSeqIdx, newSeqPageIdx] = getRouteCoordinates(url);
       if (newSeqIdx !== -1 && newSeqPageIdx !== -1) {
         const el = pageRefs.current[newSeqPageIdx]?.current;
+        const hsc = horizontalScrollContainer.current;
         if (el) {
-          el.scrollIntoView({
-            behavior: smooth ? 'smooth' : 'auto',
-            block: 'start',
-            inline: 'start',
-          });
+          // Quickly snap to top
+          const currentX = hsc.scrollLeft;
+          hsc.scrollTo(currentX, 0);
+          // Animate scroll right
+          const targetX = el.offsetLeft;
+          if (smooth) {
+            setScrollSnap(false);
+            animate({
+              ...{ from: currentX, to: targetX },
+              ...{ type: 'spring', mass: 1, stiffness: 600, damping: 90 },
+              onUpdate: (value) => hsc.scrollTo(value, 0),
+              onComplete: () => setScrollSnap(true),
+            });
+          } else {
+            hsc.scrollTo(targetX, 0);
+          }
         }
       }
-      window.scrollTo(window.pageXOffset, 0);
     };
     transitionPage(router.asPath, false); // jump every time the currentSequence changes
     const smoothTransition = (url) => transitionPage(url, true);
@@ -108,13 +124,14 @@ function MobileLayout(propsForCurrentPage) {
   const { state: { menuOpen }, dispatch } = useStore();
 
   return (
-    <motion.div
-      className={cx('wrapper')}
-      animate={menuOpen ? 'menu-open' : 'menu-closed'}
-    >
+    <React.Fragment>
       {/* Menu bar at the top */}
       <div className={cx('menu-button', 'mobile', { light: propsForCurrentPage.isLight })}>
-        <motion.button type="button" onClick={() => dispatch('setMenuOpen', !menuOpen)}>
+        <motion.button
+          type="button"
+          onClick={() => dispatch('setMenuOpen', !menuOpen)}
+          animate={menuOpen ? 'menu-open' : 'menu-closed'}
+        >
           <MenuIcon />
           {
             propsForCurrentPage.provideH1
@@ -123,40 +140,48 @@ function MobileLayout(propsForCurrentPage) {
           }
         </motion.button>
       </div>
-      {/* Page content */}
-      {
-        seqPages
-          // The page is part of a sequence
-          ? seqPages.map(({
-            title, // The 'title' is the pre-determined page from sequences.js
-            Component, pageProps, // We render loaded pages with these
-            isLight = false, // The default 'placeholder' is dark
-            href: pageHref, as: pageAs,
-          }, i) => (
-            <div
-              className={cx('mobile-page', { light: isLight })}
-              key={`${pageAs}-${pageHref}`}
-              ref={pageRefs.current[i]}
-            >
-              {/* Main page content */}
-              {Component
-                // We have the component for this page; render the whole page
-                ? <Component {...pageProps} />
-                // If we don’t have the component for this page, render a placeholder there instead
-                : <div className={cx('placeholder')}>{title}</div>}
-            </div>
-          ))
-          // If the page is not part of a sequence, we just render the current page and assume we
-          // have all the info.
-          : (
-            <div
-              className={cx('mobile-page', { light: propsForCurrentPage.isLight })}
-            >
-              <propsForCurrentPage.Component {...propsForCurrentPage.pageProps} />
-            </div>
-          )
-      }
-    </motion.div>
+
+      <div
+        className={cx('wrapper')}
+        style={{ scrollSnapType: scrollSnap ? 'x mandatory' : 'none' }}
+        key={currentSequenceId}
+        ref={horizontalScrollContainer}
+      >
+        {/* Page content */}
+        {
+          seqPages
+            // The page is part of a sequence
+            ? seqPages.map(({
+              title, // The 'title' is the pre-determined page from sequences.js
+              Component, pageProps, // We render loaded pages with these
+              isLight = false, // The default 'placeholder' is dark
+              href: pageHref, as: pageAs,
+            }, i) => (
+              <div
+                className={cx('mobile-page', { light: isLight })}
+                key={`${pageAs}-${pageHref}`}
+                ref={pageRefs.current[i]}
+              >
+                {/* Main page content */}
+                {Component
+                  // We have the component for this page; render the whole page
+                  ? <Component {...pageProps} />
+                  // If we don’t have the component for this page, render a placeholder instead
+                  : <div className={cx('placeholder')}>{title}</div>}
+              </div>
+            ))
+            // If the page is not part of a sequence, we just render the current page and assume we
+            // have all the info.
+            : (
+              <div
+                className={cx('mobile-page', { light: propsForCurrentPage.isLight })}
+              >
+                <propsForCurrentPage.Component {...propsForCurrentPage.pageProps} />
+              </div>
+            )
+        }
+      </div>
+    </React.Fragment>
   );
 }
 
