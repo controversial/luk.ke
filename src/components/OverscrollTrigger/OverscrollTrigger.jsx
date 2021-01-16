@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 
 import { motion, useMotionValue, useTransform, useSpring, useAnimation } from 'framer-motion';
 import { useTransformMulti, delay } from 'helpers/motion';
-import { spring } from 'popmotion';
+import { animate } from 'popmotion';
 import debounce from 'lodash/debounce';
 
 import styles from './OverscrollTrigger.module.sass';
@@ -24,15 +24,15 @@ function scrollDown() {
   const pageDown = se.scrollTop + se.offsetHeight; // one "window height" down
   const bottom = se.scrollHeight - se.offsetHeight; // bottom of page
   return new Promise((resolve) => {
-    spring({
+    animate({
       from: se.scrollTop,
       to: Math.min(pageDown, bottom),
+      type: 'spring',
       mass: 1,
       stiffness: 400,
       damping: 90,
-    }).start({
-      update: (value) => { se.scrollTo(0, value); },
-      complete: resolve,
+      onUpdate: (value) => { se.scrollTo(0, value); },
+      onComplete: resolve,
     });
   });
 }
