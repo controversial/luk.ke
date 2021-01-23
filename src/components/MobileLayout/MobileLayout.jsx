@@ -75,7 +75,7 @@ function MobileLayout(propsForCurrentPage) {
     return () => router.events.off('routeChangeComplete', cachePageAttributes);
   }, [setRouteSequences, router.events]);
 
-  const [currentSequenceIndex, currentPageIndex] = getRouteCoordinates(router.asPath);
+  const [currentSequenceIndex] = getRouteCoordinates(router.asPath);
   const { id: currentSequenceId, pages: seqPages } = routeSequences[currentSequenceIndex];
 
   /* Manage page rendering and transitions */
@@ -87,7 +87,7 @@ function MobileLayout(propsForCurrentPage) {
     pageRefs.current = seqPages.map(() => React.createRef());
   }
 
-  const [scrollSnap, setScrollSnap] = useState(true);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(false);
 
   useEffect(() => {
     const transitionPage = (url, smooth = true) => {
@@ -102,12 +102,12 @@ function MobileLayout(propsForCurrentPage) {
           // Animate scroll right
           const targetX = el.offsetLeft;
           if (smooth) {
-            setScrollSnap(false);
+            setIsAutoScrolling(true);
             animate({
               ...{ from: currentX, to: targetX },
               ...{ type: 'spring', mass: 1, stiffness: 600, damping: 90 },
               onUpdate: (value) => hsc.scrollTo(value, 0),
-              onComplete: () => setScrollSnap(true),
+              onComplete: () => setTimeout(() => setIsAutoScrolling(false), 50),
             });
           } else {
             hsc.scrollTo(targetX, 0);
@@ -120,6 +120,33 @@ function MobileLayout(propsForCurrentPage) {
     router.events.on('routeChangeComplete', smoothTransition);
     return () => router.events.off('routeChangeComplete', smoothTransition);
   }, [currentSequenceId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const [closestPage, setClosestPage] = useState(0); // -1 is left; 1 is right
+
+  // Record which page the user is scrolled nearest
+  const routeSequencesRef = useRef(null);
+  routeSequencesRef.current = routeSequences;
+  useEffect(() => {
+    // Disable scroll listener while scrolling automatically
+    if (isAutoScrolling) return () => {};
+    const el = horizontalScrollContainer.current;
+    const offsetsLeft = pageRefs.current.map((pel) => pel.current.offsetLeft);
+    // Update direction on every scroll event
+    const scrollListener = () => {
+      const distances = offsetsLeft.map((ol) => Math.abs(el.scrollLeft - ol));
+      const closestPageIndex = distances.indexOf(Math.min(...distances));
+      setClosestPage(routeSequencesRef.current[currentSequenceIndex].pages[closestPageIndex]);
+    };
+    // Call both functions together
+    el.addEventListener('scroll', scrollListener);
+    return () => el.removeEventListener('scroll', scrollListener);
+  }, [currentSequenceIndex, isAutoScrolling]);
+
+  // TODO: navigate to the closestPage when it changes, but ensure programmatic navigation animation
+  // doesn’t kick in
+  useEffect(() => {
+    console.log('CHANGED TO: ', closestPage);
+  }, [closestPage]);
 
   const { state: { menuOpen }, dispatch } = useStore();
 
@@ -143,7 +170,7 @@ function MobileLayout(propsForCurrentPage) {
 
       <div
         className={cx('wrapper')}
-        style={{ scrollSnapType: scrollSnap ? 'x mandatory' : 'none' }}
+        style={{ scrollSnapType: isAutoScrolling ? 'none' : 'x mandatory' }}
         key={currentSequenceId}
         ref={horizontalScrollContainer}
       >
