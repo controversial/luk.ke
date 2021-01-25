@@ -65,6 +65,8 @@ function MobileLayout(propsForCurrentPage) {
   const [routeSequences, setRouteSequences] = useState(
     augmentRoute(baseSequences, router.asPath, pageAttributesRef.current),
   );
+  const routeSequencesRef = useRef(null);
+  routeSequencesRef.current = routeSequences;
   // Capture pageAttributes for each page we load
   useEffect(() => {
     // Cache { Component, pageProps } for the current page
@@ -75,8 +77,10 @@ function MobileLayout(propsForCurrentPage) {
     return () => router.events.off('routeChangeComplete', cachePageAttributes);
   }, [setRouteSequences, router.events]);
 
-  const [currentSequenceIndex] = getRouteCoordinates(router.asPath);
-  const { id: currentSequenceId, pages: seqPages } = routeSequences[currentSequenceIndex];
+  const [currentSequenceIndex, currentPageIndex] = getRouteCoordinates(router.asPath);
+  const { id: currentSequenceId, pages: seqPages } = routeSequences[currentSequenceIndex] ?? {};
+  const currentPage = routeSequences[currentSequenceIndex]?.pages?.[currentPageIndex];
+  const [closestPage, setClosestPage] = useState(currentPage);
 
   /* Manage page rendering and transitions */
 
@@ -103,6 +107,7 @@ function MobileLayout(propsForCurrentPage) {
           const targetX = el.offsetLeft;
           if (smooth) {
             setIsAutoScrolling(true);
+            setClosestPage(routeSequences[newSeqIdx]?.pages?.[newSeqPageIdx]);
             animate({
               ...{ from: currentX, to: targetX },
               ...{ type: 'spring', mass: 1, stiffness: 600, damping: 90 },
@@ -121,11 +126,7 @@ function MobileLayout(propsForCurrentPage) {
     return () => router.events.off('routeChangeComplete', smoothTransition);
   }, [currentSequenceId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const [closestPage, setClosestPage] = useState(0); // -1 is left; 1 is right
-
   // Record which page the user is scrolled nearest
-  const routeSequencesRef = useRef(null);
-  routeSequencesRef.current = routeSequences;
   useEffect(() => {
     // Disable scroll listener while scrolling automatically
     if (isAutoScrolling) return () => {};
@@ -137,16 +138,20 @@ function MobileLayout(propsForCurrentPage) {
       const closestPageIndex = distances.indexOf(Math.min(...distances));
       setClosestPage(routeSequencesRef.current[currentSequenceIndex].pages[closestPageIndex]);
     };
-    // Call both functions together
+
     el.addEventListener('scroll', scrollListener);
     return () => el.removeEventListener('scroll', scrollListener);
   }, [currentSequenceIndex, isAutoScrolling]);
 
   // TODO: navigate to the closestPage when it changes, but ensure programmatic navigation animation
   // doesn’t kick in
+  const isAutoScrollingRef = useRef();
+  isAutoScrollingRef.current = isAutoScrolling;
   useEffect(() => {
-    console.log('CHANGED TO: ', closestPage);
-  }, [closestPage]);
+    if (!isAutoScrollingRef.current) {
+      console.log('USER CHANGED SCROLL TO: ', closestPage);
+    }
+  }, [closestPage?.as || closestPage?.href]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { state: { menuOpen }, dispatch } = useStore();
 
