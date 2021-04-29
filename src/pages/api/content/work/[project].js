@@ -1,4 +1,4 @@
-import { Api } from 'helpers/prismic';
+import Api from 'helpers/prismic';
 import { processProject } from './index';
 
 /**

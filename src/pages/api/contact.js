@@ -2,7 +2,7 @@ import sgMail from '@sendgrid/mail';
 import { isEmail } from 'helpers/email';
 
 import Prismic from 'prismic-javascript';
-import { Api } from 'helpers/prismic';
+import Api from 'helpers/prismic';
 
 import { delay } from 'helpers/motion';
 
