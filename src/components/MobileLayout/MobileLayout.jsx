@@ -91,10 +91,18 @@ function MobileLayout(propsForCurrentPage) {
     pageRefs.current = seqPages.map(() => React.createRef());
   }
 
+
+  // Track when scrolling is user-initiated and when scrolling is automatically initiated
   const [isAutoScrolling, setIsAutoScrolling] = useState(false);
+  const isUserScrollingRef = useRef(false);
 
   useEffect(() => {
     const transitionPage = (url, smooth = true) => {
+      if (isUserScrollingRef.current) {
+        isUserScrollingRef.current = false;
+        return;
+      }
+      console.log('hey');
       const [newSeqIdx, newSeqPageIdx] = getRouteCoordinates(url);
       if (newSeqIdx !== -1 && newSeqPageIdx !== -1) {
         const el = pageRefs.current[newSeqPageIdx]?.current;
@@ -122,6 +130,8 @@ function MobileLayout(propsForCurrentPage) {
     };
     transitionPage(router.asPath, false); // jump every time the currentSequence changes
     const smoothTransition = (url) => transitionPage(url, true);
+    // When navigation occurs because of programmatic navigation, we update scroll position
+    // ourselves
     router.events.on('routeChangeComplete', smoothTransition);
     return () => router.events.off('routeChangeComplete', smoothTransition);
   }, [currentSequenceId]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -143,12 +153,14 @@ function MobileLayout(propsForCurrentPage) {
     return () => el.removeEventListener('scroll', scrollListener);
   }, [currentSequenceIndex, isAutoScrolling]);
 
-  // TODO: navigate to the closestPage when it changes, but ensure programmatic navigation animation
+  // Navigate to the closestPage when it changes, and ensure programmatic navigation animation
   // doesn’t kick in
   const isAutoScrollingRef = useRef();
   isAutoScrollingRef.current = isAutoScrolling;
   useEffect(() => {
     if (!isAutoScrollingRef.current) {
+      isUserScrollingRef.current = true;
+      router.push(closestPage.href, closestPage.as || closestPage.href);
       console.log('USER CHANGED SCROLL TO: ', closestPage);
     }
   }, [closestPage?.as || closestPage?.href]); // eslint-disable-line react-hooks/exhaustive-deps
