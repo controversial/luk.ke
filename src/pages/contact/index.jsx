@@ -34,7 +34,7 @@ function ContactPageLightContent({
   const form = useRef(null);
 
   const [formState, setFormState] = useState('initial'); // 'initial', 'loading', or 'complete'
-  const { handleSubmit, register, errors } = useForm();
+  const { handleSubmit, register, formState: { errors } } = useForm();
 
   async function submit(values) {
     setFormState('loading');
@@ -74,24 +74,21 @@ function ContactPageLightContent({
                   <fieldset disabled={['loading', 'complete'].includes(formState)}>
                     <input
                       type="text"
-                      name="name"
                       placeholder="Your name"
                       className={cx('field', { error: errors.name })}
-                      ref={register({ required: true })}
+                      {...register('name', { required: true })}
                     />
                     <input
                       type="text"
-                      name="email"
                       placeholder="Your email"
                       className={cx('field', { error: errors.email })}
-                      ref={register({ required: true, pattern: emailRegex })}
+                      {...register('email', { required: true, pattern: emailRegex })}
                     />
                     <textarea
-                      name="message"
                       placeholder="What’s up?"
                       rows="5"
                       className={cx('field', { error: errors.message })}
-                      ref={register({ required: true })}
+                      {...register('message', { required: true })}
                     />
 
                     <ArrowLink type="submit">
