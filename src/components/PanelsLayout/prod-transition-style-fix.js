@@ -1,27 +1,22 @@
 // See https://github.com/vercel/next.js/issues/17464
 // In production, styles are removed prematurely in route transition.
-// This is a workaround for that bug, based on https://github.com/vercel/next.js/issues/17464#issuecomment-751267740
+// This is a workaround for that bug, based on https://github.com/vercel/next.js/issues/17464#issuecomment-796430107
 
-import Router from 'next/router';
-import { delay } from 'helpers/motion';
+import { useEffect } from 'react';
 
-Router.events.on('routeChangeStart', () => {
-  // Add a copy of each style node to the head
-  const styleNodes = [
-    ...document.querySelectorAll('link[rel=stylesheet]'),
-    ...document.querySelectorAll('style:not([media=x])'),
-  ];
-  const copies = styleNodes.map((e) => e.cloneNode(true));
-  copies.forEach((node) => {
-    node.removeAttribute('data-n-p');
-    node.removeAttribute('data-n-href');
-    document.head.appendChild(node);
-  });
-  // Remove the copies a little while after routeChangeComplete
-  const delayedCleanup = async () => {
-    Router.events.off('routeChangeComplete', delayedCleanup);
-    await delay(500);
-    copies.forEach((node) => document.head.removeChild(node));
-  };
-  Router.events.on('routeChangeComplete', delayedCleanup);
-});
+const isNextStyleTag = (el) => el.nodeName.toLowerCase() === 'style' && el.getAttribute('media') === 'x';
+const isNextLinkTag = (el) => el.nodeName.toLowerCase() === 'link' && el.getAttribute('rel') === 'stylesheet';
+
+// Hide Next's link tags and style tags from Next
+const hideElements = (els) => [...els]
+  .filter((el) => (isNextStyleTag(el) || isNextLinkTag(el)))
+  .forEach((el) => ['media', 'data-n-p'].forEach((attr) => el.removeAttribute(attr)));
+
+export default function useStyleFix() {
+  useEffect(() => {
+    hideElements(document.head.childNodes);
+    const observer = new MutationObserver((muts) => hideElements(muts.map((mut) => mut.target)));
+    observer.observe(document.head, { subtree: true, attributes: true, childList: true });
+    return () => observer.disconnect();
+  }, []);
+}

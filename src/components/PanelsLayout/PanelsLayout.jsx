@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 
 import { motion, useMotionValue, useTransform, useAnimation } from 'framer-motion';
 import { useTransformMulti, easings } from 'helpers/motion';
-import './prod-transition-style-fix';
+import useStyleFix from './prod-transition-style-fix';
 
 import Menu from 'components/Menu';
 import MenuIcon from 'components/MenuIcon';
@@ -41,6 +41,8 @@ function PanelsLayout({
   provideH1: passedProvideH1,
   willNavigate,
 }) {
+  useStyleFix();
+
   // This component supports "freezing" updates to certain cached state values.
   // This is useful for preserving the old state during animations.
   // In this component, freezeUpdates=true implies that we are in the middle of a page transition
