@@ -2,6 +2,7 @@ import puppeteer from 'puppeteer-core';
 import chr from 'chrome-aws-lambda';
 
 const MAC_BINARY_PATH = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const base = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : process.env.BASE_URL;
 
 async function getChromeLaunchOptions() {
   return process.env.VERCEL
@@ -13,7 +14,8 @@ export async function screenshot(path, scale = 1, viewport = { width: 1200, heig
   const browser = await puppeteer.launch(await getChromeLaunchOptions());
   const page = await browser.newPage();
   await page.setViewport({ ...viewport, deviceScaleFactor: scale });
-  await page.goto(new URL(path, process.env.BASE_URL).href, { waitUntil: 'networkidle2', timeout: 5000 });
+  const url = new URL(path, base).href;
+  await page.goto(url, { waitUntil: 'networkidle2', timeout: 5000 });
   const file = await page.screenshot();
   await browser.close();
   return file;
