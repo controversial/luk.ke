@@ -90,7 +90,7 @@ function WorkPageLightContent({ content: projects, bus }) {
 
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeout = useRef(null);
-  const { scrollY } = useViewportScroll();
+  const { scrollY } = useViewportScroll(); // TODO: this causes useLayoutEffect server warning - fix
   useEffect(() => scrollY.onChange(() => {
     clearTimeout(scrollTimeout.current);
     setIsScrolling(true);

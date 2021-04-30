@@ -18,6 +18,7 @@
   "dependencies": {
     "@next/bundle-analyzer": "^10.2.0",
     "@sendgrid/mail": "^7.4.2",
+    "chrome-aws-lambda": "^8.0.2",
     "classnames": "^2.3.1",
     "domhandler": "^4.2.0",
     "domutils": "^2.6.0",
@@ -32,6 +33,7 @@
     "prismic-dom": "git+https://git@github.com/controversial/prismic-dom.git",
     "prismic-javascript": "^3.0.2",
     "prop-types": "^15.7.2",
+    "puppeteer-core": "^8.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.3.5"
