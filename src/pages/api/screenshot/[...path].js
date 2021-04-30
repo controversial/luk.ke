@@ -15,7 +15,7 @@ export async function screenshot(path, scale = 1, viewport = { width: 1200, heig
   const page = await browser.newPage();
   await page.setViewport({ ...viewport, deviceScaleFactor: scale });
   const url = new URL(path, base).href;
-  await page.goto(url, { waitUntil: 'networkidle2', timeout: 5000 });
+  await page.goto(url, { waitUntil: 'networkidle0', timeout: 5000 });
   const file = await page.screenshot();
   await browser.close();
   return file;
