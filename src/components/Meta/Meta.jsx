@@ -35,13 +35,15 @@ export default function Meta({ title, description, path, canonicalPath }) {
       )}
       {/* Canonical URL */}
       <link rel="canonical" href={canonicalUrl} key="canonical" />
-      <link property="og:url" content={canonicalUrl} key="og_url" />
+      <meta property="og:url" content={canonicalUrl} key="og_url" />
       {/* Images */}
       {images.map(({ url, width, height }, i) => (
         <React.Fragment key={url}>
           <meta property="og:image" content={url} key={`og_image_${i + 1}`} />
-          <meta property="og:image:width" content={width} key={`og_image_width_${i + 1}`} />
-          <meta property="og:image:height" content={height} key={`og_image_height_${i + 1}`} />
+          {/* Note: these end up in the wrong place after a page transition, but probably ok since
+                    most crawlers will not perform client side navigation */}
+          <meta property="og:image:width" content={width} key={`og_image_width_${url}`} />
+          <meta property="og:image:height" content={height} key={`og_image_height_${url}`} />
         </React.Fragment>
       ))}
       <meta name="twitter:image" content={images[2].url} key="twitter_image" />

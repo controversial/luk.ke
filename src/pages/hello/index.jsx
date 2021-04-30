@@ -31,7 +31,7 @@ function Hello() {
   return (
     <Meta
       title="Hello"
-      description="Luke is a creative developer. He designs and brings unique web-based experiences to life."
+      description="Luke is a creative developer. He designs unique web-based experiences and brings them to life."
       path="/hello"
       canonicalPath="/"
     />
