@@ -6,7 +6,7 @@ import parse from 'html-react-parser';
 
 import { getHomepage } from 'pages/api/content/hello';
 
-import Head from 'next/head';
+import Meta from 'components/Meta/Meta';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMatchedMedia } from 'components/Responsive';
@@ -29,11 +29,12 @@ const replaceAge = ({ attribs }) => attribs?.['class'] === 'age' && <AgeCounter 
 
 function Hello() {
   return (
-    <React.Fragment>
-      <Head>
-        <title>Luke Deen Taylor</title>
-      </Head>
-    </React.Fragment>
+    <Meta
+      title="Hello"
+      description="Luke is a creative developer. He designs and brings unique web-based experiences to life."
+      path="/hello"
+      canonicalPath="/"
+    />
   );
 }
 

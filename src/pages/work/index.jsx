@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import { useRouter } from 'next/router';
-import Head from 'next/head';
+import Meta from 'components/Meta/Meta';
 
 import { AnimatePresence, motion, useViewportScroll } from 'framer-motion';
 import { ParallaxScroll, ParallaxSection, ParallaxImage } from 'components/ParallaxScroll';
@@ -38,15 +38,25 @@ function getIndexFromHash(projects, hash) {
 
 // Main component configures page metadata and doesn't redner anything
 
-function WorkIndex() {
+function WorkIndex({ content }) {
+  let description = 'A selection of personal coding projects by Luke Deen Taylor, a creative developer.';
+  if (content.length === 1) description = `${description} Explore projects like ${content[0].name}`;
+  else if (content.length > 1) {
+    description = `${description} Explore projects like ${content.slice(0, -1).map((c) => c.name).join(', ')}, and ${content.slice(-1)[0].name}.`;
+  }
   return (
-    <React.Fragment>
-      <Head>
-        <title>Work | Luke Deen Taylor</title>
-      </Head>
-    </React.Fragment>
+    <Meta
+      title="Work"
+      description={description}
+      path="/work"
+    />
   );
 }
+WorkIndex.propTypes = {
+  content: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+  })).isRequired,
+};
 
 
 // The light section displays information about the current case study

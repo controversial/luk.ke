@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-import Head from 'next/head';
+import Meta from 'components/Meta';
 import Image from 'next/image';
 
 import TagsList from 'components/TagsList';
@@ -40,12 +40,11 @@ function CaseStudy({ project }) {
 
   return (
     <React.Fragment>
-      <Head>
-        <title>
-          { project.name && `${project.name} | ` }
-          Luke Deen Taylor
-        </title>
-      </Head>
+      <Meta
+        title={project.name}
+        description={`${project.name}, a project by Luke Deen Taylor. ${project.subhead}`}
+        path={`/work/${project.uid}`}
+      />
 
       <article className={cx('page')}>
         {/* Header content */}

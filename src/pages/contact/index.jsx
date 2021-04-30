@@ -11,7 +11,7 @@ import { emailRegex } from 'helpers/email';
 import { motion, AnimatePresence } from 'framer-motion';
 import { easings } from 'helpers/motion';
 import ArrowLink from 'components/ArrowLink';
-import Head from 'next/head';
+import Meta from 'components/Meta/Meta';
 
 import styles from './index.module.sass';
 const cx = classNames.bind(styles);
@@ -19,11 +19,11 @@ const cx = classNames.bind(styles);
 
 function Contact() {
   return (
-    <React.Fragment>
-      <Head>
-        <title>Contact | Luke Deen Taylor</title>
-      </Head>
-    </React.Fragment>
+    <Meta
+      title="Contact"
+      description="Connect with Luke on social media, or send a message through a contact form. Luke Deen Taylor is a creative developer."
+      path="/contact"
+    />
   );
 }
 
