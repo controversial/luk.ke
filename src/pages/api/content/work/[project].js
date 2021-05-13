@@ -15,6 +15,7 @@ export async function getProject(projectId) {
 
 
 export default async function routeHandler(req, res) {
+  res.setHeader('Cache-Control', 'max-age=0, s-maxage=60, stale-while-revalidate');
   const { project: projectId } = req.query;
   getProject(projectId)
     .catch((e) => res.status(e.message.startsWith("Couldn't find") ? 404 : 500).json({ error: e.message || e }))

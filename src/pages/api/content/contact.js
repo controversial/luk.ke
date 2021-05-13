@@ -16,6 +16,7 @@ export async function getContactPage() {
 }
 
 export default async function routeHandler(req, res) {
+  res.setHeader('Cache-Control', 'max-age=0, s-maxage=60, stale-while-revalidate');
   const contactPage = await getContactPage();
   res.status(200).json(contactPage);
 }

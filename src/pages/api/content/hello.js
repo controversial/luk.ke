@@ -39,5 +39,7 @@ export async function getHomepage() {
 }
 
 export default async function routeHandler(req, res) {
-  res.status(200).json(await getHomepage());
+  res.setHeader('Cache-Control', 'max-age=0, s-maxage=60, stale-while-revalidate');
+  const homepage = await getHomepage();
+  res.status(200).json(homepage);
 }
