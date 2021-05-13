@@ -1,25 +1,8 @@
-import puppeteer from 'puppeteer-core';
-import chr from 'chrome-aws-lambda';
+import screenshotUrl from 'helpers/server/screenshot';
 
-const MAC_BINARY_PATH = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const base = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : process.env.BASE_URL;
 
-async function getChromeLaunchOptions() {
-  return process.env.VERCEL
-    ? { executablePath: await chr.executablePath, args: chr.args, headless: chr.headless }
-    : { executablePath: MAC_BINARY_PATH };
-}
-
-export async function screenshot(path, scale = 1, viewport = { width: 1200, height: 627 }) {
-  const browser = await puppeteer.launch(await getChromeLaunchOptions());
-  const page = await browser.newPage();
-  await page.setViewport({ ...viewport, deviceScaleFactor: scale });
-  const url = new URL(path, base).href;
-  await page.goto(url, { waitUntil: 'networkidle0', timeout: 10000 });
-  const file = await page.screenshot();
-  await browser.close();
-  return file;
-}
+const screenshot = (path, ...args) => screenshotUrl(new URL(path, base).href, ...args);
 
 export default async function routeHandler(req, res) {
   const path = req.query.path.join('/');
