@@ -6,7 +6,7 @@ import { Api, cleanImage } from 'helpers/server/prismic';
 
 import { getTotalStars } from '../stars';
 
-export async function getHomepage(forceRefreshStars = false) {
+export async function getHomepage() {
   const [cmsData, totalGithubStars] = await Promise.all([
     // Fetch page content from CMS
     Api
@@ -25,7 +25,7 @@ export async function getHomepage(forceRefreshStars = false) {
         },
       })),
     // Simultaneously, fetch my total number of GitHub stars from the API
-    getTotalStars(forceRefreshStars),
+    getTotalStars(),
   ]);
 
   return {
@@ -39,6 +39,5 @@ export async function getHomepage(forceRefreshStars = false) {
 }
 
 export default async function routeHandler(req, res) {
-  const homepage = await getHomepage(false);
-  res.status(200).json(homepage);
+  res.status(200).json(await getHomepage());
 }

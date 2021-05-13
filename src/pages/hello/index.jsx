@@ -133,7 +133,7 @@ Object.assign(Hello, {
 
 export async function getStaticProps() {
   return {
-    props: { content: await getHomepage(true) },
+    props: { content: await getHomepage() },
     revalidate: 60, // fetch new CMS data in the background if it's been more than a minute
   };
 }
