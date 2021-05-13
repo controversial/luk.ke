@@ -4,7 +4,7 @@ import glob from 'globby';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
 import { fileURLToPath } from 'url';
-import { argv } from 'process';
+import process from 'process';
 
 const PUBLIC_BASE = 'https://luk.ke/';
 
@@ -26,7 +26,9 @@ export async function getSitemap() {
 }
 
 
-if (fileURLToPath(import.meta.url) === argv[1]) {
+if (fileURLToPath(import.meta.url) === process.argv[1]) {
+  process.stdout.write('Generating sitemap...');
   const sitemap = await getSitemap();
   await fs.writeFile('public/sitemap.xml', sitemap, 'utf-8');
+  process.stdout.write(' done!\n');
 }
