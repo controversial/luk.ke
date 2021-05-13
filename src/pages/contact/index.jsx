@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { emailRegex } from 'helpers/email';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { easings } from 'helpers/motion';
+import { easings } from 'helpers/react/motion';
 import ArrowLink from 'components/ArrowLink';
 import Meta from 'components/Meta/Meta';
 

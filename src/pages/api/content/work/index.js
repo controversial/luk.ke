@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 const Prismic = require('prismic-javascript');
 const PrismicDOM = require('prismic-dom');
-const { Api, cleanImage } = require('../../../../helpers/prismic');
-const withClassName = require('../../../../helpers/addClassToMarkup');
+const { Api, cleanImage } = require('../../../../helpers/server/prismic');
+const withClassName = require('../../../../helpers/server/addClassToMarkup');
 
 
 // Helper functions

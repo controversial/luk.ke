@@ -1,6 +1,6 @@
 import Prismic from 'prismic-javascript';
 import PrismicDOM from 'prismic-dom';
-import { Api } from 'helpers/prismic';
+import { Api } from 'helpers/server/prismic';
 
 
 export async function getContactPage() {

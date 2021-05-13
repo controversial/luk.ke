@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { useElementWidth } from 'helpers/hooks';
+import { useElementWidth } from 'helpers/react/hooks';
 import { motion, MotionValue } from 'framer-motion';
 
 import styles from './Carousel.module.sass';

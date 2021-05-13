@@ -10,7 +10,7 @@ import FramedFigure from 'components/FramedFigure';
 
 import { getProject } from 'pages/api/content/work/[project]';
 import { fetchAllProjects } from 'pages/api/content/work';
-import { useWindowWidth } from 'helpers/hooks';
+import { useWindowWidth } from 'helpers/react/hooks';
 import parse from 'html-react-parser';
 import { renderBlock, parseAsTextBlock as asTextBlock } from 'helpers/pages/work/case-study-blocks';
 

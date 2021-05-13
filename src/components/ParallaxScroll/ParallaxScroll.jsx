@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useElementWidth } from 'helpers/hooks.js';
+import { useElementWidth } from 'helpers/react/hooks.js';
 
 import { motion, useTransform, useViewportScroll } from 'framer-motion';
-import { useLerp, useVelocity } from 'helpers/motion';
+import { useLerp, useVelocity } from 'helpers/react/motion';
 
 import ParallaxSection from './ParallaxSection.jsx';
 

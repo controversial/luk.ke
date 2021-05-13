@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { useStore } from 'store';
-import useFreezable from 'helpers/useFreezable';
+import useFreezable from 'helpers/react/useFreezable';
 
 import { useRouter } from 'next/router';
 
 import { motion, useMotionValue, useTransform, useAnimation } from 'framer-motion';
-import { useTransformMulti, easings } from 'helpers/motion';
+import { useTransformMulti, easings } from 'helpers/react/motion';
 import useStyleFix from './prod-transition-style-fix';
 
 import Menu from 'components/Menu';

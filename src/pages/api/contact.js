@@ -2,9 +2,9 @@ import sgMail from '@sendgrid/mail';
 import { isEmail } from 'helpers/email';
 
 import Prismic from 'prismic-javascript';
-import { Api } from 'helpers/prismic';
+import { Api } from 'helpers/server/prismic';
 
-import { delay } from 'helpers/motion';
+import { delay } from 'helpers/react/motion';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 

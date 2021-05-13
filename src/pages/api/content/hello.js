@@ -2,7 +2,7 @@
 
 import Prismic from 'prismic-javascript';
 import PrismicDOM from 'prismic-dom';
-import { Api, cleanImage } from 'helpers/prismic';
+import { Api, cleanImage } from 'helpers/server/prismic';
 
 import { getTotalStars } from '../stars';
 

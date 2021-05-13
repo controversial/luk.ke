@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames/bind';
 
 import { motion } from 'framer-motion';
-import { easings } from 'helpers/motion';
+import { easings } from 'helpers/react/motion';
 
 import styles from './MenuIcon.module.sass';
 const cx = classNames.bind(styles);
