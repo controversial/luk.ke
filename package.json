@@ -33,6 +33,7 @@
     "prismic-dom": "git+https://git@github.com/controversial/prismic-dom.git",
     "prismic-javascript": "^3.0.2",
     "prop-types": "^15.7.2",
+    "puppeteer": "^9.1.1",
     "puppeteer-core": "^9.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
