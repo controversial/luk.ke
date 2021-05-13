@@ -10,11 +10,13 @@ const PUBLIC_BASE = 'https://luk.ke/';
 
 
 export const getPaths = () => glob('**/*.html', { cwd: '.next/server/pages', onlyFiles: true })
+  // Remove .html extensions and remove "index.html" filenames from the ends of paths
   .then((paths) => paths.map(((p) => {
-    // Remove .html extensions and remove "index.html" filenames from the ends of paths
     const { dir, name } = path.parse(p);
     return `/${name === 'index' ? dir : path.join(dir, name)}`;
   })))
+  // Exclude error code pages (404, 500)
+  .then((paths) => paths.filter((p) => !/^\/[0-9]{3}$/.test(p)))
   .then((paths) => paths.sort());
 
 export async function getSitemap() {
