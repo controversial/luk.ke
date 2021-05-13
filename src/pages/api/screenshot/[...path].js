@@ -9,6 +9,7 @@ export default async function routeHandler(req, res) {
   if (path.startsWith('api/screenshot/')) res.status(400).json({ error: 'recursion not allowed' });
   else {
     res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Cache-Control', 'max-age=0, s-maxage=86400, stale-while-revalidate');
     const scale = ['1', '2', '3'].includes(req.query.scale) ? parseInt(req.query.scale, 10) : 1;
     res.send(await screenshot(path, scale));
   }
