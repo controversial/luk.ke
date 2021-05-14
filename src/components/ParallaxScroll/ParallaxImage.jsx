@@ -76,8 +76,6 @@ function ParallaxImage({ img, layout, zoom, scrollProgress, sectionIndex }) {
         ...from.left === 0 && { justifyContent: 'flex-start' },
         ...from.right === 0 && { justifyContent: 'flex-end' },
       }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1, transition: { opacity: { duration: 0.3, ease: 'easeInOut' } } }}
     >
       <div style={{ width, height }}>
         {
