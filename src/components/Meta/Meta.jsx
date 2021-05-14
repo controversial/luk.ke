@@ -61,8 +61,9 @@ Meta.propTypes = {
   description: PropTypes.string,
   path: PropTypes.string.isRequired,
   // for homepage, when we screenshot /hello but need canonical /
-  canonicalPath: PropTypes.string.isRequired,
+  canonicalPath: PropTypes.string,
 };
 Meta.defaultProps = {
   description: null,
+  canonicalPath: undefined,
 };
