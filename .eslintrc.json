@@ -3,21 +3,22 @@
   "env": { "browser": true },
   // Override some rules
   "rules": {
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }], // Allow importing devDependencies
-    "no-param-reassign": ["error", { "props": false }],                          // Allow modifying properties of parameters
-    "no-underscore-dangle": "off",                                               // Allow names like _a
-    "global-require": "off",                                                     // Allow require() in local scope
-    "object-curly-newline": ["error", { "consistent": true }],                   // Either both braces have newlines or neither does
-    "import/no-webpack-loader-syntax": "off",                                    // Allow webpack loader syntax (with !)
-    "import/newline-after-import": "off",                                        // Allow code right after import statements
-    "import/extensions": "off",                                                  // Allow importing modules without specifying extensions
-    "import/order": "off",                                                       // Allow importing modules in any order
-    "jsx-a11y/anchor-is-valid": "off",                                           // In Next.js the href goes on the Link wrapper, not on the a tag
-    "react/no-danger": "off",                                                    // Allow using dangerouslySetInnerHTML
-    "react/jsx-fragments": "off",                                                // Allow either React Fragment syntax
-    "react/jsx-props-no-spreading": "off",                                       // Allow spreading props (like <Component {...props} />)
-    "react/jsx-props-no-multi-spaces": "off",                                    // Allow multiple newlines in between props
-    "no-multiple-empty-lines": ["error", { "max": 2, "maxBOF": 0, "maxEOF": 0 }] // Allow up to 2 empty lines in a row
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],  // Allow importing devDependencies
+    "no-param-reassign": ["error", { "props": false }],                           // Allow modifying properties of parameters
+    "no-underscore-dangle": "off",                                                // Allow names like _a
+    "global-require": "off",                                                      // Allow require() in local scope
+    "object-curly-newline": ["error", { "consistent": true }],                    // Either both braces have newlines or neither does
+    "import/no-webpack-loader-syntax": "off",                                     // Allow webpack loader syntax (with !)
+    "import/newline-after-import": "off",                                         // Allow code right after import statements
+    "import/extensions": "off",                                                   // Allow importing modules without specifying extensions
+    "import/order": "off",                                                        // Allow importing modules in any order
+    "jsx-a11y/anchor-is-valid": "off",                                            // In Next.js the href goes on the Link wrapper, not on the a tag
+    "react/no-danger": "off",                                                     // Allow using dangerouslySetInnerHTML
+    "react/jsx-fragments": "off",                                                 // Allow either React Fragment syntax
+    "react/jsx-props-no-spreading": "off",                                        // Allow spreading props (like <Component {...props} />)
+    "react/jsx-props-no-multi-spaces": "off",                                     // Allow multiple newlines in between props
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxBOF": 0, "maxEOF": 0 }], // Allow up to 2 empty lines in a row
+    "no-empty": ["error", { "allowEmptyCatch": true }]                            // Allow empty blocks when it's for a catch statement
   },
   // Support modern JS syntax
   "parser": "@babel/eslint-parser",
