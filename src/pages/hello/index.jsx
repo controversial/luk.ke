@@ -22,7 +22,7 @@ const cx = classNames.bind(styles);
 // Replacement function for html-react-parser. If we encounter an element with class name 'age', we
 // replace it with an instance of AgeCounter
 // eslint-disable-next-line react/prop-types
-const replaceAge = ({ attribs }) => attribs?.['class'] === 'age' && <AgeCounter className={cx('age')} />;
+const replaceAge = ({ attribs }) => attribs?.class === 'age' && <AgeCounter className={cx('age')} />;
 
 
 // Main component - configures page metadata and doesn't render anything
