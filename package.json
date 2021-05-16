@@ -37,21 +37,21 @@
     "puppeteer-core": "^9.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-hook-form": "^7.5.3"
+    "react-hook-form": "^7.6.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.2",
     "@babel/plugin-syntax-top-level-await": "^7.12.13",
-    "babel-plugin-inline-react-svg": "^1.1.2",
+    "babel-plugin-inline-react-svg": "^2.0.1",
     "eslint": "^7.26.0",
     "eslint-config-airbnb": "^18.2.1",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.23.2",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
     "globby": "^11.0.3",
     "sass": "^1.32.13",
     "sitemap": "^7.0.0",
-    "val-loader": "^3.1.0"
+    "val-loader": "^4.0.0"
   }
 }
