@@ -57,7 +57,7 @@ function OverscrollTrigger({ callback, preCallback }) {
   // pathLength is always 0 while the arrow is not hidden
   const pathLength = useTransformMulti([progress, arrowIsHidden], (a, b) => a * b);
   // Animate changes to pathLength
-  const pathLengthSpring = useSpring(pathLength, { stiffness: 400, damping: 90 });
+  const pathLengthSpring = useSpring(pathLength, { stiffness: 1000, damping: 60 });
 
   const arrowControls = useAnimation();
   useEffect(() => arrowControls.set('visible'), [arrowControls]);

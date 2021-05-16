@@ -131,7 +131,11 @@ function PanelsLayout({
     setFreezeUpdates(false);
     // Wait for the panel to finish sliding
     if (lightPanelWillMove) {
-      await new Promise((resolve) => setLightPanelAnimCallback(() => resolve));
+      await Promise.all([
+        // Close the menu
+        lightPanelControls.start({ x: 0 }),
+        new Promise((resolve) => setLightPanelAnimCallback(() => resolve)),
+      ]);
     }
     setLightPanelAnimCallback(null);
     // Fade in all content
@@ -188,9 +192,9 @@ function PanelsLayout({
 
         {/* Light panel */}
         <motion.div
-          layoutTransition={(!freezeUpdates && !displayContent)
-            && { duration: 0.5, ease: [0.5, 0.1, 0.25, 1] }}
-          onAnimationComplete={lightPanelAnimCallback}
+          layout={(!freezeUpdates && !displayContent)}
+          transition={{ duration: 0.5, ease: [0.5, 0.1, 0.25, 1] }}
+          onLayoutAnimationComplete={lightPanelAnimCallback}
           className={cx('panel', 'light')}
           animate={lightPanelControls}
         >

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import Image from 'next/image';
-import { motion, useTransform, MotionValue } from 'framer-motion';
+import { motion, useTransform, MotionValue, useMotionValue } from 'framer-motion';
 
 import styles from './Parallax.module.sass';
 const cx = classNames.bind(styles);
@@ -16,7 +16,16 @@ function ParallaxImage({ img, layout, zoom, scrollProgress, sectionIndex }) {
   const { from } = layout;
   const to = { ...from, ...layout.to };
 
-  const y = useTransform(scrollProgress, [0, 1], [from.top ?? 0, to.top ?? 0]);
+  // Implement our own useTransform based on [0, 1], [from.top, to.top] in order to address broken
+  // behavior (getting stuck at the top on first page load)
+  const y = useMotionValue(from.top);
+  useEffect(() => {
+    const a = from.top ?? 0; const b = to.top ?? 0;
+    const compute = (sp) => a + (b - a) * sp;
+    y.set(compute(scrollProgress.get()));
+    return scrollProgress.onChange((val) => { y.set(compute(val)); });
+  }, [from.top, to.top, scrollProgress, y]);
+
   const scale = useTransform(scrollProgress, [0, 1], [from.zoom ?? 1, to.zoom ?? 1]);
 
   // Add event listener to attach videos with mode 'progress' to scroll position
@@ -35,7 +44,7 @@ function ParallaxImage({ img, layout, zoom, scrollProgress, sectionIndex }) {
           const exit = 0 - bounds.height;
           let elementProgress = (bounds.top - enter) / (exit - enter);
           elementProgress = Math.min(Math.max(elementProgress, 0), 1);
-          const videoTime = elementProgress * videoEl.current.duration ?? 0;
+          const videoTime = elementProgress * videoEl.current.duration || 0;
           videoEl.current.currentTime = videoTime;
         }
       });
