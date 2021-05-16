@@ -69,7 +69,7 @@ const lightContentTransitionVariants = {
     opacity: 1,
     // this is the transition for the entering element
     transition: {
-      duration: 0.35, delay: 0.2, y: { ease: 'circOut' }, opacity: { ease: 'easeOut' },
+      duration: 0.35, delay: 0.2, y: { ease: 'circOut', delay: 0.2 }, opacity: { ease: 'easeOut', delay: 0.2 },
     },
   },
   exit: (direction) => ({
