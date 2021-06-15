@@ -1,5 +1,5 @@
 {
-  "extends": ["airbnb", "airbnb/hooks"],
+  "extends": ["airbnb", "airbnb/hooks", "next"],
   "env": { "browser": true },
   // Override some rules
   "rules": {

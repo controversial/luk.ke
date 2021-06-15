@@ -14,7 +14,6 @@ module.exports = withBundleAnalyzer({
     path: 'https://images.prismic.io/luke/',
   },
 
-  future: { webpack5: true },
   webpack: (config) => {
     config.module.rules.push({
       test: require.resolve('./src/components/MobileLayout/sequences.js'),
