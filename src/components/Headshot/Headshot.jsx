@@ -26,6 +26,7 @@ export default function Headshot({ image, sizes, objectFit }) {
       <Image
         src={image.filename || image.src}
         alt={image.alt}
+        {...image.blurDataURL && ({ placeholder: 'blur', blurDataURL: image.blurDataURL })}
         layout="fill"
         sizes={sizes}
         objectFit={objectFit}
@@ -36,6 +37,7 @@ export default function Headshot({ image, sizes, objectFit }) {
         <Image
           src={image.unfiltered_filename || image.unfiltered_src}
           alt={image.unfiltered_alt}
+          {...image.unfiltered_blurDataURL && ({ placeholder: 'blur', blurDataURL: image.unfiltered_blurDataURL })}
           layout="fill"
           sizes={sizes}
           objectFit={objectFit}

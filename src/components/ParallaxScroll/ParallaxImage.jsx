@@ -99,6 +99,7 @@ function ParallaxImage({ img, layout, zoom, scrollProgress, sectionIndex }) {
                 <Image
                   src={img.filename || img.src}
                   alt={img.alt}
+                  {...img.blurDataURL && ({ placeholder: 'blur', blurDataURL: img.blurDataURL })}
                   width={imgWidth}
                   height={imgHeight}
                   layout="responsive"

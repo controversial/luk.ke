@@ -33,6 +33,7 @@ const renderImageBlock = (block) => (
     <Image
       src={block.filename || block.src}
       alt={block.alt}
+      {...block.blurDataURL && ({ placeholder: 'blur', blurDataURL: block.blurDataURL })}
       width={block.dimensions[0]}
       height={block.dimensions[1]}
       layout="responsive"
@@ -54,7 +55,7 @@ const renderImageGalleryBlock = (block, windowWidth) => {
       spacing={Math.floor(carouselSpacing)}
       itemWidth={Math.floor(carouselItemWidth)}
     >
-      { block.images.map(({ src, filename, alt, dimensions, caption }) => (
+      { block.images.map(({ src, filename, alt, blurDataURL, dimensions, caption }) => (
         <FramedFigure
           className={cx('carousel-item')}
           frameStyle={block.frame}
@@ -64,6 +65,7 @@ const renderImageGalleryBlock = (block, windowWidth) => {
           <Image
             src={filename || src}
             alt={alt}
+            {...blurDataURL && ({ placeholder: 'blur', blurDataURL })}
             width={dimensions[0]}
             height={dimensions[1]}
             layout="responsive"

@@ -74,6 +74,7 @@ function CaseStudy({ project }) {
               <Image
                 src={heroImage.filename || heroImage.src}
                 alt={heroImage.alt}
+                {...heroImage.blurDataUrl && ({ placeholder: 'blur', blurDataURL: heroImage.blurDataURL })}
                 width={heroImage.dimensions[0]}
                 height={heroImage.dimensions[1]}
                 layout="responsive"
