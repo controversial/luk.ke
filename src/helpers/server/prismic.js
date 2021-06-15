@@ -12,7 +12,9 @@ async function imageSrc(url) {
   if (u.host === 'images.prismic.io' && u.pathname.startsWith('/luke')) {
     return {
       src: url,
-      blurhash: await fetch(`${u.protocol}//${u.host}${u.pathname}?w=64&fm=blurhash`).then((r) => r.text()),
+      blurDataURL: await fetch(`${u.protocol}//${u.host}${u.pathname}?w=10&fm=png`)
+        .then((r) => r.buffer())
+        .then((buffer) => `data:image/png;base64,${buffer.toString('base64')}`),
       filename: u.pathname.split('/').slice(-1)[0],
     };
   }
