@@ -80,7 +80,7 @@ const processProject = async ({
             type,
             frame: item.frame,
             images: await Promise.all(items.map(async ({ image, caption }) => ({
-              ...cleanImage(image),
+              ...await cleanImage(image),
               caption: PrismicDOM.RichText.asHtml(caption) || null,
             }))),
           };
