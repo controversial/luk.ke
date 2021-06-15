@@ -72,7 +72,6 @@ function MobileLayout({
     const cachePageAttributes = (path) => {
       const [seqIdx, routeIdx] = getRouteCoordinates(path);
       if (seqIdx > -1 && routeIdx > -1) {
-        console.log(`Saving component ${pageAttributesRef.current.Component.name} for route ${path} (${seqIdx}, ${routeIdx})`);
         setRouteSequences((ps) => augmentRoute(ps, path, pageAttributesRef.current));
       }
     };

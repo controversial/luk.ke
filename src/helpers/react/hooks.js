@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { useState, useEffect } from 'react';
 
 export function useWindowWidth() {

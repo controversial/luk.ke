@@ -37,5 +37,5 @@ module.exports = async function getMobileRouteSequences() {
 
 // Allow running with 'node sequences.js' in testing
 if (!module.parent) {
-  module.exports().then(console.log);
+  module.exports().then(console.log); // eslint-disable-line no-console
 }

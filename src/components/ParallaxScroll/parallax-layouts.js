@@ -4,7 +4,7 @@
 // ParallaxImages appear with their 'from' values when their ParallaxSection enters the bottom
 // of the viewport. They reach their 'to' values as it disappears past the top of the page
 
-export default {
+const layouts = {
   // Layout 1: large vertical primary image to the right, slightly smaller vertical image to the
   //           top left, and a small vertical image to the bottom left of the primary image
   'layout-1': [
@@ -51,3 +51,5 @@ export default {
     },
   ],
 };
+
+export default layouts;
