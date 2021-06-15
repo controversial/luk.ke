@@ -12,14 +12,14 @@ export async function getHomepage() {
     Api
       .then((api) => api.query(Prismic.Predicates.at('document.type', 'homepage')))
       .then(({ results }) => results[0].data)
-      .then(({ main_title, text: textBlocks, hero_image, hero_image_unfiltered }) => ({
+      .then(async ({ main_title, text: textBlocks, hero_image, hero_image_unfiltered }) => ({
         title: PrismicDOM.RichText.asHtml(main_title),
         text: textBlocks
           .map(({ text_content }) => PrismicDOM.RichText.asHtml(text_content)),
         hero_image: {
-          ...cleanImage(hero_image),
+          ...await cleanImage(hero_image),
           ...Object.fromEntries(
-            Object.entries(cleanImage(hero_image_unfiltered))
+            Object.entries(await cleanImage(hero_image_unfiltered))
               .map(([k, v]) => [`unfiltered_${k}`, v]),
           ),
         },

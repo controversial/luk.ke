@@ -32,12 +32,14 @@ const processProject = async ({
     label,
     url: PrismicDOM.Link.url(link),
   })),
-  featured_images: project.featured_images
-    .map(({ image, video, video_mode, zoom }) => ({
-      ...cleanImage(image),
-      zoom,
-      ...video.url && { video: { src: video.url, mode: video_mode } },
-    })),
+  featured_images: await Promise.all(
+    project.featured_images
+      .map(async ({ image, video, video_mode, zoom }) => ({
+        ...await cleanImage(image),
+        zoom,
+        ...video.url && { video: { src: video.url, mode: video_mode } },
+      })),
+  ),
   featured_images_layout: project.featured_images_layout,
 
   // If we're including the content of the page, in addition to just simple metadata, we need to
@@ -45,13 +47,13 @@ const processProject = async ({
   ...includeContent && {
     content: {
       hero: (project.hero_image?.url || undefined) && {
-        ...cleanImage(project.hero_image),
+        ...await cleanImage(project.hero_image),
         frame: project.hero_image_frame,
         url: project.hero_image_link?.link_type === 'Web' ? project.hero_image_link.url : null,
         caption: PrismicDOM.RichText.asHtml(project.hero_image_caption) || null,
       },
 
-      blocks: body.map(({ slice_type: type, primary: item, items }) => {
+      blocks: await Promise.all(body.map(async ({ slice_type: type, primary: item, items }) => {
         // Breaks between sections
         if (type === 'section_heading') {
           return {
@@ -68,7 +70,7 @@ const processProject = async ({
         if (type === 'image') {
           return {
             type,
-            ...cleanImage(item.image),
+            ...await cleanImage(item.image),
             frame: item.frame,
             caption: PrismicDOM.RichText.asHtml(item.caption) || null,
           };
@@ -77,10 +79,10 @@ const processProject = async ({
           return {
             type,
             frame: item.frame,
-            images: items.map(({ image, caption }) => ({
+            images: await Promise.all(items.map(async ({ image, caption }) => ({
               ...cleanImage(image),
               caption: PrismicDOM.RichText.asHtml(caption) || null,
-            })),
+            }))),
           };
         }
         // Videos
@@ -96,7 +98,7 @@ const processProject = async ({
         }
 
         return { type, content: Object.keys(item || {}).length ? item : items };
-      }),
+      })),
     },
   },
 

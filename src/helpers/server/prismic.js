@@ -6,20 +6,21 @@ const Api = Prismic.api(apiEndpoint);
 /* Extract filename if image comes from imgix - Next.js can do smart optimizations with this. */
 
 const unpackDimensions = ({ width, height } = {}) => [width, height];
-function imageSrc(url) {
+async function imageSrc(url) {
   let u = {};
   try { u = new URL(url); } catch (e) { /* Ignore URL parsing errors */ }
   if (u.host === 'images.prismic.io' && u.pathname.startsWith('/luke')) {
     return {
       src: url,
+      blurhash: await fetch(`${u.protocol}//${u.host}${u.pathname}?w=64&fm=blurhash`).then((r) => r.text()),
       filename: u.pathname.split('/').slice(-1)[0],
     };
   }
   return { src: url };
 }
 
-const cleanImage = ({ url, dimensions, alt } = {}) => (url || dimensions || alt || null) && {
-  ...imageSrc(url),
+const cleanImage = async ({ url, dimensions, alt } = {}) => (url || dimensions || alt || null) && {
+  ...await imageSrc(url),
   alt,
   dimensions: unpackDimensions(dimensions),
 };
