@@ -28,7 +28,7 @@
     "htmlparser2": "^6.1.0",
     "lodash": "^4.17.21",
     "mitt": "^2.1.0",
-    "next": "^11.1.1",
+    "next": "^12.1.0",
     "popmotion": "9.3.6",
     "prismic-dom": "git+https://git@github.com/controversial/prismic-dom.git",
     "prismic-javascript": "^3.0.2",
